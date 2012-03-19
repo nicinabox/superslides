@@ -62,7 +62,9 @@ $.fn.superslides = (options) ->
         
   adjust_slides_size = ($el, callback) ->
     $el.each (i) ->
-      $(this).width(width).height(height)
+      console.log width, height
+      $(this).width(width).height(height).css
+        left: width
       adjust_image_size $(this), options.adjust_image_size_callback
 
     callback()

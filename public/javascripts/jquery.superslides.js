@@ -67,7 +67,10 @@
     };
     adjust_slides_size = function($el, callback) {
       $el.each(function(i) {
-        $(this).width(width).height(height);
+        console.log(width, height);
+        $(this).width(width).height(height).css({
+          left: width
+        });
         return adjust_image_size($(this), options.adjust_image_size_callback);
       });
       return callback();
