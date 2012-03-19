@@ -1,14 +1,20 @@
 # Superslides 0.1 
 
-Superslides is a full screen slider for jQuery heavily influenced by Nathan Searles' SlidesJS. It's designed to be as flexible as possible, while maintaining a reasonable code base and good browser compatibility.
+__Not yet production ready. See Known Bugs.__
+
+Superslides is a full screen slider for jQuery heavily influenced by Nathan Searles' [SlidesJS](https://github.com/nathansearles/slides/). It's designed to be as flexible as possible, while maintaining a reasonable code base and good browser compatibility.
 
 # Usage
 
-`$('#slides').superslides(options_hash)`
+Basic usage is as follows. See options below for things you can change. 
+
+    $('#slides').superslides(options_hash)
+
+View the public folder for a complete example.
 
 # Options
 
-Currently, Superslides has a few configurable options: auto play with a delay, slide transition speed, and slide easing (jQueryUI or the jQuery easing plugin required).
+Currently, Superslides has a few configurable options: auto play with a delay, slide transition speed, and slide easing ([jQueryUI](http://jqueryui.com/) or the [jQuery easing plugin](http://gsgd.co.uk/sandbox/jquery/easing/) required).
 
 Listed as `option: default_value`  
 
@@ -22,7 +28,7 @@ Listed as `option: default_value`
 
 You may need to hook in to certain events, so I've included a few callback functions for convenience.
 
-Listed in the order they are fired:
+Listed in the order they are called:
 
     adjust_slides_size_callback
     adjust_image_size_callback
@@ -30,7 +36,7 @@ Listed in the order they are fired:
 
 # Markup
 
-Markup is pretty straightforward. At the very least you'll need a `ul` with a container. Inside each `li` you're pretty much home free.
+Markup is pretty straightforward. At the very least you'll need a `ul` with a container. Inside each `li` you're pretty much home free. I've included a completely optional `.container`
 
     <div id="slides">
       <ul>
@@ -115,12 +121,12 @@ Not _all_ of these styles are required, but most of them are. They've been writt
       top: 38%;
       background: none;
     }
-    #slides ul li .container .content-wrapper {
-      width: 400px;
-      padding: 75px 90px;
-    }
-    
+
+# Contributing
+
+If you'd like to contribute by fixing bugs, adding features, or otherwise, you should know that Superslides is written in [Coffeescript](http://coffeescript.org/) with [Jasmine](http://pivotal.github.com/jasmine/) and [Jasmine Headless Webkit](http://johnbintz.github.com/jasmine-headless-webkit/). Write a test for your feature and submit a pull request :)
+
 # Known Bugs
 
 * Scaling does not yet work if you resize your browser
-* Possible crossbrowser bugs (untested)
+* Possible cross-browser bugs (untested)
