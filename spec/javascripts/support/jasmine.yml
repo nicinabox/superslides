@@ -1,0 +1,10 @@
+src_files:
+  - public/javascripts/vendor/*.js
+
+spec_files:
+  - "**/*[Ss]pec.*"
+
+src_dir: 
+  - public/javascripts/vendor
+  - src
+spec_dir: spec/javascripts
