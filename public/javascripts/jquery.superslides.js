@@ -12,7 +12,7 @@
   $ = jQuery;
 
   $.fn.superslides = function(options) {
-    var $children, $nav, $this, adjust_image_size, adjust_slides_size, animate, current, first_load, height, interval, next, prev, size, start, stop, width;
+    var $children, $nav, $this, adjust_image_position, adjust_slides_size, animate, current, first_load, height, interval, next, prev, size, start, stop, width;
     options = $.extend({
       delay: 5000,
       play: false,
@@ -20,7 +20,7 @@
       slide_easing: 'linear',
       nav_class: 'slides-navigation',
       adjust_slides_size_callback: function() {},
-      adjust_image_size_callback: function() {},
+      adjust_image_position_callback: function() {},
       animate_callback: function() {}
     }, options);
     $this = $(this).children('ul');
@@ -47,7 +47,7 @@
     stop = function() {
       return clearInterval(interval);
     };
-    adjust_image_size = function($el, callback) {
+    adjust_image_position = function($el, callback) {
       var $img, img_height, img_width;
       $img = $('img', $el);
       img_width = $img.width();
@@ -70,13 +70,12 @@
         $(this).width(width).height(height).css({
           left: width
         });
-        return adjust_image_size($(this), options.adjust_image_size_callback);
+        return adjust_image_position($(this), options.adjust_image_position_callback);
       });
       return callback();
     };
     animate = function(direction, callback) {
       var position;
-      first_load = false;
       prev = current;
       switch (direction) {
         case 'next':
@@ -116,6 +115,7 @@
           display: 'none',
           zIndex: 0
         });
+        first_load = false;
         return callback();
       });
     };
@@ -143,7 +143,8 @@
         height = window.innerHeight || document.body.clientHeight;
         adjust_slides_size($children, options.adjust_slides_size_callback);
         return $this.width(width * 3).css({
-          left: -width
+          left: -width,
+          height: height
         });
       });
       return $('a', $nav).click(function(e) {
