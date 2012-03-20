@@ -12,7 +12,7 @@
   $ = jQuery;
 
   $.fn.superslides = function(options) {
-    var $children, $nav, $this, adjust_image_position, adjust_slides_size, animate, current, first_load, height, interval, next, prev, size, start, stop, width;
+    var $children, $nav, $this, adjust_image_position, adjust_slides_size, animate, current, first_load, height, img_height, img_width, interval, next, prev, size, start, stop, width;
     options = $.extend({
       delay: 5000,
       play: false,
@@ -34,6 +34,8 @@
     next = 0;
     first_load = true;
     interval = 0;
+    img_height = 0;
+    img_width = 0;
     start = function() {
       animate(0, options.animate_callback);
       if (options.play) {
@@ -48,7 +50,7 @@
       return clearInterval(interval);
     };
     adjust_image_position = function($el, callback) {
-      var $img, img_height, img_width;
+      var $img;
       $img = $('img', $el);
       if ($img.attr('height')) {
         img_height = $img.height();

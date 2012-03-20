@@ -29,6 +29,8 @@ $.fn.superslides = (options) ->
   next = 0
   first_load = true
   interval = 0
+  img_height = 0
+  img_width = 0
   
   start = () ->
     animate 0, options.animate_callback
@@ -42,11 +44,12 @@ $.fn.superslides = (options) ->
     clearInterval interval
 
   adjust_image_position = ($el, callback) ->
-    $img        = $('img', $el)
+    $img = $('img', $el)
     
     if $img.attr('height')
       img_height = $img.height()
       $img.removeAttr('height')
+      
     if $img.attr('width')
       img_width = $img.width()
       $img.removeAttr('width')
