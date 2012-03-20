@@ -1,4 +1,4 @@
-# Superslides 0.1 
+# Superslides 0.2
 
 __Not yet production ready. See Known Bugs.__
 
