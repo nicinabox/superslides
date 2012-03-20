@@ -12,7 +12,7 @@
   $ = jQuery;
 
   $.fn.superslides = function(options) {
-    var $children, $nav, $this, adjust_image_position, adjust_slides_size, animate, current, first_load, height, img_height, img_width, interval, next, prev, size, start, stop, width;
+    var $children, $nav, $this, adjust_image_position, adjust_slides_size, animate, current, first_load, height, img, interval, next, prev, size, start, stop, width;
     options = $.extend({
       delay: 5000,
       play: false,
@@ -34,8 +34,10 @@
     next = 0;
     first_load = true;
     interval = 0;
-    img_height = 0;
-    img_width = 0;
+    img = {
+      width: 0,
+      height: 0
+    };
     start = function() {
       animate(0, options.animate_callback);
       if (options.play) {
@@ -53,21 +55,21 @@
       var $img;
       $img = $('img', $el);
       if ($img.attr('height')) {
-        img_height = $img.height();
+        img.height = $img.height();
         $img.removeAttr('height');
       }
       if ($img.attr('width')) {
-        img_width = $img.width();
+        img.width = $img.width();
         $img.removeAttr('width');
       }
-      if (height < img_height) {
+      if (height < img.height) {
         $img.css({
-          top: -(img_height - height) / 2
+          top: -(img.height - height) / 2
         });
       }
-      if (width < img_width) {
+      if (width < img.width) {
         $img.css({
-          left: -(img_width - width) / 2
+          left: -(img.width - width) / 2
         });
       }
       return callback();
