@@ -36,9 +36,9 @@ Listed in the order they are called:
 
 Markup is pretty straightforward. At the very least you'll need a `ul` with a container. Inside each `li` you're pretty much home free. I've included a completely optional `.container`.
 
-## A note on scaling images
+### A note on scaling images
 
-Be sure to include the height and width attributes of the images in it's original size! These attributes will be removed when it scales the image, but the are needed for original size calculation.
+Be sure to include the height and width attributes of the image in it's original size! These attributes will be removed when the slider is initialized, but they are need to quickly and simply calculate the original image dimensions.
 
     <div id="slides">
       <ul>
