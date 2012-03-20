@@ -36,7 +36,11 @@ Listed in the order they are called:
 
 # Markup
 
-Markup is pretty straightforward. At the very least you'll need a `ul` with a container. Inside each `li` you're pretty much home free. I've included a completely optional `.container`
+Markup is pretty straightforward. At the very least you'll need a `ul` with a container. Inside each `li` you're pretty much home free. I've included a completely optional `.container`.
+
+## A note on scaling images
+
+Be sure to include the height and width attributes of the images in it's original size! These attributes will be removed when it scales the image, but the are needed for original size calculation.
 
     <div id="slides">
       <ul>

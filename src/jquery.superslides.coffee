@@ -42,13 +42,14 @@ $.fn.superslides = (options) ->
     clearInterval interval
 
   adjust_image_position = ($el, callback) ->
-    # FIXME: image height/width calculation
-
     $img        = $('img', $el)
-    img_width   = $img.width()
-    img_height  = $img.height()
-  
-    $img.removeAttr('width').removeAttr('height')
+    
+    if $img.attr('height')
+      img_height = $img.height()
+      $img.removeAttr('height')
+    if $img.attr('width')
+      img_width = $img.width()
+      $img.removeAttr('width')
   
     if height < img_height
       $img.css

@@ -50,9 +50,14 @@
     adjust_image_position = function($el, callback) {
       var $img, img_height, img_width;
       $img = $('img', $el);
-      img_width = $img.width();
-      img_height = $img.height();
-      $img.removeAttr('width').removeAttr('height');
+      if ($img.attr('height')) {
+        img_height = $img.height();
+        $img.removeAttr('height');
+      }
+      if ($img.attr('width')) {
+        img_width = $img.width();
+        $img.removeAttr('width');
+      }
       if (height < img_height) {
         $img.css({
           top: -(img_height - height) / 2
