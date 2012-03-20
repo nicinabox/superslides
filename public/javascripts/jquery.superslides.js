@@ -12,7 +12,7 @@
   $ = jQuery;
 
   $.fn.superslides = function(options) {
-    var $children, $nav, $this, adjust_image_size, adjust_slides_size, animate, current, first_load, height, interval, move_slide, next, prev, size, start, stop, width;
+    var $children, $nav, $this, adjust_image_size, adjust_slides_size, animate, current, first_load, height, interval, next, prev, size, start, stop, width;
     options = $.extend({
       delay: 5000,
       play: false,
@@ -74,10 +74,6 @@
       });
       return callback();
     };
-    move_slide = function(source, target) {
-      $children.eq(source).insertAfter($children.eq(target));
-      return $children = $this.children();
-    };
     animate = function(direction, callback) {
       var position;
       first_load = false;
@@ -116,6 +112,7 @@
           zIndex: 2
         });
         $children.eq(prev).css({
+          background: 'red',
           left: width,
           display: 'none',
           zIndex: 0
@@ -146,8 +143,8 @@
         width = window.innerWidth || document.body.clientWidth;
         height = window.innerHeight || document.body.clientHeight;
         adjust_slides_size($children, options.adjust_slides_size_callback);
-        return $this.width(width * size).css({
-          left: -width * current
+        return $this.width(width * 3).css({
+          left: -width
         });
       });
       return $('a', $nav).click(function(e) {

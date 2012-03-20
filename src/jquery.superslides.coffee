@@ -42,7 +42,7 @@ $.fn.superslides = (options) ->
     clearInterval interval
 
   adjust_image_size = ($el, callback) ->
-    # TODO: Fix height/width calculation
+    # FIXME: image height/width calculation
     
     $img        = $('img', $el)
     img_width   = $img.width()
@@ -61,16 +61,14 @@ $.fn.superslides = (options) ->
     callback()
         
   adjust_slides_size = ($el, callback) ->
+    # FIXME Image disappears on resize
+    
     $el.each (i) ->
       $(this).width(width).height(height).css
         left: width
       adjust_image_size $(this), options.adjust_image_size_callback
 
     callback()
-    
-  move_slide = (source, target) ->
-    $children.eq(source).insertAfter($children.eq(target))
-    $children = $this.children()
 
   animate = (direction, callback) ->
     first_load = false
@@ -113,6 +111,7 @@ $.fn.superslides = (options) ->
 
       # reset previous slide
       $children.eq(prev).css
+        background: 'red'
         left: width
         display: 'none'
         zIndex: 0
@@ -145,8 +144,8 @@ $.fn.superslides = (options) ->
       width = window.innerWidth || document.body.clientWidth
       height = window.innerHeight || document.body.clientHeight
       adjust_slides_size $children, options.adjust_slides_size_callback
-      $this.width(width*size).css
-        left: -width*current
+      $this.width(width*3).css
+        left: -width
 
     $('a', $nav).click (e) ->
       e.preventDefault()
