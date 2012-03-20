@@ -111,7 +111,6 @@ $.fn.superslides = (options) ->
 
       # reset previous slide
       $children.eq(prev).css
-        background: 'red'
         left: width
         display: 'none'
         zIndex: 0
