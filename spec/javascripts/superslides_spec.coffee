@@ -5,8 +5,8 @@ describe 'Superslides', ->
   beforeEach ->
     window.innerWidth = 800
     window.innerHeight = 600
-    slide_html = '<div class="slides-container">
-                    <ul id="slides">
+    slide_html = '<div id="slides">
+                    <ul>
                       <li><img src="http://placehold.it/800x600" width="800" height="600" alt=""></li>
                       <li><img src="http://placehold.it/800x600" width="800" height="600" alt=""></li>
                       <li><img src="http://placehold.it/800x600" width="800" height="600" alt=""></li>
@@ -20,8 +20,8 @@ describe 'Superslides', ->
     $('#slides').superslides()
     
 
-  it 'sets #slides width equal to the sum of all slides', ->
-    expect($('#slides').width()).toEqual 2400
+  it 'sets #slides ul width equal to the sum of all slides', ->
+    expect($('#slides ul').width()).toEqual 2400
 
   describe 'each slide', ->    
     it 'should be window size', ->
@@ -36,7 +36,7 @@ describe 'Superslides', ->
       $(window).resize()
 
     it 'adjusts #slides', ->
-      expect($('#slides').width()).toEqual 3000
+      expect($('#slides ul').width()).toEqual 3000
 
     it 'adjusts slide', ->
       $('#slides li').each (i) ->

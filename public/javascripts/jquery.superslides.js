@@ -67,7 +67,6 @@
     };
     adjust_slides_size = function($el, callback) {
       $el.each(function(i) {
-        console.log(width, height);
         $(this).width(width).height(height).css({
           left: width
         });
