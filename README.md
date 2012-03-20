@@ -31,7 +31,7 @@ You may need to hook in to certain events, so I've included a few callback funct
 Listed in the order they are called:
 
     adjust_slides_size_callback
-    adjust_image_size_callback
+    adjust_image_position_callback
     animate_callback
 
 # Markup
@@ -128,5 +128,4 @@ If you'd like to contribute by fixing bugs, adding features, or otherwise, you s
 
 # Known Bugs
 
-* Scaling does not yet work if you resize your browser
 * Possible cross-browser bugs (untested)
