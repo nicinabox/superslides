@@ -15,7 +15,6 @@ $.fn.superslides = (options) ->
     nav_class: 'slides-navigation'
     adjust_slides_size_callback: ->
     adjust_image_position_callback: ->
-    animate_callback: ->
   , options
 
   $this = $(this).children('ul')
@@ -35,11 +34,11 @@ $.fn.superslides = (options) ->
     height: 0
   
   start = () ->
-    animate 0, options.animate_callback
+    animate 0
     if options.play      
       interval = setInterval ->
         direction = (if first_load then 0 else "next")
-        animate direction, options.animate_callback
+        animate direction
       , options.delay
         
   stop = () ->
@@ -74,7 +73,7 @@ $.fn.superslides = (options) ->
 
     callback()
 
-  animate = (direction, callback) ->
+  animate = (direction) ->
     unless animating
       prev = current
       animating = true
@@ -120,10 +119,11 @@ $.fn.superslides = (options) ->
           display: 'none'
           zIndex: 0
 
+        $children.eq(current).addClass('current')
+        $this.trigger('slides.initialized') if first_load
         first_load = false
         animating = false
-        $children.eq(current).addClass('current')
-        callback()
+        $this.trigger('slides.animated')
 
   this.each ->
     $this.width(width*size)
@@ -159,6 +159,6 @@ $.fn.superslides = (options) ->
       e.preventDefault()
       stop()
       if $(this).hasClass('next')
-        animate 'next', options.animate_callback
+        animate 'next'
       else
-        animate 'prev', options.animate_callback
+        animate 'prev'
