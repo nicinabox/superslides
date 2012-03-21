@@ -1,6 +1,6 @@
 
 /*
-  Superslides 0.1
+  Superslides 0.2.1
   Fullscreen slideshow plugin for jQuery
   by Nic Aitch
   http://nicinabox.com
@@ -12,7 +12,7 @@
   $ = jQuery;
 
   $.fn.superslides = function(options) {
-    var $children, $nav, $this, adjust_image_position, adjust_slides_size, animate, current, first_load, height, img, interval, next, prev, size, start, stop, width;
+    var $children, $nav, $this, adjust_image_position, adjust_slides_size, animate, animating, current, first_load, height, img, interval, next, prev, size, start, stop, width;
     options = $.extend({
       delay: 5000,
       play: false,
@@ -34,6 +34,7 @@
     next = 0;
     first_load = true;
     interval = 0;
+    animating = false;
     img = {
       width: 0,
       height: 0
@@ -85,48 +86,53 @@
     };
     animate = function(direction, callback) {
       var position;
-      prev = current;
-      switch (direction) {
-        case 'next':
-          position = width * 2;
-          direction = -width * 2;
-          next = current + 1;
-          if (size === next) next = 0;
-          break;
-        case 'prev':
-          position = 0;
-          direction = 0;
-          next = current - 1;
-          if (next === -1) next = size - 1;
-          break;
-        default:
-          prev = -1;
-          next = direction;
+      if (!animating) {
+        prev = current;
+        animating = true;
+        switch (direction) {
+          case 'next':
+            position = width * 2;
+            direction = -width * 2;
+            next = current + 1;
+            if (size === next) next = 0;
+            break;
+          case 'prev':
+            position = 0;
+            direction = 0;
+            next = current - 1;
+            if (next === -1) next = size - 1;
+            break;
+          default:
+            prev = -1;
+            next = direction;
+        }
+        current = next;
+        $children.removeClass('current');
+        $children.eq(current).css({
+          left: position,
+          display: 'block'
+        });
+        return $this.animate({
+          left: -position
+        }, options.slide_speed, options.slide_easing, function() {
+          $this.css({
+            left: -width
+          });
+          $children.eq(next).css({
+            left: width,
+            zIndex: 2
+          });
+          $children.eq(prev).css({
+            left: width,
+            display: 'none',
+            zIndex: 0
+          });
+          first_load = false;
+          animating = false;
+          $children.eq(current).addClass('current');
+          return callback();
+        });
       }
-      current = next;
-      $children.removeClass('current').eq(current).addClass('current');
-      $children.eq(current).css({
-        left: position,
-        display: 'block'
-      });
-      return $this.animate({
-        left: -position
-      }, options.slide_speed, options.slide_easing, function() {
-        $this.css({
-          left: -width
-        });
-        $children.eq(next).css({
-          left: width,
-          zIndex: 2
-        });
-        $children.eq(prev).css({
-          left: width,
-          display: 'none',
-          zIndex: 0
-        });
-        first_load = false;
-        return callback();
-      });
     };
     return this.each(function() {
       var $container;

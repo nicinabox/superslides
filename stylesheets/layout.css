@@ -77,7 +77,7 @@ code, pre {
   top: 0;
 }
 #slides ul li.current img {
-/*  position: fixed;*/
+  position: fixed;
 }
 #slides ul li .container {
   width: 55%;
