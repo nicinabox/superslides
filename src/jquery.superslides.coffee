@@ -91,8 +91,8 @@ $.fn.superslides = (options) ->
         next = direction
 
     current = next
-    $children.removeClass('current').eq(current).addClass('current')
-
+    $children.removeClass('current')
+    
     $children.eq(current).css
       left: position
       display: 'block'
@@ -118,6 +118,7 @@ $.fn.superslides = (options) ->
         zIndex: 0
 
       first_load = false
+      $children.eq(current).addClass('current')
       callback()
 
   this.each ->
