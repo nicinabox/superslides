@@ -29,6 +29,7 @@ $.fn.superslides = (options) ->
   next = 0
   first_load = true
   interval = 0
+  animating = false
   img =
     width: 0
     height: 0
@@ -74,52 +75,55 @@ $.fn.superslides = (options) ->
     callback()
 
   animate = (direction, callback) ->
-    prev = current
-    switch direction
-      when 'next'
-        position = width*2
-        direction = -width*2
-        next = current + 1
-        next = 0 if size == next
-      when 'prev'
-        position = 0
-        direction = 0
-        next = current - 1
-        next = size-1 if next == -1
-      else
-        prev = -1
-        next = direction
+    unless animating
+      prev = current
+      animating = true
+      switch direction
+        when 'next'
+          position = width*2
+          direction = -width*2
+          next = current + 1
+          next = 0 if size == next
+        when 'prev'
+          position = 0
+          direction = 0
+          next = current - 1
+          next = size-1 if next == -1
+        else
+          prev = -1
+          next = direction
 
-    current = next
-    $children.removeClass('current')
+      current = next
+      $children.removeClass('current')
     
-    $children.eq(current).css
-      left: position
-      display: 'block'
+      $children.eq(current).css
+        left: position
+        display: 'block'
 
-    $this.animate
-      left: -position
-    , options.slide_speed
-    , options.slide_easing
-    , ->
-      # after animation reset control position
-      $this.css
-        left: -width
+      $this.animate
+        left: -position
+      , options.slide_speed
+      , options.slide_easing
+      , ->
+        # after animation reset control position
+        $this.css
+          left: -width
 
-      # reset and show next
-      $children.eq(next).css
-        left: width
-        zIndex: 2
+        # reset and show next
+        $children.eq(next).css
+          left: width
+          zIndex: 2
 
-      # reset previous slide
-      $children.eq(prev).css
-        left: width
-        display: 'none'
-        zIndex: 0
+        # reset previous slide
+        $children.eq(prev).css
+          left: width
+          display: 'none'
+          zIndex: 0
 
-      first_load = false
-      $children.eq(current).addClass('current')
-      callback()
+        first_load = false
+        animating = false
+        $children.eq(current).addClass('current')
+        callback()
 
   this.each ->
     $this.width(width*size)
