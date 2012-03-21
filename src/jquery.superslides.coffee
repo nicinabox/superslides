@@ -13,8 +13,6 @@ $.fn.superslides = (options) ->
     slide_speed: 'normal'
     slide_easing: 'linear'
     nav_class: 'slides-navigation'
-    adjust_slides_size_callback: ->
-    adjust_image_position_callback: ->
   , options
 
   $this = $(this).children('ul')
@@ -44,7 +42,7 @@ $.fn.superslides = (options) ->
   stop = () ->
     clearInterval interval
 
-  adjust_image_position = ($el, callback) ->
+  adjust_image_position = ($el) ->
     $img = $('img', $el)
 
     if $img.attr('height')
@@ -63,15 +61,15 @@ $.fn.superslides = (options) ->
       $img.css
         left: -(img.width - width)/2
 
-    callback()
+    $this.trigger('slides.image_adjusted')
 
-  adjust_slides_size = ($el, callback) ->
+  adjust_slides_size = ($el) ->
     $el.each (i) ->
       $(this).width(width).height(height).css
         left: width
-      adjust_image_position $(this), options.adjust_image_position_callback
+      adjust_image_position $(this)
 
-    callback()
+    $this.trigger('slides.sized')
 
   animate = (direction) ->
     unless animating
@@ -144,13 +142,13 @@ $.fn.superslides = (options) ->
       height: height
       left: -width
 
-    adjust_slides_size $children, options.adjust_slides_size_callback
+    adjust_slides_size $children
     start()
 
     $(window).resize (e) ->
       width = window.innerWidth || document.body.clientWidth
       height = window.innerHeight || document.body.clientHeight
-      adjust_slides_size $children, options.adjust_slides_size_callback
+      adjust_slides_size $children
       $this.width(width*3).css
         left: -width
         height: height
