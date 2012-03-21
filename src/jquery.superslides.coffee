@@ -32,40 +32,40 @@ $.fn.superslides = (options) ->
   img =
     width: 0
     height: 0
-  
+
   start = () ->
     animate 0
-    if options.play      
+    if options.play
       interval = setInterval ->
         direction = (if first_load then 0 else "next")
         animate direction
       , options.delay
-        
+
   stop = () ->
     clearInterval interval
 
   adjust_image_position = ($el, callback) ->
     $img = $('img', $el)
-    
+
     if $img.attr('height')
       img.height = $img.height()
       $img.removeAttr('height')
-      
+
     if $img.attr('width')
       img.width = $img.width()
       $img.removeAttr('width')
-    
+
     if height < img.height
       $img.css
         top: -(img.height - height)/2
-    
+
     if width < img.width
       $img.css
         left: -(img.width - width)/2
 
     callback()
-        
-  adjust_slides_size = ($el, callback) ->    
+
+  adjust_slides_size = ($el, callback) ->
     $el.each (i) ->
       $(this).width(width).height(height).css
         left: width
@@ -94,7 +94,7 @@ $.fn.superslides = (options) ->
 
       current = next
       $children.removeClass('current')
-    
+
       $children.eq(current).css
         left: position
         display: 'block'
@@ -128,7 +128,7 @@ $.fn.superslides = (options) ->
   this.each ->
     $this.width(width*size)
     $container = $this.parent()
-    
+
     # set css for slides
     $children.css
       position: 'absolute'
@@ -136,8 +136,8 @@ $.fn.superslides = (options) ->
       left: width
       zIndex: 0
       display: 'none'
-		
-		# set css for control div
+
+    # set css for control div
     $this.css
       position: 'relative'
       width: width * 3
@@ -146,7 +146,7 @@ $.fn.superslides = (options) ->
 
     adjust_slides_size $children, options.adjust_slides_size_callback
     start()
-		
+
     $(window).resize (e) ->
       width = window.innerWidth || document.body.clientWidth
       height = window.innerHeight || document.body.clientHeight
