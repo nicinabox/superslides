@@ -1,3 +1,5 @@
 $(document).ready(function() {
-  $('#slides').superslides()
+  $('#slides').superslides({
+    // play: true
+  })
 });
