@@ -18,9 +18,7 @@
       play: false,
       slide_speed: 'normal',
       slide_easing: 'linear',
-      nav_class: 'slides-navigation',
-      adjust_slides_size_callback: function() {},
-      adjust_image_position_callback: function() {}
+      nav_class: 'slides-navigation'
     }, options);
     $this = $(this).children('ul');
     $children = $this.children();
@@ -51,7 +49,7 @@
     stop = function() {
       return clearInterval(interval);
     };
-    adjust_image_position = function($el, callback) {
+    adjust_image_position = function($el) {
       var $img;
       $img = $('img', $el);
       if ($img.attr('height')) {
@@ -72,16 +70,16 @@
           left: -(img.width - width) / 2
         });
       }
-      return callback();
+      return $this.trigger('slides.image_adjusted');
     };
-    adjust_slides_size = function($el, callback) {
+    adjust_slides_size = function($el) {
       $el.each(function(i) {
         $(this).width(width).height(height).css({
           left: width
         });
-        return adjust_image_position($(this), options.adjust_image_position_callback);
+        return adjust_image_position($(this));
       });
-      return callback();
+      return $this.trigger('slides.sized');
     };
     animate = function(direction) {
       var position;
@@ -151,12 +149,12 @@
         height: height,
         left: -width
       });
-      adjust_slides_size($children, options.adjust_slides_size_callback);
+      adjust_slides_size($children);
       start();
       $(window).resize(function(e) {
         width = window.innerWidth || document.body.clientWidth;
         height = window.innerHeight || document.body.clientHeight;
-        adjust_slides_size($children, options.adjust_slides_size_callback);
+        adjust_slides_size($children);
         return $this.width(width * 3).css({
           left: -width,
           height: height
