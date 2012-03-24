@@ -1,7 +1,6 @@
 {spawn, exec} = require 'child_process'
 
 task 'watch', 'continually build', ->
-    coffee = spawn 'coffee', ['-cwo', 'public/javascripts', 'src']
     coffee = spawn 'coffee', ['-cwo', 'build', 'src']
     coffee.stdout.on 'data', (data) -> 
       exec 'cake minify'
