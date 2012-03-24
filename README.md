@@ -133,6 +133,6 @@ Not _all_ of these styles are required, but most of them are. They've been writt
 
 If you'd like to contribute by fixing bugs, adding features, or otherwise, you should know that Superslides is written in [Coffeescript](http://coffeescript.org/) with [Jasmine](http://pivotal.github.com/jasmine/) and [Jasmine Headless Webkit](http://johnbintz.github.com/jasmine-headless-webkit/). Write a test for your feature and submit a pull request :)
 
-# Known Bugs
+# Known Bugs & Caveats
 
-* Possible cross-browser bugs (untested)
+* IE 7 & 8 don't scale the image nicely
