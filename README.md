@@ -19,15 +19,23 @@ Listed as `option: default_value`
     slide_easing: 'linear'
     nav_class: 'slides-navigation'
     
-# Callbacks
+# Events
 
-You may need to hook in to certain events, so I've included a few callback functions for convenience.
+Superslides triggers a few events that you can bind to (listed in the order they are fired):
 
-Listed in the order they are called:
+    slides.initialized
+    slides.animated
+    
+When the window is resized and on first load before `slides.initialized`:
 
-    adjust_slides_size_callback
-    adjust_image_position_callback
-    animate_callback
+    slides.image_adjusted
+    slides.sized
+    
+Binding to events:
+
+    $('body').on('slides.initialized', '#slides', function(){
+      console.log('Superslides initialized')
+    })
 
 # Markup
 
