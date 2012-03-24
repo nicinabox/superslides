@@ -2,6 +2,8 @@
 
 Superslides is a full screen slider for jQuery heavily influenced by Nathan Searles' [SlidesJS](https://github.com/nathansearles/slides/). It's designed to be as flexible as possible, while maintaining a reasonable code base and good browser compatibility.
 
+It is 2kb minified (4.5kb uncompressed).
+
 # Usage
 [Check out the demo](http://nicinabox.github.com/superslides/) for a complete example. Basic usage is as follows. See options below for things you can change. 
 
