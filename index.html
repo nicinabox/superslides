@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="stylesheets/normalize.css">
   <link rel="stylesheet" href="stylesheets/layout.css">
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
-  <script src="javascripts/jquery.superslides.js"></script>
+  <script src="https://raw.github.com/nicinabox/superslides/master/build/jquery.superslides.min.js"></script>
   <script src="javascripts/application.js"></script>
 </head>
 <body>
@@ -18,25 +18,19 @@
         <img src="images/cinelli.jpeg" alt="Cinelli">
         <div class="container">
           <h1>Superslides is a full screen slider for jQuery.</h1>
-          <p>
-            <a class="button" href="https://github.com/downloads/nicinabox/superslides/superslides-0.2.zip">Download v0.2</a>
-          </p>
-          <p>
-            <a href="https://github.com/nicinabox/superslides">Full documentation</a> is available at Github.
-          </p>
+          <div class="column">
+            <p>
+              It's tiny&mdash;only 2kb minified. <a href="https://github.com/nicinabox/superslides">Full documentation</a> is available at Github.
+              
+            </p>
+          </div>
+          <div class="column">
+            <a class="button" href="https://raw.github.com/nicinabox/superslides/master/build/jquery.superslides.min.js">Download v0.2.1</a>
+          </div>
         </div>
       </li>
       <li>
         <img src="images/surly.jpeg" alt="Surly">
-        <div class="container">
-          <h1>It's only requires a little bit of HTML.</h1>
-          <p>
-            Inside each <code>li</code> you can add your own markup and design.
-          </p>
-        </div>
-      </li>
-      <li>
-        <img src="images/cinelli-front.jpeg" alt="Cinelli">
         <div class="container">
           <h1>It's light on features, but easily configurable.</h1>
           <p>
@@ -49,12 +43,27 @@ slide_speed: 'normal'
 slide_easing: 'linear'
 nav_class: 'slides-navigation'
           </pre>
-          <h2>There are even a few callbacks available.</h2>
-          <pre>
-adjust_slides_size_callback
-adjust_image_position_callback
-animate_callback
-          </pre>
+        </div>
+      </li>
+      <li>
+        <img src="images/cinelli-front.jpeg" alt="Cinelli">
+        <div class="container">
+          <h1>Bind to events</h1>
+          <p>
+            Superslides triggers a few events that you can bind to (listed in the order they are fired):
+            <pre>
+slides.initialized
+slides.animated
+            </pre>
+          </p>  
+          <p>
+            When the window is resized and on first load before <code>slides.initialized</code>:
+
+            <pre>
+slides.image_adjusted
+slides.sized
+            </pre>
+          </p>
         </div>
       </li>
       <li>
