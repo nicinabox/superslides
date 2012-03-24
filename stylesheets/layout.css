@@ -28,6 +28,8 @@ code, pre {
   margin-right: 0;
 }
 
+/* Superslides CSS */
+
 #slides {
   overflow: hidden;
   width: 100%;
@@ -47,16 +49,16 @@ code, pre {
   background: black;
   text-decoration: none;
   display: block;
-  padding: 5px 10px;
+  padding: 20px 10px;
   width: 70px;
   text-align: center;
   top: 50%;
 }
 #slides .slides-navigation a.prev {
-  left: 8%;
+  left: 0;
 }
 #slides .slides-navigation a.next {
-  right: 8%;
+  right: 0;
 }
 #slides ul {
   margin: 0;
