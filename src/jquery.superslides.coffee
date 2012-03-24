@@ -27,9 +27,6 @@ $.fn.superslides = (options) ->
   first_load = true
   interval = 0
   animating = false
-  img =
-    width: 0
-    height: 0
 
   start = () ->
     animate 0
@@ -44,23 +41,21 @@ $.fn.superslides = (options) ->
 
   adjust_image_position = ($el) ->
     $img = $('img', $el)
-
+    
     if $img.attr('height')
-      img.height = $img.height()
-      $img.removeAttr('height')
+      $img.data('original-height', $img.height()).removeAttr('height')
 
     if $img.attr('width')
-      img.width = $img.width()
-      $img.removeAttr('width')
+      $img.data('original-width', $img.width()).removeAttr('width')
 
-    if height < img.height
+    if height < $img.data('original-height')
       $img.css
-        top: -(img.height - height)/2
+        top: -($img.data('original-height') - height)/2
 
-    if width < img.width
+    if width < $img.data('original-width')
       $img.css
-        left: -(img.width - width)/2
-
+        left: -($img.data('original-width') - width)/2
+        
     $this.trigger('slides.image_adjusted')
 
   adjust_slides_size = ($el) ->

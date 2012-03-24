@@ -49,7 +49,15 @@ describe 'Superslides', ->
         $('#slides li').each (i) ->
           expect($('img', this).attr('width')).toBeUndefined()
           expect($('img', this).attr('height')).toBeUndefined()
-
+            
+      it 'adds data-original-width', ->
+        $('#slides li').each (i) ->
+          expect($('img', this).data('original-width')).toEqual 800
+        
+      it 'adds data-original-height', ->
+        $('#slides li').each (i) ->
+          expect($('img', this).data('original-height')).toEqual 600
+      
       it 'vertically if window height is less than image height', ->
         window.innerHeight = 500
         $(window).resize()
