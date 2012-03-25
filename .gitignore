@@ -1,3 +1,4 @@
 .DS_Store
 .jhw-cache/
 public
+.sass-cache/
