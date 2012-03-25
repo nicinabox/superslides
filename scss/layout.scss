@@ -46,6 +46,9 @@ code, pre {
   overflow: hidden;
   width: 100%;
   height: 100%;
+  img {
+    -ms-interpolation-mode: bicubic;
+  }
   .slides-navigation {
     width: 85%;
     margin: 0 auto;
@@ -80,7 +83,7 @@ code, pre {
       }
     }
   }
-  ul {
+  .slides-container {
     margin: 0;
     padding: 0;
     list-style: none;
