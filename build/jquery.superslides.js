@@ -21,7 +21,7 @@
       nav_class: 'slides-navigation',
       container: 'slides-container'
     }, options);
-    $(this).children().wrapAll('<div class="slides-control" />');
+    $("." + options.container, this).wrap('<div class="slides-control" />');
     $this = $(this);
     $control = $('.slides-control', $this);
     $container = $("." + options.container);
@@ -112,7 +112,8 @@
           display: 'block'
         });
         return $control.animate({
-          left: -position
+          left: -position,
+          avoidTransforms: false
         }, options.slide_speed, options.slide_easing, function() {
           $control.css({
             left: -width
@@ -127,27 +128,31 @@
             zIndex: 0
           });
           $children.eq(current).addClass('current');
-          if (first_load) $this.trigger('slides.initialized');
-          first_load = false;
+          if (first_load) {
+            $container.fadeIn('fast');
+            $this.trigger('slides.initialized');
+            first_load = false;
+          }
           animating = false;
           return $this.trigger('slides.animated');
         });
       }
     };
     return this.each(function() {
-      $control.width(width * size);
-      $children.css({
-        position: 'absolute',
-        top: 0,
-        left: width,
-        zIndex: 0,
-        display: 'none'
-      });
       $control.css({
         position: 'relative',
         width: width * 3,
         height: height,
         left: -width
+      });
+      $container.hide();
+      $children.css({
+        display: 'none',
+        position: 'absolute',
+        overflow: 'hidden',
+        top: 0,
+        left: width,
+        zIndex: 0
       });
       adjust_slides_size($children);
       start();

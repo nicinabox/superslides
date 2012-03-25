@@ -16,7 +16,7 @@ $.fn.superslides = (options) ->
     container: 'slides-container'
   , options
   
-  $(this).children().wrapAll('<div class="slides-control" />')
+  $(".#{options.container}", this).wrap('<div class="slides-control" />')
     
   $this = $(this)
   $control = $('.slides-control', $this)
@@ -95,20 +95,21 @@ $.fn.superslides = (options) ->
 
       current = next
       $children.removeClass('current')
-
+        
       $children.eq(current).css
         left: position
         display: 'block'
-
+      
       $control.animate
         left: -position
+        avoidTransforms: false
       , options.slide_speed
       , options.slide_easing
       , ->
-        # after animation reset control position
+        # reset control position
         $control.css
           left: -width
-
+          
         # reset and show next
         $children.eq(next).css
           left: width
@@ -121,28 +122,31 @@ $.fn.superslides = (options) ->
           zIndex: 0
 
         $children.eq(current).addClass('current')
-        $this.trigger('slides.initialized') if first_load
-        first_load = false
+     
+        if first_load
+          $container.fadeIn('fast')
+          $this.trigger('slides.initialized')
+          first_load = false
+          
         animating = false
         $this.trigger('slides.animated')
-
+    
   this.each ->
-    $control.width(width*size)
-
-    # set css for slides
-    $children.css
-      position: 'absolute'
-      top: 0
-      left: width
-      zIndex: 0
-      display: 'none'
-
-    # set css for control div
     $control.css
       position: 'relative'
       width: width * 3
       height: height
       left: -width
+    
+    $container.hide()
+    
+    $children.css
+      display: 'none'
+      position: 'absolute'
+      overflow: 'hidden'
+      top: 0
+      left: width
+      zIndex: 0
 
     adjust_slides_size $children
     start()
