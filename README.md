@@ -1,4 +1,4 @@
-# Superslides 0.2.2
+# Superslides 0.2.3
 
 Superslides is a full screen slider for jQuery heavily influenced by Nathan Searles' [SlidesJS](https://github.com/nathansearles/slides/). It's designed to be as flexible as possible, while maintaining a reasonable code base and good browser compatibility.
 
@@ -138,6 +138,10 @@ Not _all_ of these styles are required, but most of them are. They've been writt
       top: 38%;
       background: none;
     }
+
+# Hardware Acceleration
+
+Superslides is compatible with the [jQuery Animate Enhanced](http://playground.benbarnett.net/jquery-animate-enhanced/) plugin. Simply include it before this plugin and it will automatically smooth out the transitions with CSS animations.
 
 # Contributing
 
