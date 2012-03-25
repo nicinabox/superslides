@@ -55,6 +55,9 @@ $.fn.superslides = (options) ->
     if width < $img.data('original-width')
       $img.css
         left: -($img.data('original-width') - width)/2
+    else
+      $img.css
+        left: 0
         
     $this.trigger('slides.image_adjusted')
 
