@@ -7,7 +7,7 @@ describe 'Superslides', ->
     window.innerWidth = 800
     window.innerHeight = 600
     slide_html = '<div id="slides">
-                    <ul>
+                    <ul class="slides-container">
                       <li><img src="http://placehold.it/800x600" width="800" height="600" alt=""></li>
                       <li><img src="http://placehold.it/800x600" width="800" height="600" alt=""></li>
                       <li><img src="http://placehold.it/800x600" width="800" height="600" alt=""></li>
@@ -21,8 +21,11 @@ describe 'Superslides', ->
     $('#slides').superslides()
 
 
-  it 'sets #slides ul width equal to the sum of all slides', ->
-    expect($('#slides ul').width()).toEqual 2400
+  it 'wraps the contents in a control container', ->
+    expect($('#slides').children()[0]).toEqual $('.slides-control')[0]
+    
+  it 'sets slides control width equal to the sum of all slides', ->
+    expect($('#slides .slides-control').width()).toEqual 2400
 
   describe 'each slide', ->
     it 'should be window size', ->
@@ -37,7 +40,7 @@ describe 'Superslides', ->
       $(window).resize()
 
     it 'adjusts #slides', ->
-      expect($('#slides ul').width()).toEqual 3000
+      expect($('#slides .slides-control').width()).toEqual 3000
 
     it 'adjusts slide', ->
       $('#slides li').each (i) ->
@@ -74,20 +77,20 @@ describe 'Superslides', ->
     xit 'after initialization', ->
       spyOnEvent($('#slides ul'), 'slides.initialized')
       $('#slides').superslides()
-      expect($('#slides ul')).toHandle('slides.initialized')
+      expect($('#slides .slides-container')).toHandle('slides.initialized')
 
     xit 'after animation', ->
-      spyOnEvent($('#slides ul'), 'slides.animated')
+      spyOnEvent($('#slides .slides-container'), 'slides.animated')
       $('#slides').superslides()
-      expect($('#slides ul')).toHandle('slides.animated')
+      expect($('#slides .slides-container')).toHandle('slides.animated')
 
     xit 'after slide size set', ->
       spyOnEvent($('#slides ul'), 'slides.sized')
-      expect($('#slides ul')).toHandle('slides.sized')
+      expect($('#slides .slides-container')).toHandle('slides.sized')
 
     xit 'after image position adjusted', ->
       spyOnEvent($('#slides ul'), 'slides.image_adjusted')
-      expect($('#slides ul')).toHandle('slides.image_adjusted')
+      expect($('#slides .slides-container')).toHandle('slides.image_adjusted')
 
   describe 'navigation', ->
     it 'sets the current slide', ->

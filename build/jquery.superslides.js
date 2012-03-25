@@ -1,6 +1,6 @@
 
 /*
-  Superslides 0.2.1
+  Superslides 0.2.2
   Fullscreen slideshow plugin for jQuery
   by Nic Aitch @nicinabox
   http://nicinabox.github.com/superslides/
@@ -12,21 +12,25 @@
   $ = jQuery;
 
   $.fn.superslides = function(options) {
-    var $children, $nav, $this, adjust_image_position, adjust_slides_size, animate, animating, current, first_load, height, interval, next, prev, size, start, stop, width;
+    var $children, $container, $control, $nav, $this, adjust_image_position, adjust_slides_size, animate, animating, current, first_load, height, interval, next, prev, size, start, stop, width;
     options = $.extend({
       delay: 5000,
       play: false,
       slide_speed: 'normal',
       slide_easing: 'linear',
-      nav_class: 'slides-navigation'
+      nav_class: 'slides-navigation',
+      container: 'slides-container'
     }, options);
-    $this = $(this).children('ul');
-    $children = $this.children();
+    $(this).children().wrapAll('<div class="slides-control" />');
+    $this = $(this);
+    $control = $('.slides-control', $this);
+    $container = $("." + options.container);
+    $children = $container.children();
     $nav = $("." + options.nav_class);
+    size = $children.length;
     width = window.innerWidth || document.body.clientWidth;
     height = window.innerHeight || document.body.clientHeight;
     current = 0;
-    size = $children.length;
     prev = 0;
     next = 0;
     first_load = true;
@@ -107,10 +111,10 @@
           left: position,
           display: 'block'
         });
-        return $this.animate({
+        return $control.animate({
           left: -position
         }, options.slide_speed, options.slide_easing, function() {
-          $this.css({
+          $control.css({
             left: -width
           });
           $children.eq(next).css({
@@ -131,9 +135,7 @@
       }
     };
     return this.each(function() {
-      var $container;
-      $this.width(width * size);
-      $container = $this.parent();
+      $control.width(width * size);
       $children.css({
         position: 'absolute',
         top: 0,
@@ -141,7 +143,7 @@
         zIndex: 0,
         display: 'none'
       });
-      $this.css({
+      $control.css({
         position: 'relative',
         width: width * 3,
         height: height,
@@ -153,7 +155,7 @@
         width = window.innerWidth || document.body.clientWidth;
         height = window.innerHeight || document.body.clientHeight;
         adjust_slides_size($children);
-        return $this.width(width * 3).css({
+        return $control.width(width * 3).css({
           left: -width,
           height: height
         });

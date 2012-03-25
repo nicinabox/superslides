@@ -1,4 +1,4 @@
-# Superslides 0.2.1
+# Superslides 0.2.2
 
 Superslides is a full screen slider for jQuery heavily influenced by Nathan Searles' [SlidesJS](https://github.com/nathansearles/slides/). It's designed to be as flexible as possible, while maintaining a reasonable code base and good browser compatibility.
 
@@ -41,14 +41,21 @@ Binding to events:
 
 # Markup
 
-Markup is pretty straightforward. At the very least you'll need a `ul` with a container. Inside each `li` you're pretty much home free. I've included a completely optional `.container`.
+Markup is pretty straightforward. At minimum it looks like this:
+
+    <div id="slides">
+      <div class="slides-container">
+        <img src="http://flickholdr.com/1000/800" width="1000" height="800" alt="">
+        <img src="http://flickholdr.com/1000/800" width="1000" height="800" alt="">
+      </div>
+    </div>
 
 ### A note on scaling images
 
-Be sure to include the height and width attributes of the image in it's original size! These attributes will be removed when the slider is initialized, but they are need to quickly and simply calculate the original image dimensions.
+Be sure to include the height and width attributes of the image in it's original size! These attributes will be removed when the slider is initialized, but they are needed to quickly and simply calculate the original image dimensions.
 
     <div id="slides">
-      <ul>
+      <ul class="slides-container">
         <li>
           <img src="http://flickholdr.com/1000/800" width="1000" height="800" alt="">
           <div class="container">
@@ -90,6 +97,12 @@ Not _all_ of these styles are required, but most of them are. They've been writt
       z-index: 3;
       top: -50%;
     }
+    #slides img {
+      max-width: none;
+      min-width: 100%;
+      min-height: 100%;
+      position: absolute;
+    }
     #slides .slides-navigation a {
       position: absolute;
       display: block;
@@ -100,13 +113,14 @@ Not _all_ of these styles are required, but most of them are. They've been writt
     #slides .slides-navigation a.next {
       right: 0;
     }
-    #slides ul {
+    /* The following is optional based on your markup */
+    #slides .slides-container {
       margin: 0;
       padding: 0;
       list-style: none;
       position: relative;
     }
-    #slides ul li {
+    #slides .slides-container li {
       margin: 0;
       padding: 0;
       float: left;
@@ -116,12 +130,6 @@ Not _all_ of these styles are required, but most of them are. They've been writt
     #slides ul li.current {
       display: block;
       z-index: 1;
-    }
-    #slides ul li img {
-      max-width: none;
-      min-width: 100%;
-      min-height: 100%;
-      position: absolute;
     }
     #slides ul li .container {
       width: 988px;

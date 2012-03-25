@@ -1,5 +1,5 @@
 ###
-  Superslides 0.2.1
+  Superslides 0.2.2
   Fullscreen slideshow plugin for jQuery
   by Nic Aitch @nicinabox
   http://nicinabox.github.com/superslides/
@@ -13,21 +13,26 @@ $.fn.superslides = (options) ->
     slide_speed: 'normal'
     slide_easing: 'linear'
     nav_class: 'slides-navigation'
+    container: 'slides-container'
   , options
-
-  $this = $(this).children('ul')
-  $children = $this.children()
+  
+  $(this).children().wrapAll('<div class="slides-control" />')
+    
+  $this = $(this)
+  $control = $('.slides-control', $this)
+  $container = $(".#{options.container}")
+  $children = $container.children()
   $nav = $(".#{options.nav_class}")
+  size = $children.length
   width = window.innerWidth || document.body.clientWidth
   height = window.innerHeight || document.body.clientHeight
   current = 0
-  size = $children.length
   prev = 0
   next = 0
   first_load = true
   interval = 0
   animating = false
-
+  
   start = () ->
     animate 0
     if options.play
@@ -95,13 +100,13 @@ $.fn.superslides = (options) ->
         left: position
         display: 'block'
 
-      $this.animate
+      $control.animate
         left: -position
       , options.slide_speed
       , options.slide_easing
       , ->
         # after animation reset control position
-        $this.css
+        $control.css
           left: -width
 
         # reset and show next
@@ -122,8 +127,7 @@ $.fn.superslides = (options) ->
         $this.trigger('slides.animated')
 
   this.each ->
-    $this.width(width*size)
-    $container = $this.parent()
+    $control.width(width*size)
 
     # set css for slides
     $children.css
@@ -134,7 +138,7 @@ $.fn.superslides = (options) ->
       display: 'none'
 
     # set css for control div
-    $this.css
+    $control.css
       position: 'relative'
       width: width * 3
       height: height
@@ -147,7 +151,7 @@ $.fn.superslides = (options) ->
       width = window.innerWidth || document.body.clientWidth
       height = window.innerHeight || document.body.clientHeight
       adjust_slides_size $children
-      $this.width(width*3).css
+      $control.width(width*3).css
         left: -width
         height: height
 
