@@ -39,6 +39,11 @@ Binding to events:
       console.log('Superslides initialized')
     })
 
+You can also start and stop the slider by triggering the respective events:
+
+    $('#slides').trigger('slides.start')
+    $('#slides').trigger('slides.stop')
+
 # Markup
 
 Markup is pretty straightforward. At minimum it looks like this:
