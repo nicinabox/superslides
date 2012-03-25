@@ -33,15 +33,16 @@ $.fn.superslides = (options) ->
   interval = 0
   animating = false
   
-  start = () ->
-    animate 0
+  start = ->
+    animate (if first_load then 0 else "next")
     if options.play
+      stop() if interval
       interval = setInterval ->
         direction = (if first_load then 0 else "next")
         animate direction
       , options.delay
 
-  stop = () ->
+  stop = ->
     clearInterval interval
 
   adjust_image_position = ($el) ->
@@ -149,8 +150,8 @@ $.fn.superslides = (options) ->
       zIndex: 0
 
     adjust_slides_size $children
-    start()
 
+    # Event bindings
     $(window).resize (e) ->
       width = window.innerWidth || document.body.clientWidth
       height = window.innerHeight || document.body.clientHeight
@@ -166,3 +167,12 @@ $.fn.superslides = (options) ->
         animate 'next'
       else
         animate 'prev'
+        
+    $('body').on 'slides.start', (e) ->
+      start()
+
+    $('body').on 'slides.stop', (e) ->
+      stop()
+      
+    # Start playing
+    $this.trigger('slides.start')

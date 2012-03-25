@@ -1,6 +1,6 @@
 
 /*
-  Superslides 0.2.2
+  Superslides 0.2.3
   Fullscreen slideshow plugin for jQuery
   by Nic Aitch @nicinabox
   http://nicinabox.github.com/superslides/
@@ -37,8 +37,9 @@
     interval = 0;
     animating = false;
     start = function() {
-      animate(0);
+      animate((first_load ? 0 : "next"));
       if (options.play) {
+        if (interval) stop();
         return interval = setInterval(function() {
           var direction;
           direction = (first_load ? 0 : "next");
@@ -155,7 +156,6 @@
         zIndex: 0
       });
       adjust_slides_size($children);
-      start();
       $(window).resize(function(e) {
         width = window.innerWidth || document.body.clientWidth;
         height = window.innerHeight || document.body.clientHeight;
@@ -165,7 +165,7 @@
           height: height
         });
       });
-      return $('a', $nav).click(function(e) {
+      $('a', $nav).click(function(e) {
         e.preventDefault();
         stop();
         if ($(this).hasClass('next')) {
@@ -174,6 +174,13 @@
           return animate('prev');
         }
       });
+      $('body').on('slides.start', function(e) {
+        return start();
+      });
+      $('body').on('slides.stop', function(e) {
+        return stop();
+      });
+      return $this.trigger('slides.start');
     });
   };
 
