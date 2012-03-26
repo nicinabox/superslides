@@ -1,9 +1,5 @@
-* {
-  outline: none; }
-
 body {
-  font-family: 'PT Sans', sans-serif;
-  -webkit-backface-visibility: hidden; }
+  font-family: 'PT Sans', sans-serif; }
 
 a {
   color: #678801;
@@ -172,6 +168,7 @@ code, pre {
         display: block;
         z-index: 1; }
       #slides .slides-container li img {
+        -webkit-backface-visibility: hidden;
         max-width: none;
         min-width: 100%;
         min-height: 100%;

@@ -1,9 +1,7 @@
 @import 'bourbon/bourbon';
 
-* { outline: none; }
 body {
   font-family: 'PT Sans', sans-serif;
-  -webkit-backface-visibility: hidden;
 }
 a {
   color: #678801;
@@ -104,6 +102,7 @@ code, pre {
         z-index: 1;
       }
       img {
+        -webkit-backface-visibility: hidden;
         max-width: none;
         min-width: 100%;
         min-height: 100%;
