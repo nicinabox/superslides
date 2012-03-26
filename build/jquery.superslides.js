@@ -12,7 +12,7 @@
   $ = jQuery;
 
   $.fn.superslides = function(options) {
-    var $children, $container, $control, $nav, $this, adjust_image_position, adjust_slides_size, animate, animating, current, first_load, height, interval, next, prev, size, start, stop, width;
+    var $children, $container, $control, $nav, $this, adjust_image_position, adjust_slides_size, animate, animating, current, first_load, height, interval, is_mobile, next, prev, size, start, stop, width;
     options = $.extend({
       delay: 5000,
       play: false,
@@ -36,6 +36,7 @@
     first_load = true;
     interval = 0;
     animating = false;
+    is_mobile = navigator.userAgent.match(/iPad|iPhone/);
     start = function() {
       animate((first_load ? 0 : "next"));
       if (options.play) {
@@ -85,7 +86,7 @@
       return $this.trigger('slides.sized');
     };
     animate = function(direction) {
-      var position;
+      var animation_options, position;
       if (!animating) {
         prev = current;
         animating = true;
@@ -112,10 +113,11 @@
           left: position,
           display: 'block'
         });
-        return $control.animate({
-          left: -position,
-          avoidTransforms: false
-        }, options.slide_speed, options.slide_easing, function() {
+        animation_options = {
+          useTranslate3d: (is_mobile ? true : false),
+          left: -position
+        };
+        return $control.animate(animation_options, options.slide_speed, options.slide_easing, function() {
           $control.css({
             left: -width
           });

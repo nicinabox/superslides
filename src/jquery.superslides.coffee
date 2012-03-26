@@ -32,6 +32,7 @@ $.fn.superslides = (options) ->
   first_load = true
   interval = 0
   animating = false
+  is_mobile = navigator.userAgent.match(/iPad|iPhone/)
   
   start = ->
     animate (if first_load then 0 else "next")
@@ -100,10 +101,13 @@ $.fn.superslides = (options) ->
       $children.eq(current).css
         left: position
         display: 'block'
-      
-      $control.animate
+
+      animation_options = 
+        useTranslate3d: (if is_mobile then true else false)
         left: -position
-        avoidTransforms: false
+            
+      $control.animate(
+        animation_options
       , options.slide_speed
       , options.slide_easing
       , ->
@@ -131,6 +135,7 @@ $.fn.superslides = (options) ->
           
         animating = false
         $this.trigger('slides.animated')
+      )
     
   this.each ->
     $control.css
