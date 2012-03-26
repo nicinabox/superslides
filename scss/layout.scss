@@ -1,7 +1,9 @@
 @import 'bourbon/bourbon';
 
+* { outline: none; }
 body {
   font-family: 'PT Sans', sans-serif;
+  -webkit-backface-visibility: hidden;
 }
 a {
   color: #678801;
