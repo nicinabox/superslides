@@ -12,19 +12,19 @@
   $ = jQuery;
 
   $.fn.superslides = function(options) {
-    var $children, $container, $control, $nav, $this, adjust_image_position, adjust_slides_size, animate, animating, current, first_load, height, interval, is_mobile, next, prev, size, start, stop, width;
+    var $children, $container, $control, $nav, $this, adjust_image_position, adjust_slides_size, animate, animating, current, first_load, height, is_mobile, load_image, next, play, play_interval, prev, size, start, stop, width;
     options = $.extend({
       delay: 5000,
       play: false,
       slide_speed: 'normal',
       slide_easing: 'linear',
       nav_class: 'slides-navigation',
-      container: 'slides-container'
+      container_class: 'slides-container'
     }, options);
-    $("." + options.container, this).wrap('<div class="slides-control" />');
+    $("." + options.container_class, this).wrap('<div class="slides-control" />');
     $this = $(this);
     $control = $('.slides-control', $this);
-    $container = $("." + options.container);
+    $container = $("." + options.container_class);
     $children = $container.children();
     $nav = $("." + options.nav_class);
     size = $children.length;
@@ -34,31 +34,41 @@
     prev = 0;
     next = 0;
     first_load = true;
-    interval = 0;
+    play_interval = 0;
     animating = false;
     is_mobile = navigator.userAgent.match(/ipad|iphone/i);
     start = function() {
       animate((first_load ? 0 : "next"));
+      return play();
+    };
+    stop = function() {
+      return clearInterval(play_interval);
+    };
+    play = function() {
       if (options.play) {
-        if (interval) stop();
-        return interval = setInterval(function() {
-          var direction;
-          direction = (first_load ? 0 : "next");
-          return animate(direction);
+        if (play_interval) stop();
+        return play_interval = setInterval(function() {
+          return animate((first_load ? 0 : "next"));
         }, options.delay);
       }
     };
-    stop = function() {
-      return clearInterval(interval);
+    load_image = function($img, callback) {
+      var image;
+      image = new Image();
+      return $img.load(function() {
+        if (typeof callback === 'function') callback(this);
+        return this;
+      });
     };
     adjust_image_position = function($el) {
       var $img;
       $img = $('img', $el);
-      if ($img.attr('height')) {
-        $img.data('original-height', $img.height()).removeAttr('height');
-      }
-      if ($img.attr('width')) {
-        $img.data('original-width', $img.width()).removeAttr('width');
+      if (!($img.data('original-height') && $img.data('original-width'))) {
+        load_image($img, function(image) {
+          $img.data('original-height', image.height).removeAttr('height');
+          $img.data('original-width', image.width).removeAttr('width');
+          return adjust_image_position($el);
+        });
       }
       if (height < $img.data('original-height')) {
         $img.css({
@@ -93,7 +103,7 @@
         switch (direction) {
           case 'next':
             position = width * 2;
-            direction = -width * 2;
+            direction = -position;
             next = current + 1;
             if (size === next) next = 0;
             break;
@@ -181,6 +191,9 @@
       });
       $('body').on('slides.stop', function(e) {
         return stop();
+      });
+      $('body').on('slides.play', function(e) {
+        return play();
       });
       return $this.trigger('slides.start');
     });

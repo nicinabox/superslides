@@ -48,14 +48,21 @@ $.fn.superslides = (options) ->
         animate (if first_load then 0 else "next")
       , options.delay
 
+  load_image = ($img, callback) ->
+    image = new Image()
+    $img.load ->
+      if typeof callback == 'function'
+        callback(this)
+      this
+
   adjust_image_position = ($el) ->
     $img = $('img', $el)
 
-    if $img.attr('height')
-      $img.data('original-height', $img.height()).removeAttr('height')
-
-    if $img.attr('width')
-      $img.data('original-width', $img.width()).removeAttr('width')
+    unless $img.data('original-height') && $img.data('original-width')
+      load_image $img, (image)->
+        $img.data('original-height', image.height).removeAttr('height')
+        $img.data('original-width', image.width).removeAttr('width')
+        adjust_image_position $el
 
     if height < $img.data('original-height')
       $img.css
