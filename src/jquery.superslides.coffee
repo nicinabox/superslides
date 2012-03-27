@@ -15,9 +15,9 @@ $.fn.superslides = (options) ->
     nav_class: 'slides-navigation'
     container: 'slides-container'
   , options
-  
+
   $(".#{options.container}", this).wrap('<div class="slides-control" />')
-    
+
   $this = $(this)
   $control = $('.slides-control', $this)
   $container = $(".#{options.container}")
@@ -48,7 +48,7 @@ $.fn.superslides = (options) ->
 
   adjust_image_position = ($el) ->
     $img = $('img', $el)
-    
+
     if $img.attr('height')
       $img.data('original-height', $img.height()).removeAttr('height')
 
@@ -65,7 +65,7 @@ $.fn.superslides = (options) ->
     else
       $img.css
         left: 0
-        
+
     $this.trigger('slides.image_adjusted')
 
   adjust_slides_size = ($el) ->
@@ -114,7 +114,7 @@ $.fn.superslides = (options) ->
         # reset control position
         $control.css
           left: -width
-          
+
         # reset and show next
         $children.eq(next).css
           left: width
@@ -127,25 +127,25 @@ $.fn.superslides = (options) ->
           zIndex: 0
 
         $children.eq(current).addClass('current')
-     
+
         if first_load
           $container.fadeIn('fast')
           $this.trigger('slides.initialized')
           first_load = false
-          
+
         animating = false
         $this.trigger('slides.animated')
       )
-    
+
   this.each ->
     $control.css
       position: 'relative'
       width: width * 3
       height: height
       left: -width
-    
+
     $container.hide()
-    
+
     $children.css
       display: 'none'
       position: 'absolute'
@@ -172,12 +172,12 @@ $.fn.superslides = (options) ->
         animate 'next'
       else
         animate 'prev'
-        
+
     $('body').on 'slides.start', (e) ->
       start()
 
     $('body').on 'slides.stop', (e) ->
       stop()
-      
+
     # Start playing
     $this.trigger('slides.start')

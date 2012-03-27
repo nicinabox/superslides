@@ -1,6 +1,6 @@
 
 /*
-  Superslides 0.2.3
+  Superslides 0.2.4
   Fullscreen slideshow plugin for jQuery
   by Nic Aitch @nicinabox
   http://nicinabox.github.com/superslides/
@@ -36,7 +36,7 @@
     first_load = true;
     interval = 0;
     animating = false;
-    is_mobile = navigator.userAgent.match(/iPad|iPhone/);
+    is_mobile = navigator.userAgent.match(/ipad|iphone/i);
     start = function() {
       animate((first_load ? 0 : "next"));
       if (options.play) {
@@ -115,7 +115,7 @@
         });
         animation_options = {
           useTranslate3d: (is_mobile ? true : false),
-          left: -position
+          left: direction
         };
         return $control.animate(animation_options, options.slide_speed, options.slide_easing, function() {
           $control.css({
