@@ -13,14 +13,14 @@ $.fn.superslides = (options) ->
     slide_speed: 'normal'
     slide_easing: 'linear'
     nav_class: 'slides-navigation'
-    container: 'slides-container'
+    container_class: 'slides-container'
   , options
 
-  $(".#{options.container}", this).wrap('<div class="slides-control" />')
+  $(".#{options.container_class}", this).wrap('<div class="slides-control" />')
 
   $this = $(this)
   $control = $('.slides-control', $this)
-  $container = $(".#{options.container}")
+  $container = $(".#{options.container_class}")
   $children = $container.children()
   $nav = $(".#{options.nav_class}")
   size = $children.length
@@ -30,21 +30,23 @@ $.fn.superslides = (options) ->
   prev = 0
   next = 0
   first_load = true
-  interval = 0
+  play_interval = 0
   animating = false
   is_mobile = navigator.userAgent.match(/ipad|iphone/i)
 
   start = ->
     animate (if first_load then 0 else "next")
-    if options.play
-      stop() if interval
-      interval = setInterval ->
-        direction = (if first_load then 0 else "next")
-        animate direction
-      , options.delay
+    play()
 
   stop = ->
-    clearInterval interval
+    clearInterval play_interval
+
+  play = ->
+    if options.play
+      stop() if play_interval
+      play_interval = setInterval ->
+        animate (if first_load then 0 else "next")
+      , options.delay
 
   adjust_image_position = ($el) ->
     $img = $('img', $el)
@@ -83,7 +85,7 @@ $.fn.superslides = (options) ->
       switch direction
         when 'next'
           position = width*2
-          direction = -width*2
+          direction = -position
           next = current + 1
           next = 0 if size == next
         when 'prev'
@@ -178,6 +180,9 @@ $.fn.superslides = (options) ->
 
     $('body').on 'slides.stop', (e) ->
       stop()
+
+    $('body').on 'slides.play', (e) ->
+      play()
 
     # Start playing
     $this.trigger('slides.start')
