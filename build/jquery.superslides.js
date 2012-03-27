@@ -28,8 +28,8 @@
     $children = $container.children();
     $nav = $("." + options.nav_class);
     size = $children.length;
-    width = window.innerWidth || document.body.clientWidth;
-    height = window.innerHeight || document.body.clientHeight;
+    width = window.innerWidth || document.documentElement.clientWidth;
+    height = window.innerHeight || document.documentElement.clientHeight;
     current = 0;
     prev = 0;
     next = 0;
@@ -159,8 +159,8 @@
       });
       adjust_slides_size($children);
       $(window).resize(function(e) {
-        width = window.innerWidth || document.body.clientWidth;
-        height = window.innerHeight || document.body.clientHeight;
+        width = window.innerWidth || document.documentElement.clientWidth;
+        height = window.innerHeight || document.documentElement.clientHeight;
         adjust_slides_size($children);
         return $control.width(width * 3).css({
           left: -width,
