@@ -32,8 +32,8 @@ $.fn.superslides = (options) ->
   first_load = true
   interval = 0
   animating = false
-  is_mobile = navigator.userAgent.match(/iPad|iPhone/)
-  
+  is_mobile = navigator.userAgent.match(/ipad|iphone/i)
+
   start = ->
     animate (if first_load then 0 else "next")
     if options.play
