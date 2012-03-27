@@ -1,5 +1,5 @@
 ###
-  Superslides 0.2.3
+  Superslides 0.2.4
   Fullscreen slideshow plugin for jQuery
   by Nic Aitch @nicinabox
   http://nicinabox.github.com/superslides/
@@ -97,15 +97,15 @@ $.fn.superslides = (options) ->
 
       current = next
       $children.removeClass('current')
-        
+
       $children.eq(current).css
         left: position
         display: 'block'
 
-      animation_options = 
+      animation_options =
         useTranslate3d: (if is_mobile then true else false)
-        left: -position
-            
+        left: direction
+
       $control.animate(
         animation_options
       , options.slide_speed
