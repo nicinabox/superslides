@@ -192,5 +192,13 @@ $.fn.superslides = (options) ->
     $('body').on 'slides.play', (e) ->
       play()
 
+    $('body').on 'slides.next', (e) ->
+      stop()
+      animate 'next'
+
+    $('body').on 'slides.prev', (e) ->
+      stop()
+      animate 'prev'
+
     # Start playing
     $this.trigger('slides.start')

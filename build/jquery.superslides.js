@@ -197,6 +197,14 @@
       $('body').on('slides.play', function(e) {
         return play();
       });
+      $('body').on('slides.next', function(e) {
+        stop();
+        return animate('next');
+      });
+      $('body').on('slides.prev', function(e) {
+        stop();
+        return animate('prev');
+      });
       return $this.trigger('slides.start');
     });
   };
