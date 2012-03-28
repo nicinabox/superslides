@@ -84,7 +84,9 @@
           left: 0
         });
       }
-      return $this.trigger('slides.image_adjusted');
+      if ($img.data('original-height') && $img.data('original-width')) {
+        return $this.trigger('slides.image_adjusted');
+      }
     };
     adjust_slides_size = function($el) {
       $el.each(function(i) {

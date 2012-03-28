@@ -75,7 +75,8 @@ $.fn.superslides = (options) ->
       $img.css
         left: 0
 
-    $this.trigger('slides.image_adjusted')
+    if $img.data('original-height') && $img.data('original-width')
+      $this.trigger('slides.image_adjusted')
 
   adjust_slides_size = ($el) ->
     $el.each (i) ->
