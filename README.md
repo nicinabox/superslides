@@ -1,4 +1,4 @@
-# Superslides 0.2.3
+# Superslides 0.2.4
 
 Superslides is a full screen slider for jQuery heavily influenced by Nathan Searles' [SlidesJS](https://github.com/nathansearles/slides/). It's designed to be as flexible as possible, while maintaining a reasonable code base and good browser compatibility.
 
@@ -20,6 +20,7 @@ Listed as `option: default_value`
     slide_speed: 'normal'
     slide_easing: 'linear'
     nav_class: 'slides-navigation'
+    container_class: 'slides-container'
 
 # Events
 
@@ -39,10 +40,17 @@ Binding to events:
       console.log('Superslides initialized')
     })
 
-You can also start and stop the slider by triggering the respective events:
+You can also control the slider by triggering the respective events:
 
     $('#slides').trigger('slides.start')
     $('#slides').trigger('slides.stop')
+    $('#slides').trigger('slides.play')
+    $('#slides').trigger('slides.next')
+    $('#slides').trigger('slides.prev')
+
+Notes on the differences between *play* and *start*:
+
+*Play* will slide only after the delay time. *Start* will slide first, then start playing (eg, slide, then continue sliding after the delay time--5 seconds by default)
 
 # Markup
 
@@ -154,7 +162,7 @@ If you'd like to contribute by fixing bugs, adding features, or otherwise, you s
 
 # Known Bugs & Caveats
 
-* IE 7 & 8 don't scale the image nicely
+* IE 7 & 8 don't scale the image nicely due to min/max-width. You can remedy this with a polyfill.
 
 # MIT License
 
