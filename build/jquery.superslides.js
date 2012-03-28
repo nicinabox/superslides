@@ -98,7 +98,7 @@
       return $this.trigger('slides.sized');
     };
     animate = function(direction) {
-      var animation_options, position;
+      var position;
       if (!animating) {
         prev = current;
         animating = true;
@@ -125,11 +125,10 @@
           left: position,
           display: 'block'
         });
-        animation_options = {
+        return $control.animate({
           useTranslate3d: (is_mobile ? true : false),
           left: direction
-        };
-        return $control.animate(animation_options, options.slide_speed, options.slide_easing, function() {
+        }, options.slide_speed, options.slide_easing, function() {
           $control.css({
             left: -width
           });

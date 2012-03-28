@@ -112,12 +112,9 @@ $.fn.superslides = (options) ->
         left: position
         display: 'block'
 
-      animation_options =
+      $control.animate(
         useTranslate3d: (if is_mobile then true else false)
         left: direction
-
-      $control.animate(
-        animation_options
       , options.slide_speed
       , options.slide_easing
       , ->
