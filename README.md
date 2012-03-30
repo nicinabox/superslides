@@ -63,9 +63,7 @@ Markup is pretty straightforward. At minimum it looks like this:
       </div>
     </div>
 
-### A note on scaling images
-
-Be sure to include the height and width attributes of the image in it's original size! These attributes will be removed when the slider is initialized, but they are needed to quickly and simply calculate the original image dimensions.
+You could even use a UL as the `slides-container`
 
     <div id="slides">
       <ul class="slides-container">
