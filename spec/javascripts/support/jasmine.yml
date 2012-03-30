@@ -4,7 +4,7 @@ src_files:
 spec_files:
   - "**/*[Ss]pec.*"
 
-src_dir: 
+src_dir:
   - spec/javascripts/support
   - src
 spec_dir: spec/javascripts
