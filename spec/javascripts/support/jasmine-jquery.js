@@ -224,14 +224,18 @@ jasmine.JQuery.matchersClass = {};
     // tests the existence of a specific event binding
     toHandle: function(eventName) {
       var events = this.actual.data("events");
-      eventParts = eventName.split('.')
-      eventName = eventParts[0]
-      if (eventParts.length == 1) {
-        eventParts.push('')
+      eventParts = eventName.split(/\.(.+)/)
+      if (eventParts.length == 1) eventParts.push('')
+      eventType = eventParts[0]
+      eventNamespaces = eventParts[1].split(/\.(.+)/)
+      if (eventNamespaces.length > 1) {
+        eventNamespace = eventNamespaces[1] + '.' + eventNamespaces[0]
+      } else {
+        eventNamespace = eventNamespaces[0]
       }
       return  events && 
-              (eventParts[0] === events[eventName][0].origType) &&
-              (eventParts[1] === events[eventName][0].namespace);
+              (eventType === events[eventType][0]['type']) &&
+              (eventNamespace === events[eventType][0]['namespace']);
     },
 
     // tests the existence of a specific event binding + handler
