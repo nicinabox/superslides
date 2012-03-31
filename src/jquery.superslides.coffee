@@ -18,7 +18,7 @@ $.fn.superslides = (options) ->
 
   $(".#{options.container_class}", this).wrap('<div class="slides-control" />')
 
-  $this = $(this)
+  $this = this
   $control = $('.slides-control', $this)
   $container = $(".#{options.container_class}")
   $children = $container.children()
@@ -177,20 +177,20 @@ $.fn.superslides = (options) ->
       else
         animate 'prev'
 
-    $('body').on 'slides.start', (e) ->
+    $this.on 'slides.start', (e) ->
       start()
 
-    $('body').on 'slides.stop', (e) ->
+    $this.on 'slides.stop', (e) ->
       stop()
 
-    $('body').on 'slides.play', (e) ->
+    $this.on 'slides.play', (e) ->
       play()
 
-    $('body').on 'slides.next', (e) ->
+    $this.on 'slides.next', (e) ->
       stop()
       animate 'next'
 
-    $('body').on 'slides.prev', (e) ->
+    $this.on 'slides.prev', (e) ->
       stop()
       animate 'prev'
 

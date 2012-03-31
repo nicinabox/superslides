@@ -22,7 +22,7 @@
       container_class: 'slides-container'
     }, options);
     $("." + options.container_class, this).wrap('<div class="slides-control" />');
-    $this = $(this);
+    $this = this;
     $control = $('.slides-control', $this);
     $container = $("." + options.container_class);
     $children = $container.children();
@@ -185,20 +185,20 @@
           return animate('prev');
         }
       });
-      $('body').on('slides.start', function(e) {
+      $this.on('slides.start', function(e) {
         return start();
       });
-      $('body').on('slides.stop', function(e) {
+      $this.on('slides.stop', function(e) {
         return stop();
       });
-      $('body').on('slides.play', function(e) {
+      $this.on('slides.play', function(e) {
         return play();
       });
-      $('body').on('slides.next', function(e) {
+      $this.on('slides.next', function(e) {
         stop();
         return animate('next');
       });
-      $('body').on('slides.prev', function(e) {
+      $this.on('slides.prev', function(e) {
         stop();
         return animate('prev');
       });

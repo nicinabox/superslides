@@ -87,7 +87,33 @@ describe 'Superslides', ->
       spyOnEvent($('#slides'), 'slides.image_adjusted')
       $('#slides').superslides()
       expect($('#slides')).toHandle('slides.image_adjusted')
+      
+  describe 'api events', ->
+    it 'slides.stop', ->
+      spyOnEvent($('#slides'), 'slides.stop')
+      $('#slides').trigger('slides.stop')
+      expect($('#slides')).toHandle('slides.stop')
+    
+    it 'slides.start', ->
+      spyOnEvent($('#slides'), 'slides.start')
+      $('#slides').trigger('slides.stop').trigger('slides.start')
+      expect($('#slides')).toHandle('slides.start')
 
+    it 'slides.play', ->
+      spyOnEvent($('#slides'), 'slides.play')
+      $('#slides').trigger('slides.stop').trigger('slides.play')
+      expect($('#slides')).toHandle('slides.play')
+    
+    it 'slides.starts', ->
+      spyOnEvent($('#slides'), 'slides.next')
+      $('#slides').trigger('slides.stop').trigger('slides.next')
+      expect($('#slides')).toHandle('slides.next')
+
+    it 'slides.starts', ->
+      spyOnEvent($('#slides'), 'slides.prev')
+      $('#slides').trigger('slides.stop').trigger('slides.prev')
+      expect($('#slides')).toHandle('slides.prev')
+      
   describe 'navigation', ->
     it 'sets the current slide', ->
       $('body').on('slides.initialized', '#slides', (e) ->
