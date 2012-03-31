@@ -58,8 +58,8 @@ Markup is pretty straightforward. At minimum it looks like this:
 
     <div id="slides">
       <div class="slides-container">
-        <img src="http://flickholdr.com/1000/800" width="1000" height="800" alt="">
-        <img src="http://flickholdr.com/1000/800" width="1000" height="800" alt="">
+        <img src="http://flickholdr.com/1000/800" alt="">
+        <img src="http://flickholdr.com/1000/800" alt="">
       </div>
     </div>
 
@@ -68,19 +68,19 @@ You could even use a UL as the `slides-container`
     <div id="slides">
       <ul class="slides-container">
         <li>
-          <img src="http://flickholdr.com/1000/800" width="1000" height="800" alt="">
+          <img src="http://flickholdr.com/1000/800" alt="">
           <div class="container">
             Slide one
           </div>
         </li>
         <li>
-          <img src="http://flickholdr.com/1000/800/space" width="1000" height="800" alt="">
+          <img src="http://flickholdr.com/1000/800/space" alt="">
           <div class="container">
             Slide two
           </div>
         </li>
         <li>
-          <img src="http://flickholdr.com/1000/800/tech" width="1000" height="800" alt="">
+          <img src="http://flickholdr.com/1000/800/tech" alt="">
           <div class="container">
             Slide three
           </div>
@@ -113,6 +113,8 @@ Not _all_ of these styles are required, but most of them are. They've been writt
       min-width: 100%;
       min-height: 100%;
       position: absolute;
+      -ms-interpolation-mode: bicubic;
+      -webkit-backface-visibility: hidden;
     }
     #slides .slides-navigation a {
       position: absolute;
@@ -123,31 +125,6 @@ Not _all_ of these styles are required, but most of them are. They've been writt
     }
     #slides .slides-navigation a.next {
       right: 0;
-    }
-    /* The following is optional based on your markup */
-    #slides .slides-container {
-      margin: 0;
-      padding: 0;
-      list-style: none;
-      position: relative;
-    }
-    #slides .slides-container li {
-      margin: 0;
-      padding: 0;
-      float: left;
-      position: relative;
-      background: none;
-    }
-    #slides ul li.current {
-      display: block;
-      z-index: 1;
-    }
-    #slides ul li .container {
-      width: 988px;
-      margin: 0 auto;
-      position: relative;
-      top: 38%;
-      background: none;
     }
 
 ## Hardware Acceleration
