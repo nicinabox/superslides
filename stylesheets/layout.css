@@ -10,12 +10,17 @@ p {
   line-height: 22px;
   overflow: hidden; }
 
-code, pre {
+pre {
   font-family: Monaco, Courier, monospace;
-  background: #eee;
-  border: 1px solid #ccc;
-  padding: 3px 5px;
-  border-radius: 3px; }
+  background-color: #F8F8F8;
+  border: 1px solid #CCC;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px;
+  margin: 15px 0;
+  font-size: 12px; }
 
 .button {
   border: 1px solid #587500;
@@ -41,10 +46,10 @@ code, pre {
   padding: 6px 18px 7px;
   text-shadow: 0 1px 0 #486000;
   -webkit-background-clip: padding-box;
+  font-weight: bold;
   padding: 10px 18px 9px;
   text-align: center;
   display: block;
-  font-weight: 300;
   font-size: 20px;
   text-decoration: none;
   margin-bottom: 6px; }
@@ -77,110 +82,3 @@ code, pre {
   margin-right: 20px; }
   .column + .column {
     margin-right: 0; }
-
-/* Superslides CSS */
-#slides {
-  overflow: hidden;
-  width: 100%;
-  height: 100%; }
-  #slides img {
-    -ms-interpolation-mode: bicubic; }
-  #slides .slides-navigation {
-    width: 85%;
-    margin: 0 auto;
-    position: relative;
-    z-index: 3;
-    top: -50%; }
-    #slides .slides-navigation a {
-      position: fixed;
-      display: block;
-      color: black;
-      background: white;
-      text-decoration: none;
-      display: block;
-      padding: 20px 10px;
-      width: 70px;
-      text-align: center;
-      top: 46%;
-      -webkit-transition-property: padding, 0.2s, ease-out;
-      -moz-transition-property: padding, 0.2s, ease-out;
-      -ms-transition-property: padding, 0.2s, ease-out;
-      -o-transition-property: padding, 0.2s, ease-out;
-      transition-property: padding, 0.2s, ease-out;
-      -webkit-transition-duration: 0.15s;
-      -moz-transition-duration: 0.15s;
-      -ms-transition-duration: 0.15s;
-      -o-transition-duration: 0.15s;
-      transition-duration: 0.15s;
-      -webkit-transition-timing-function: ease-out;
-      -moz-transition-timing-function: ease-out;
-      -ms-transition-timing-function: ease-out;
-      -o-transition-timing-function: ease-out;
-      transition-timing-function: ease-out;
-      -webkit-transition-delay: 0;
-      -moz-transition-delay: 0;
-      -ms-transition-delay: 0;
-      -o-transition-delay: 0;
-      transition-delay: 0; }
-      #slides .slides-navigation a.prev {
-        left: 0;
-        -webkit-border-top-right-radius: 40px;
-        -moz-border-top-right-radius: 40px;
-        -moz-border-radius-topright: 40px;
-        -ms-border-top-right-radius: 40px;
-        -o-border-top-right-radius: 40px;
-        border-top-right-radius: 40px;
-        -webkit-border-bottom-right-radius: 40px;
-        -moz-border-bottom-right-radius: 40px;
-        -moz-border-radius-bottomright: 40px;
-        -ms-border-bottom-right-radius: 40px;
-        -o-border-bottom-right-radius: 40px;
-        border-bottom-right-radius: 40px; }
-        #slides .slides-navigation a.prev:hover {
-          padding-left: 20px; }
-      #slides .slides-navigation a.next {
-        right: 0;
-        -webkit-border-top-left-radius: 40px;
-        -moz-border-top-left-radius: 40px;
-        -moz-border-radius-topleft: 40px;
-        -ms-border-top-left-radius: 40px;
-        -o-border-top-left-radius: 40px;
-        border-top-left-radius: 40px;
-        -webkit-border-bottom-left-radius: 40px;
-        -moz-border-bottom-left-radius: 40px;
-        -moz-border-radius-bottomleft: 40px;
-        -ms-border-bottom-left-radius: 40px;
-        -o-border-bottom-left-radius: 40px;
-        border-bottom-left-radius: 40px; }
-        #slides .slides-navigation a.next:hover {
-          padding-right: 20px; }
-  #slides .slides-container {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-    position: relative; }
-    #slides .slides-container li {
-      margin: 0;
-      padding: 0;
-      position: relative;
-      background: none; }
-      #slides .slides-container li.current {
-        display: block;
-        z-index: 1; }
-      #slides .slides-container li img {
-        -webkit-backface-visibility: hidden;
-        max-width: none;
-        min-width: 100%;
-        min-height: 100%;
-        position: absolute;
-        left: 0;
-        top: 0; }
-      #slides .slides-container li .container {
-        width: 55%;
-        margin: 0 auto 30px auto;
-        position: relative;
-        top: 25%;
-        min-height: 300px;
-        padding: 30px;
-        background: white;
-        background: rgba(255, 255, 255, 0.9); }
