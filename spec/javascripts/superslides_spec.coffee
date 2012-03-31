@@ -6,18 +6,7 @@ describe 'Superslides', ->
   beforeEach ->
     window.innerWidth = 800
     window.innerHeight = 600
-    slide_html = '<div id="slides">
-                    <ul class="slides-container">
-                      <li><img src="http://placehold.it/800x600" width="800" height="600" alt=""></li>
-                      <li><img src="http://placehold.it/800x600" width="800" height="600" alt=""></li>
-                      <li><img src="http://placehold.it/800x600" width="800" height="600" alt=""></li>
-                    </ul>
-                    <nav class="slides-navigation">
-                      <a href="#" class="next">Next</a>
-                      <a href="#" class="prev">Previous</a>
-                    </nav>
-                  </div>'
-    $('body').html(slide_html)
+    loadFixtures('slides-advanced.html')
     $('#slides').superslides()
 
 
