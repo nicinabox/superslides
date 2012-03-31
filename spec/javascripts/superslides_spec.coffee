@@ -21,7 +21,13 @@ describe 'Superslides', ->
       $('#slides li').each (i) ->
         expect($(this).height()).toEqual 600
         expect($(this).width()).toEqual 800
-
+  
+    it 'removes img width and height attributes', ->
+      $('body').on 'slides.initialized', ->
+        $('#slides li').each (i) ->
+          expect($('img', this).attr('width')).toBeUndefined()
+          expect($('img', this).attr('height')).toBeUndefined()
+      
   describe 'window resize', ->
     beforeEach ->
       window.innerWidth = 1000
@@ -36,31 +42,30 @@ describe 'Superslides', ->
         expect($(this).width()).toEqual 1000
         expect($(this).height()).toEqual 900
 
-    describe 'slide image', ->
-      # it 'removes inline width and height tags for scalability', ->
-      #   $('#slides li').each (i) ->
-      #     expect($('img', this).attr('width')).toBeUndefined()
-      #     expect($('img', this).attr('height')).toBeUndefined()
-      #
-      # it 'adds data-original-width', ->
-      #   $('#slides li').each (i) ->
-      #     expect($('img', this).data('original-width')).toEqual 800
-      #
-      # it 'adds data-original-height', ->
-      #   $('#slides li').each (i) ->
-      #     expect($('img', this).data('original-height')).toEqual 600
-      #
-      # it 'vertically if window height is less than image height', ->
-      #   window.innerHeight = 500
-      #   $(window).resize()
-      #   $('#slides li').each (i) ->
-      #     expect($('img', this).attr('style')).toMatch 'top: -50px'
-      #
-      # it 'horizontally if window width is less than image width', ->
-      #   window.innerWidth = 700
-      #   $(window).resize()
-      #   $('#slides li').each (i) ->
-      #     expect($('img', this).attr('style')).toMatch 'left: -50px'
+    describe 'slide image', ->      
+      it 'adds data-original-width', ->
+        $('body').on 'slides.initialized', ->
+          $('#slides li').each (i) ->
+            expect($('img', this).data('original-width')).toEqual 800
+      
+      it 'adds data-original-height', ->
+        $('body').on 'slides.initialized', ->
+          $('#slides li').each (i) ->
+            expect($('img', this).data('original-height')).toEqual 600
+      
+      it 'vertically if window height is less than image height', ->
+        window.innerHeight = 500
+        $(window).resize()
+        $('body').on 'slides.initialized', ->
+          $('#slides li').each (i) ->
+            expect($('img', this).attr('style')).toMatch 'top: -50px'
+        
+      it 'horizontally if window width is less than image width', ->
+        window.innerWidth = 700
+        $(window).resize()
+        $('body').on 'slides.initialized', ->
+          $('#slides li').each (i) ->
+            expect($('img', this).attr('style')).toMatch 'left: -50px'
 
   describe 'events', ->
     it 'after initialization', ->

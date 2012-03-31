@@ -55,14 +55,12 @@ $.fn.superslides = (options) ->
         callback(this)
       this
 
-  adjust_image_position = ($el) ->
-    $img = $('img', $el)
-
+  adjust_image_position = ($img) ->
     unless $img.data('original-height') && $img.data('original-width')
-      load_image $img, (image)->
+      load_image $img, (image) ->
         $img.data('original-height', image.height).removeAttr('height')
         $img.data('original-width', image.width).removeAttr('width')
-        adjust_image_position $el
+        adjust_image_position $img
 
     if height < $img.data('original-height')
       $img.css
@@ -74,7 +72,6 @@ $.fn.superslides = (options) ->
     else
       $img.css
         left: 0
-
     if $img.data('original-height') && $img.data('original-width')
       $this.trigger('slides.image_adjusted')
 
@@ -82,7 +79,7 @@ $.fn.superslides = (options) ->
     $el.each (i) ->
       $(this).width(width).height(height).css
         left: width
-      adjust_image_position $(this)
+      adjust_image_position $('img', this)
 
     $this.trigger('slides.sized')
 

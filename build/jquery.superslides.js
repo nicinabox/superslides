@@ -60,14 +60,12 @@
         return this;
       });
     };
-    adjust_image_position = function($el) {
-      var $img;
-      $img = $('img', $el);
+    adjust_image_position = function($img) {
       if (!($img.data('original-height') && $img.data('original-width'))) {
         load_image($img, function(image) {
           $img.data('original-height', image.height).removeAttr('height');
           $img.data('original-width', image.width).removeAttr('width');
-          return adjust_image_position($el);
+          return adjust_image_position($img);
         });
       }
       if (height < $img.data('original-height')) {
@@ -93,7 +91,7 @@
         $(this).width(width).height(height).css({
           left: width
         });
-        return adjust_image_position($(this));
+        return adjust_image_position($('img', this));
       });
       return $this.trigger('slides.sized');
     };
