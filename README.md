@@ -4,12 +4,12 @@ Superslides is a full screen slider for jQuery heavily influenced by Nathan Sear
 
 It is 2kb minified (4.5kb uncompressed).
 
-# Usage
+## Usage
 [Check out the demo](http://nicinabox.github.com/superslides/) for a complete example. Basic usage is as follows. See options below for things you can change.
 
     $('#slides').superslides(options_hash)
 
-# Options
+## Options
 
 Currently, Superslides has a few configurable options: auto play with a delay, slide transition speed, and slide easing ([jQueryUI](http://jqueryui.com/) or the [jQuery easing plugin](http://gsgd.co.uk/sandbox/jquery/easing/) required).
 
@@ -22,7 +22,7 @@ Listed as `option: default_value`
     nav_class: 'slides-navigation'
     container_class: 'slides-container'
 
-# Events
+## Events
 
 Superslides triggers a few events that you can bind to (listed in the order they are fired):
 
@@ -52,7 +52,7 @@ Notes on the differences between *play* and *start*:
 
 *Play* will slide only after the delay time. *Start* will slide first, then start playing (eg, slide, then continue sliding after the delay time--5 seconds by default)
 
-# Markup
+## Markup
 
 Markup is pretty straightforward. At minimum it looks like this:
 
@@ -92,7 +92,7 @@ You could even use a UL as the `slides-container`
       </nav>
     </div>
 
-# CSS
+## CSS
 
 Not _all_ of these styles are required, but most of them are. They've been written with much of the styling removed, and only the basic structural elements left in place. That said, it's likely you may need to tweak to your needs.
 
@@ -150,19 +150,19 @@ Not _all_ of these styles are required, but most of them are. They've been writt
       background: none;
     }
 
-# Hardware Acceleration
+## Hardware Acceleration
 
-Superslides is compatible with the [jQuery Animate Enhanced](http://playground.benbarnett.net/jquery-animate-enhanced/) plugin. Simply include it before this plugin and it will automatically smooth out the transitions with CSS animations.
+Superslides is compatible with the [jQuery Animate Enhanced](http://playground.benbarnett.net/jquery-animate-enhanced/) plugin. Simply include it before this plugin and it will automatically smooth out transitions using CSS instead of JavaScript.
 
-# Contributing
+## Contributing
 
 If you'd like to contribute by fixing bugs, adding features, or otherwise, you should know that Superslides is written in [Coffeescript](http://coffeescript.org/) with [Jasmine](http://pivotal.github.com/jasmine/) and [Jasmine Headless Webkit](http://johnbintz.github.com/jasmine-headless-webkit/). Write a test for your feature and submit a pull request :)
 
-# Known Bugs & Caveats
+## Known Bugs & Caveats
 
 * IE 7 & 8 don't scale the image nicely due to min/max-width. You can remedy this with a polyfill.
 
-# MIT License
+## MIT License
 
 Copyright (C) 2012 Nic Haynes (aka, Nic Aitch)
 
