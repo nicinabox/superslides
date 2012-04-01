@@ -1,4 +1,4 @@
-# Superslides 0.2.4
+# Superslides 0.3.0
 
 Superslides is a full screen slider for jQuery heavily influenced by Nathan Searles' [SlidesJS](https://github.com/nathansearles/slides/). It's designed to be as flexible as possible, while maintaining a reasonable code base and good browser compatibility.
 
