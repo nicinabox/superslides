@@ -35,8 +35,9 @@ $.fn.superslides = (options) ->
   is_mobile = navigator.userAgent.match(/mobile/i)
 
   start = ->
-    animate (if first_load then 0 else "next")
-    play()
+    if size > 1
+      animate(if first_load then 0 else "next")
+      play()
 
   stop = ->
     clearInterval play_interval
@@ -142,23 +143,24 @@ $.fn.superslides = (options) ->
       )
 
   this.each ->
-    $control.css
-      position: 'relative'
-      width: width * 3
-      height: height
-      left: -width
+    if size > 1
+      $control.css
+        position: 'relative'
+        width: width * 3
+        height: height
+        left: -width
 
-    $container.hide()
+      $container.hide()
 
-    $children.css
-      display: 'none'
-      position: 'absolute'
-      overflow: 'hidden'
-      top: 0
-      left: width
-      zIndex: 0
+      $children.css
+        display: 'none'
+        position: 'absolute'
+        overflow: 'hidden'
+        top: 0
+        left: width
+        zIndex: 0
 
-    adjust_slides_size $children
+      adjust_slides_size $children
 
     # Event bindings
     $(window).resize (e) ->
