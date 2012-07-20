@@ -90,7 +90,7 @@ $.fn.superslides = (options) ->
       animating = true
       switch direction
         when 'next'
-          position = width*2
+          position = width * 2
           direction = -position
           next = current + 1
           next = 0 if size == next
@@ -167,7 +167,7 @@ $.fn.superslides = (options) ->
       width = window.innerWidth || document.documentElement.clientWidth
       height = window.innerHeight || document.documentElement.clientHeight
       adjust_slides_size $children
-      $control.width(width*3).css
+      $control.width(width * 3).css
         left: -width
         height: height
 
