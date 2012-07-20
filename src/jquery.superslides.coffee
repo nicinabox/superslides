@@ -1,5 +1,5 @@
 ###
-  Superslides 0.3.0
+  Superslides 0.3.1
   Fullscreen slideshow plugin for jQuery
   by Nic Aitch @nicinabox
   http://nicinabox.github.com/superslides/
