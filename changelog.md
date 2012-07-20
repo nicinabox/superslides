@@ -1,5 +1,10 @@
 # Changelog
 
+### 0.3.1 - July 19, 2012
+
+* Fix slides if only 1 present
+* Update mobile detection
+
 ### 0.3.0  - April 1, 2012
 * Add play, next, prev event hooks
 * Image sizes are calculated automatically (and asyncronously)
