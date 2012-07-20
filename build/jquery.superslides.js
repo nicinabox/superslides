@@ -96,10 +96,13 @@
     };
     adjust_slides_size = function($el) {
       $el.each(function(i) {
-        $(this).width(width).height(height).css({
-          left: width
-        });
-        return adjust_image_position($('img', this));
+        $(this).width(width).height(height);
+        if (size > 1) {
+          $(this).css({
+            left: width
+          });
+          return adjust_image_position($('img', this));
+        }
       });
       return $this.trigger('slides.sized');
     };
@@ -179,8 +182,8 @@
           left: width,
           zIndex: 0
         });
-        adjust_slides_size($children);
       }
+      adjust_slides_size($children);
       $(window).resize(function(e) {
         width = window.innerWidth || document.documentElement.clientWidth;
         height = window.innerHeight || document.documentElement.clientHeight;

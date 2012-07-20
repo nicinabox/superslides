@@ -78,9 +78,13 @@ $.fn.superslides = (options) ->
 
   adjust_slides_size = ($el) ->
     $el.each (i) ->
-      $(this).width(width).height(height).css
-        left: width
-      adjust_image_position $('img', this)
+      $(this).width(width).height(height)
+
+      if size > 1
+        $(this).css
+          left: width
+
+        adjust_image_position $('img', this)
 
     $this.trigger('slides.sized')
 
@@ -160,7 +164,7 @@ $.fn.superslides = (options) ->
         left: width
         zIndex: 0
 
-      adjust_slides_size $children
+    adjust_slides_size $children
 
     # Event bindings
     $(window).resize (e) ->
