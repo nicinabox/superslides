@@ -14,7 +14,7 @@
   $ = jQuery;
 
   $.fn.superslides = function(options) {
-    var $children, $container, $control, $nav, $this, adjust_image_position, adjust_slides_size, animate, animating, current, first_load, height, is_mobile, load_image, next, play, play_interval, prev, size, start, stop, width;
+    var $children, $container, $control, $nav, $this, $window, adjust_image_position, adjust_slides_size, animate, animating, current, first_load, height, is_mobile, load_image, multiplier, next, play, play_interval, prev, size, start, stop, width;
     options = $.extend({
       delay: 5000,
       play: false,
@@ -25,19 +25,21 @@
     }, options);
     $("." + options.container_class, this).wrap('<div class="slides-control" />');
     $this = this;
+    $window = $(window);
     $control = $('.slides-control', $this);
     $container = $("." + options.container_class);
     $children = $container.children();
     $nav = $("." + options.nav_class);
     size = $children.length;
-    width = window.innerWidth || document.documentElement.clientWidth;
-    height = window.innerHeight || document.documentElement.clientHeight;
+    width = $window.width();
+    height = $window.height();
     current = 0;
     prev = 0;
     next = 0;
     first_load = true;
     play_interval = 0;
     animating = false;
+    multiplier = (size === 1 ? 1 : 3);
     is_mobile = navigator.userAgent.match(/mobile/i);
     start = function() {
       if (size > 1) {
@@ -59,9 +61,7 @@
       }
     };
     load_image = function($img, callback) {
-      var image;
-      image = new Image();
-      return $img.load(function() {
+      return $("<img />").attr('src', $img.attr('src')).load(function() {
         if (typeof callback === 'function') {
           callback(this);
         }
@@ -101,8 +101,8 @@
           $(this).css({
             left: width
           });
-          return adjust_image_position($('img', this));
         }
+        return adjust_image_position($('img', this));
       });
       return $this.trigger('slides.sized');
     };
@@ -166,10 +166,12 @@
       }
     };
     return this.each(function() {
+      $control.css({
+        position: 'relative'
+      });
       if (size > 1) {
         $control.css({
-          position: 'relative',
-          width: width * 3,
+          width: width * multiplier,
           height: height,
           left: -width
         });
@@ -185,13 +187,17 @@
       }
       adjust_slides_size($children);
       $(window).resize(function(e) {
-        width = window.innerWidth || document.documentElement.clientWidth;
-        height = window.innerHeight || document.documentElement.clientHeight;
+        width = $window.width();
+        height = $window.height();
         adjust_slides_size($children);
-        return $control.width(width * 3).css({
-          left: -width,
+        $control.width(width * multiplier).css({
           height: height
         });
+        if (size > 1) {
+          return $control.css({
+            left: -width
+          });
+        }
       });
       $('a', $nav).click(function(e) {
         e.preventDefault();

@@ -19,19 +19,21 @@ $.fn.superslides = (options) ->
   $(".#{options.container_class}", this).wrap('<div class="slides-control" />')
 
   $this = this
+  $window = $(window)
   $control = $('.slides-control', $this)
   $container = $(".#{options.container_class}")
   $children = $container.children()
   $nav = $(".#{options.nav_class}")
   size = $children.length
-  width = window.innerWidth || document.documentElement.clientWidth
-  height = window.innerHeight || document.documentElement.clientHeight
+  width = $window.width()
+  height = $window.height()
   current = 0
   prev = 0
   next = 0
   first_load = true
   play_interval = 0
   animating = false
+  multiplier = (if size == 1 then 1 else 3)
   is_mobile = navigator.userAgent.match(/mobile/i)
 
   start = ->
@@ -50,11 +52,11 @@ $.fn.superslides = (options) ->
       , options.delay
 
   load_image = ($img, callback) ->
-    image = new Image()
-    $img.load ->
-      if typeof callback == 'function'
-        callback(this)
-      this
+    $("<img />").attr('src', $img.attr('src'))
+      .load ->
+        if typeof callback == 'function'
+          callback(this)
+        this
 
   adjust_image_position = ($img) ->
     unless $img.data('original-height') && $img.data('original-width')
@@ -65,11 +67,11 @@ $.fn.superslides = (options) ->
 
     if height < $img.data('original-height')
       $img.css
-        top: -($img.data('original-height') - height)/2
+        top: -($img.data('original-height') - height) / 2
 
     if width < $img.data('original-width')
       $img.css
-        left: -($img.data('original-width') - width)/2
+        left: -($img.data('original-width') - width) / 2
     else
       $img.css
         left: 0
@@ -84,7 +86,7 @@ $.fn.superslides = (options) ->
         $(this).css
           left: width
 
-        adjust_image_position $('img', this)
+      adjust_image_position $('img', this)
 
     $this.trigger('slides.sized')
 
@@ -147,10 +149,12 @@ $.fn.superslides = (options) ->
       )
 
   this.each ->
+    $control.css
+        position: 'relative'
+
     if size > 1
       $control.css
-        position: 'relative'
-        width: width * 3
+        width: width * multiplier
         height: height
         left: -width
 
@@ -168,12 +172,17 @@ $.fn.superslides = (options) ->
 
     # Event bindings
     $(window).resize (e) ->
-      width = window.innerWidth || document.documentElement.clientWidth
-      height = window.innerHeight || document.documentElement.clientHeight
+      width = $window.width()
+      height = $window.height()
+
       adjust_slides_size $children
-      $control.width(width * 3).css
-        left: -width
+
+      $control.width(width * multiplier).css
         height: height
+
+      if size > 1
+        $control.css
+          left: -width
 
     $('a', $nav).click (e) ->
       e.preventDefault()
