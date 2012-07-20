@@ -1,5 +1,9 @@
 # Changelog
 
+### 0.3.2 - July 20, 2012
+
+* Fix image size calculation
+
 ### 0.3.1 - July 19, 2012
 
 * Fix slides if only 1 present
