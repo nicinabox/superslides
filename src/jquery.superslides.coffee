@@ -49,8 +49,8 @@ adjust_image_position = ($img) ->
   else
     $img.css
       left: 0
-  # if $img.data('original-height') && $img.data('original-width')
-    # $this.trigger('slides.image_adjusted')
+  if $img.data('original-height') && $img.data('original-width')
+    $container.trigger('slides.image_adjusted')
 
 adjust_slides_size = ($el) ->
   $el.each (i) ->
@@ -62,7 +62,7 @@ adjust_slides_size = ($el) ->
 
     adjust_image_position $('img', this)
 
-  # $this.trigger('slides.sized')
+  $container.trigger('slides.sized')
 
 start = ->
   if size > 1
@@ -135,11 +135,11 @@ animate = (direction) ->
 
       if first_load
         $container.fadeIn('fast')
-        # $this.trigger('slides.initialized')
+        $container.trigger('slides.initialized')
         first_load = false
 
       animating = false
-      # $this.trigger('slides.animated')
+      $container.trigger('slides.animated')
     )
 
 
