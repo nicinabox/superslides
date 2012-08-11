@@ -251,8 +251,8 @@ $.fn.superslides.options =
   slide_easing: 'linear'
   nav_class: 'slides-navigation'
   container_class: 'slides-container'
-  pagination: true
-  hashchange: true
+  pagination: false
+  hashchange: false
 
 # Public API methods
 $.fn.superslides.api =
