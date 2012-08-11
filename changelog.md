@@ -1,5 +1,12 @@
 # Changelog
 
+### 0.4 - Aug 11, 2012
+
+* Major refactor
+* Add control API
+* Add pagination
+* Add hashchange support
+
 ### 0.3.1 - July 19, 2012
 
 * Fix slides if only 1 present
