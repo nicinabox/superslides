@@ -52,12 +52,12 @@ You can also control the slider by triggering the respective events:
 
 Alternatively, use the API to control the slider
 
-  $('#slides').superslides('start')
-  $('#slides').superslides('stop')
-  $('#slides').superslides('play')
-  $('#slides').superslides('prev')
-  $('#slides').superslides('next')
-  $('#slides').superslides('animate', 3) // where 3 is a slide number
+    $('#slides').superslides('start')
+    $('#slides').superslides('stop')
+    $('#slides').superslides('play')
+    $('#slides').superslides('prev')
+    $('#slides').superslides('next')
+    $('#slides').superslides('animate', 3) // where 3 is a slide number
 
 Notes on the differences between *play* and *start*:
 
