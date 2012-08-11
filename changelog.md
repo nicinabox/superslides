@@ -6,6 +6,7 @@
 * Add control API
 * Add pagination
 * Add hashchange support
+* CSS is now included in the bulid
 
 ### 0.3.1 - July 19, 2012
 

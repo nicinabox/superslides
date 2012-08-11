@@ -103,41 +103,6 @@ You could even use a UL as the `slides-container`
       </nav>
     </div>
 
-## CSS
-
-Not _all_ of these styles are required, but most of them are. They've been written with much of the styling removed, and only the basic structural elements left in place. That said, it's likely you may need to tweak to your needs.
-
-    #slides {
-      overflow: hidden;
-      width: 100%;
-      height: 100%;
-    }
-    #slides .slides-navigation {
-      width: 988px;
-      margin: 0 auto;
-      position: relative;
-      z-index: 3;
-      top: -50%;
-    }
-    #slides img {
-      max-width: none;
-      min-width: 100%;
-      min-height: 100%;
-      position: absolute;
-      -ms-interpolation-mode: bicubic;
-      -webkit-backface-visibility: hidden;
-    }
-    #slides .slides-navigation a {
-      position: absolute;
-      display: block;
-    }
-    #slides .slides-navigation a.prev {
-      left: 0;
-    }
-    #slides .slides-navigation a.next {
-      right: 0;
-    }
-
 ## Hardware Acceleration
 
 Superslides is compatible with the [jQuery Animate Enhanced](http://playground.benbarnett.net/jquery-animate-enhanced/) plugin. Simply include it before this plugin and it will automatically smooth out transitions using CSS instead of JavaScript.
