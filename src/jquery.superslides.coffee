@@ -11,9 +11,6 @@ height = $window.height()
 is_mobile = navigator.userAgent.match(/mobile/i)
 
 # State control
-current = 0
-next = 0
-prev = 0
 first_load = true
 play_interval = 0
 animating = false
@@ -80,33 +77,34 @@ play = ->
     , $.fn.superslides.options.delay
 
 animate = (direction) ->
+  this.current = this.current || 0
   unless animating || direction >= size
-    prev = current
+    prev = this.current
     animating = true
     switch direction
       when 'next'
         position = width * 2
         direction = -position
-        next = current + 1
+        next = this.current + 1
         next = 0 if size == next
       when 'prev'
         position = 0
         direction = 0
-        next = current - 1
+        next = this.current - 1
         next = size - 1 if next == -1
       else
+        prev = -1 if first_load
         next = +direction
         if next > prev
           position = width * 2
           direction = -position
         else
           position = direction = 0
-          prev = -1
 
-    current = next
+    this.current = next
     $children.removeClass('current')
 
-    $children.eq(current).css
+    $children.eq(this.current).css
       left: position
       display: 'block'
 
@@ -131,7 +129,7 @@ animate = (direction) ->
         display: 'none'
         zIndex: 0
 
-      $children.eq(current).addClass('current')
+      $children.eq(this.current).addClass('current')
 
       if first_load
         $container.fadeIn('fast')
@@ -141,6 +139,7 @@ animate = (direction) ->
       animating = false
       $container.trigger('slides.animated')
     )
+    false
 
 
 # Plugin
@@ -217,7 +216,7 @@ $.fn.superslides = (options) ->
 
       start()
 
-# Defaults
+# Options
 $.fn.superslides.options =
   delay: 5000
   play: false

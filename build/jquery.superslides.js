@@ -9,7 +9,7 @@
 
 
 (function() {
-  var $children, $container, $control, $nav, $window, adjust_image_position, adjust_slides_size, animate, animating, current, first_load, height, is_mobile, load_image, multiplier, next, play, play_interval, prev, size, start, stop, width;
+  var $children, $container, $control, $nav, $window, adjust_image_position, adjust_slides_size, animate, animating, first_load, height, is_mobile, load_image, multiplier, play, play_interval, size, start, stop, width;
 
   $window = $(window);
 
@@ -18,12 +18,6 @@
   height = $window.height();
 
   is_mobile = navigator.userAgent.match(/mobile/i);
-
-  current = 0;
-
-  next = 0;
-
-  prev = 0;
 
   first_load = true;
 
@@ -115,15 +109,16 @@
   };
 
   animate = function(direction) {
-    var position;
+    var next, position, prev;
+    this.current = this.current || 0;
     if (!(animating || direction >= size)) {
-      prev = current;
+      prev = this.current;
       animating = true;
       switch (direction) {
         case 'next':
           position = width * 2;
           direction = -position;
-          next = current + 1;
+          next = this.current + 1;
           if (size === next) {
             next = 0;
           }
@@ -131,28 +126,30 @@
         case 'prev':
           position = 0;
           direction = 0;
-          next = current - 1;
+          next = this.current - 1;
           if (next === -1) {
             next = size - 1;
           }
           break;
         default:
+          if (first_load) {
+            prev = -1;
+          }
           next = +direction;
           if (next > prev) {
             position = width * 2;
             direction = -position;
           } else {
             position = direction = 0;
-            prev = -1;
           }
       }
-      current = next;
+      this.current = next;
       $children.removeClass('current');
-      $children.eq(current).css({
+      $children.eq(this.current).css({
         left: position,
         display: 'block'
       });
-      return $control.animate({
+      $control.animate({
         useTranslate3d: (is_mobile ? true : false),
         left: direction
       }, $.fn.superslides.options.slide_speed, $.fn.superslides.options.slide_easing, function() {
@@ -168,7 +165,7 @@
           display: 'none',
           zIndex: 0
         });
-        $children.eq(current).addClass('current');
+        $children.eq(this.current).addClass('current');
         if (first_load) {
           $container.fadeIn('fast');
           $container.trigger('slides.initialized');
@@ -177,6 +174,7 @@
         animating = false;
         return $container.trigger('slides.animated');
       });
+      return false;
     }
   };
 
