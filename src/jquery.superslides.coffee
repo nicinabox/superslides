@@ -77,20 +77,21 @@ play = ->
     , $.fn.superslides.options.delay
 
 animate = (direction) ->
-  this.current = this.current || 0
-  unless animating || direction >= size
-    prev = this.current
+  self = this
+  self.current = (if self.current >= 0 then self.current else null)
+  unless animating || direction >= size || +direction == self.current
+    prev = self.current
     animating = true
     switch direction
       when 'next'
         position = width * 2
         direction = -position
-        next = this.current + 1
+        next = self.current + 1
         next = 0 if size == next
       when 'prev'
         position = 0
         direction = 0
-        next = this.current - 1
+        next = self.current - 1
         next = size - 1 if next == -1
       else
         prev = -1 if first_load
@@ -101,10 +102,10 @@ animate = (direction) ->
         else
           position = direction = 0
 
-    this.current = next
+    self.current = next
     $children.removeClass('current')
 
-    $children.eq(this.current).css
+    $children.eq(self.current).css
       left: position
       display: 'block'
 
@@ -129,7 +130,7 @@ animate = (direction) ->
         display: 'none'
         zIndex: 0
 
-      $children.eq(this.current).addClass('current')
+      $children.eq(self.current).addClass('current')
 
       if first_load
         $container.fadeIn('fast')
@@ -137,9 +138,9 @@ animate = (direction) ->
         first_load = false
 
       animating = false
-      $container.trigger('slides.animated')
+      $container.trigger('slides.animated', [self.current, next, prev])
     )
-    false
+    self.current
 
 
 # Plugin
@@ -206,7 +207,7 @@ $.fn.superslides = (options) ->
           $control.css
             left: -width
 
-      $('a', $nav).click (e) ->
+      $(document).on 'click', ".#{options.nav_class} a", (e) ->
         e.preventDefault()
         stop()
         if $(this).hasClass('next')
@@ -214,6 +215,25 @@ $.fn.superslides = (options) ->
         else
           animate 'prev'
 
+      if options.pagination
+        el = this
+        $(document).on "slides.initialized", (e) ->
+          $(el).append($("<nav>", { class: 'slides-pagination'}))
+          $(".slides-container", el).children().each (i) ->
+            $(".slides-pagination").append $("<a>",
+              href: "#"
+              "data-id": i
+            )
+        .on "slides.animated", (e, current, next, prev) ->
+          $pagination = $(".slides-pagination")
+          $(".active", $pagination).removeClass "active"
+          $("a", $pagination).eq(current).addClass "active"
+        .on "click", ".slides-pagination a", (e) ->
+          e.preventDefault()
+          index = $(this).data("id")
+          $slides.superslides "animate", index
+
+      # Kick it off
       start()
 
 # Options
@@ -224,6 +244,7 @@ $.fn.superslides.options =
   slide_easing: 'linear'
   nav_class: 'slides-navigation'
   container_class: 'slides-container'
+  pagination: true
 
 # Public API methods
 $.fn.superslides.api =

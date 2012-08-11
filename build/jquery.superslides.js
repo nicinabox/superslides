@@ -109,16 +109,17 @@
   };
 
   animate = function(direction) {
-    var next, position, prev;
-    this.current = this.current || 0;
-    if (!(animating || direction >= size)) {
-      prev = this.current;
+    var next, position, prev, self;
+    self = this;
+    self.current = (self.current >= 0 ? self.current : null);
+    if (!(animating || direction >= size || +direction === self.current)) {
+      prev = self.current;
       animating = true;
       switch (direction) {
         case 'next':
           position = width * 2;
           direction = -position;
-          next = this.current + 1;
+          next = self.current + 1;
           if (size === next) {
             next = 0;
           }
@@ -126,7 +127,7 @@
         case 'prev':
           position = 0;
           direction = 0;
-          next = this.current - 1;
+          next = self.current - 1;
           if (next === -1) {
             next = size - 1;
           }
@@ -143,9 +144,9 @@
             position = direction = 0;
           }
       }
-      this.current = next;
+      self.current = next;
       $children.removeClass('current');
-      $children.eq(this.current).css({
+      $children.eq(self.current).css({
         left: position,
         display: 'block'
       });
@@ -165,16 +166,16 @@
           display: 'none',
           zIndex: 0
         });
-        $children.eq(this.current).addClass('current');
+        $children.eq(self.current).addClass('current');
         if (first_load) {
           $container.fadeIn('fast');
           $container.trigger('slides.initialized');
           first_load = false;
         }
         animating = false;
-        return $container.trigger('slides.animated');
+        return $container.trigger('slides.animated', [self.current, next, prev]);
       });
-      return false;
+      return self.current;
     }
   };
 
@@ -196,6 +197,7 @@
       size = $children.length;
       multiplier = (size === 1 ? 1 : 3);
       return this.each(function() {
+        var el;
         $control.css({
           position: 'relative'
         });
@@ -229,7 +231,7 @@
             });
           }
         });
-        $('a', $nav).click(function(e) {
+        $(document).on('click', "." + options.nav_class + " a", function(e) {
           e.preventDefault();
           stop();
           if ($(this).hasClass('next')) {
@@ -238,6 +240,30 @@
             return animate('prev');
           }
         });
+        if (options.pagination) {
+          el = this;
+          $(document).on("slides.initialized", function(e) {
+            $(el).append($("<nav>", {
+              "class": 'slides-pagination'
+            }));
+            return $(".slides-container", el).children().each(function(i) {
+              return $(".slides-pagination").append($("<a>", {
+                href: "#",
+                "data-id": i
+              }));
+            });
+          }).on("slides.animated", function(e, current, next, prev) {
+            var $pagination;
+            $pagination = $(".slides-pagination");
+            $(".active", $pagination).removeClass("active");
+            return $("a", $pagination).eq(current).addClass("active");
+          }).on("click", ".slides-pagination a", function(e) {
+            var index;
+            e.preventDefault();
+            index = $(this).data("id");
+            return $slides.superslides("animate", index);
+          });
+        }
         return start();
       });
     }
@@ -249,7 +275,8 @@
     slide_speed: 'normal',
     slide_easing: 'linear',
     nav_class: 'slides-navigation',
-    container_class: 'slides-container'
+    container_class: 'slides-container',
+    pagination: true
   };
 
   $.fn.superslides.api = {
