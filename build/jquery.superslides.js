@@ -250,8 +250,7 @@
             }));
             return $(".slides-container", el).children().each(function(i) {
               return $(".slides-pagination").append($("<a>", {
-                href: "#",
-                "data-id": i
+                href: "#" + i
               }));
             });
           }).on("slides.animated", function(e, current, next, prev) {
@@ -261,13 +260,14 @@
             return $("a", $pagination).eq(current).addClass("active");
           }).on("click", ".slides-pagination a", function(e) {
             var index;
-            e.preventDefault();
-            index = $(this).data("id");
+            if (!options.hashchange) {
+              e.preventDefault();
+            }
+            index = this.hash.replace(/^#/, '');
             return animate(index);
           });
           $window.on('hashchange', function(e) {
             var index;
-            e.preventDefault();
             index = location.hash.replace(/^#/, '');
             stop();
             return animate(index);
@@ -285,7 +285,8 @@
     slide_easing: 'linear',
     nav_class: 'slides-navigation',
     container_class: 'slides-container',
-    pagination: true
+    pagination: true,
+    hashchange: true
   };
 
   $.fn.superslides.api = {

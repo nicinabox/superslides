@@ -224,20 +224,18 @@ $.fn.superslides = (options) ->
           $(el).append($("<nav>", { class: 'slides-pagination'}))
           $(".slides-container", el).children().each (i) ->
             $(".slides-pagination").append $("<a>",
-              href: "#"
-              "data-id": i
+              href: "#" + i
             )
         .on "slides.animated", (e, current, next, prev) ->
           $pagination = $(".slides-pagination")
           $(".active", $pagination).removeClass "active"
           $("a", $pagination).eq(current).addClass "active"
         .on "click", ".slides-pagination a", (e) ->
-          e.preventDefault()
-          index = $(this).data("id")
+          e.preventDefault() unless options.hashchange
+          index = this.hash.replace(/^#/, '')
           animate index
 
         $window.on 'hashchange', (e) ->
-          e.preventDefault()
           index = location.hash.replace(/^#/, '')
           stop()
           animate index
@@ -254,6 +252,7 @@ $.fn.superslides.options =
   nav_class: 'slides-navigation'
   container_class: 'slides-container'
   pagination: true
+  hashchange: true
 
 # Public API methods
 $.fn.superslides.api =
