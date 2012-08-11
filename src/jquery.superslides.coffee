@@ -63,7 +63,12 @@ adjust_slides_size = ($el) ->
 
 start = ->
   if size > 1
-    animate(if first_load then 0 else "next")
+    if location.hash
+      index = location.hash.replace(/^#/, '')
+    else
+      index = (if first_load then 0 else "next")
+
+    animate index
     play()
 
 stop = ->
@@ -80,7 +85,7 @@ animate = (direction) ->
   self = this
   self.current = (if self.current >= 0 then self.current else null)
   unless animating || direction >= size || +direction == self.current
-    prev = self.current
+    prev = self.current || +direction - 1 || 0
     animating = true
     switch direction
       when 'next'
@@ -89,12 +94,10 @@ animate = (direction) ->
         next = self.current + 1
         next = 0 if size == next
       when 'prev'
-        position = 0
-        direction = 0
+        position = direction = 0
         next = self.current - 1
         next = size - 1 if next == -1
       else
-        prev = -1 if first_load
         next = +direction
         if next > prev
           position = width * 2
@@ -231,7 +234,13 @@ $.fn.superslides = (options) ->
         .on "click", ".slides-pagination a", (e) ->
           e.preventDefault()
           index = $(this).data("id")
-          $slides.superslides "animate", index
+          animate index
+
+        $window.on 'hashchange', (e) ->
+          e.preventDefault()
+          index = location.hash.replace(/^#/, '')
+          stop()
+          animate index
 
       # Kick it off
       start()

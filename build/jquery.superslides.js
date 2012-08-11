@@ -87,8 +87,14 @@
   };
 
   start = function() {
+    var index;
     if (size > 1) {
-      animate(first_load ? 0 : "next");
+      if (location.hash) {
+        index = location.hash.replace(/^#/, '');
+      } else {
+        index = (first_load ? 0 : "next");
+      }
+      animate(index);
       return play();
     }
   };
@@ -113,7 +119,7 @@
     self = this;
     self.current = (self.current >= 0 ? self.current : null);
     if (!(animating || direction >= size || +direction === self.current)) {
-      prev = self.current;
+      prev = self.current || +direction - 1 || 0;
       animating = true;
       switch (direction) {
         case 'next':
@@ -125,17 +131,13 @@
           }
           break;
         case 'prev':
-          position = 0;
-          direction = 0;
+          position = direction = 0;
           next = self.current - 1;
           if (next === -1) {
             next = size - 1;
           }
           break;
         default:
-          if (first_load) {
-            prev = -1;
-          }
           next = +direction;
           if (next > prev) {
             position = width * 2;
@@ -261,7 +263,14 @@
             var index;
             e.preventDefault();
             index = $(this).data("id");
-            return $slides.superslides("animate", index);
+            return animate(index);
+          });
+          $window.on('hashchange', function(e) {
+            var index;
+            e.preventDefault();
+            index = location.hash.replace(/^#/, '');
+            stop();
+            return animate(index);
           });
         }
         return start();
