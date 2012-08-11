@@ -1,8 +1,8 @@
-# Superslides 0.3.1
+# Superslides 0.4
 
 Superslides is a full screen slider for jQuery heavily influenced by Nathan Searles' [SlidesJS](https://github.com/nathansearles/slides/). It's designed to be as flexible as possible, while maintaining a reasonable code base and good browser compatibility.
 
-It is 2kb minified (4.5kb uncompressed).
+It is 4kb minified (8kb uncompressed).
 
 ## Usage
 [Check out the demo](http://nicinabox.github.com/superslides/) for a complete example. Basic usage is as follows. See options below for things you can change.
@@ -21,6 +21,8 @@ Listed as `option: default_value`
     slide_easing: 'linear'
     nav_class: 'slides-navigation'
     container_class: 'slides-container'
+    pagination: true
+    hashchange: true
 
 ## Events
 
@@ -48,9 +50,18 @@ You can also control the slider by triggering the respective events:
     $('#slides').trigger('slides.next')
     $('#slides').trigger('slides.prev')
 
+Alternatively, use the API to control the slider
+
+  $('#slides').superslides('start')
+  $('#slides').superslides('stop')
+  $('#slides').superslides('play')
+  $('#slides').superslides('prev')
+  $('#slides').superslides('next')
+  $('#slides').superslides('animate', 3) // where 3 is a slide number
+
 Notes on the differences between *play* and *start*:
 
-*Play* will slide only after the delay time. *Start* will slide first, then start playing (eg, slide, then continue sliding after the delay time--5 seconds by default)
+*Play* will slide only after the delay time. *Start* will slide first, then start playing (i.e., slide, then continue sliding after the delay time--5 seconds by default)
 
 ## Markup
 
