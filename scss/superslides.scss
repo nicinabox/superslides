@@ -10,16 +10,7 @@
     padding: 0;
     list-style: none;
     position: relative;
-    li {
-      margin: 0;
-      padding: 0;
-      position: relative;
-      background: none;
-      &.current {
-        display: block;
-        z-index: 1;
-      }
-      img {
+    img {
         -webkit-backface-visibility: hidden;
         -ms-interpolation-mode: bicubic;
         max-width: none;
@@ -28,6 +19,20 @@
         position: absolute;
         left: 0;
         top: 0;
+        &.keep-original {
+          min-width: 0;
+          min-height: 0;
+          position: static;
+        }
+      }
+    li {
+      margin: 0;
+      padding: 0;
+      position: relative;
+      background: none;
+      &.current {
+        display: block;
+        z-index: 1;
       }
       .container {
         width: 55%;

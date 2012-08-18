@@ -1,5 +1,5 @@
 ###
-  Superslides 0.4
+  Superslides 0.4.1
   Fullscreen slideshow plugin for jQuery
   by Nic Aitch @nicinabox
   http://nicinabox.github.com/superslides/
@@ -57,7 +57,7 @@ adjust_slides_size = ($el) ->
       $(this).css
         left: width
 
-    adjust_image_position $('img', this)
+    adjust_image_position $('img', this).not('.keep-original')
 
   $container.trigger('slides.sized')
 
