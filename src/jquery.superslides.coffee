@@ -179,8 +179,8 @@ $.fn.superslides = (options) ->
         $children.wrapInner('<div class="scrollable" />')
         $children.each ->
           $scrollable = $(this).find('.scrollable')
-          $img = $scrollable.find('img').not('.keep-original')
-          $img.insertBefore($scrollable)
+          $scrollable.find('img').not('.keep-original')
+                      .insertBefore($scrollable)
 
       $control.css
         position: 'relative'

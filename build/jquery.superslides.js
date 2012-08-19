@@ -203,10 +203,9 @@
         if (options.scrollable) {
           $children.wrapInner('<div class="scrollable" />');
           $children.each(function() {
-            var $img, $scrollable;
+            var $scrollable;
             $scrollable = $(this).find('.scrollable');
-            $img = $scrollable.find('img').not('.keep-original');
-            return $img.insertBefore($scrollable);
+            return $scrollable.find('img').not('.keep-original').insertBefore($scrollable);
           });
         }
         $control.css({
