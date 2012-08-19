@@ -200,6 +200,15 @@
       multiplier = (size === 1 ? 1 : 3);
       return this.each(function() {
         var el;
+        if (options.scrollable) {
+          $children.wrapInner('<div class="scrollable" />');
+          $children.each(function() {
+            var $img, $scrollable;
+            $scrollable = $(this).find('.scrollable');
+            $img = $scrollable.find('img').not('.keep-original');
+            return $img.insertBefore($scrollable);
+          });
+        }
         $control.css({
           position: 'relative'
         });
@@ -286,7 +295,8 @@
     nav_class: 'slides-navigation',
     container_class: 'slides-container',
     pagination: false,
-    hashchange: false
+    hashchange: false,
+    scrollable: true
   };
 
   $.fn.superslides.api = {

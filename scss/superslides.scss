@@ -1,7 +1,7 @@
 @import "compass";
 
 #slides {
-  overflow: hidden;
+  overflow-x: hidden;
   width: 100%;
   height: 100%;
   .slides-container {
@@ -44,6 +44,17 @@
         background: white;
         background: rgba(255, 255, 255, 0.9);
       }
+    }
+  }
+  .scrollable {
+    @include pie-clearfix;
+    position: relative;
+    top: 0;
+    left: 0;
+    overflow-y: auto;
+    height: 100%;
+    .container {
+      @include clearfix;
     }
   }
 }

@@ -175,6 +175,13 @@ $.fn.superslides = (options) ->
     multiplier = (if size == 1 then 1 else 3)
 
     this.each ->
+      if options.scrollable
+        $children.wrapInner('<div class="scrollable" />')
+        $children.each ->
+          $scrollable = $(this).find('.scrollable')
+          $img = $scrollable.find('img').not('.keep-original')
+          $img.insertBefore($scrollable)
+
       $control.css
         position: 'relative'
 
@@ -253,6 +260,7 @@ $.fn.superslides.options =
   container_class: 'slides-container'
   pagination: false
   hashchange: false
+  scrollable: true
 
 # Public API methods
 $.fn.superslides.api =
