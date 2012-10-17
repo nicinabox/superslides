@@ -4,6 +4,9 @@
   overflow-x: hidden;
   width: 100%;
   height: 100%;
+  .slides-control {
+    -webkit-transform: translateZ(0);
+  }
   .slides-container {
     display: none;
     margin: 0;
@@ -11,12 +14,11 @@
     list-style: none;
     position: relative;
     img {
-        -webkit-backface-visibility: hidden;
         -ms-interpolation-mode: bicubic;
         max-width: none;
         min-width: 100%;
         min-height: 100%;
-        position: relative;
+        position: absolute;
         left: 0;
         top: 0;
         &.keep-original {
@@ -108,6 +110,13 @@
     margin: 2px;
     &.active {
       background: #222;
+    }
+  }
+}
+.touch {
+  .slide {
+    img {
+      -webkit-backface-visibility: hidden;
     }
   }
 }
