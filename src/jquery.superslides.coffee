@@ -35,6 +35,7 @@ adjust_image_position = ($img) ->
       $img.data('original-height', image.height).removeAttr('height')
       $img.data('original-width', image.width).removeAttr('width')
       adjust_image_position $img
+    return
 
   if height < $img.data('original-height')
     $img.css
