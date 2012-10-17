@@ -1,5 +1,11 @@
 # Changelog
 
+### 0.4.1 - Unreleased
+
+* Fix squished images on mobile
+* Add support for non-fullscreen images
+* Add support for scrollable content
+
 ### 0.4 - Aug 11, 2012
 
 * Major refactor
