@@ -2,7 +2,7 @@
 
 Superslides is a full screen slider for jQuery heavily influenced by Nathan Searles' [SlidesJS](https://github.com/nathansearles/slides/). It's designed to be as flexible as possible, while maintaining a reasonable code base and good browser compatibility.
 
-It is 4kb minified (8kb uncompressed).
+It's 8kb minified (12kb uncompressed).
 
 ## Usage
 [Check out the demo](http://nicinabox.github.com/superslides/) for a complete example. Basic usage is as follows. See options below for things you can change.
@@ -11,9 +11,7 @@ It is 4kb minified (8kb uncompressed).
 
 ## Options
 
-Currently, Superslides has a few configurable options: auto play with a delay, slide transition speed, and slide easing ([jQueryUI](http://jqueryui.com/) or the [jQuery easing plugin](http://gsgd.co.uk/sandbox/jquery/easing/) required).
-
-Listed as `option: default_value`
+There are a few configurable options (these are the defaults):
 
     delay: 5000
     play: false
