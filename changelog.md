@@ -1,6 +1,6 @@
 # Changelog
 
-### 0.4.1 - Unreleased
+### 0.4.1 - Oct 18, 2012
 
 * Fix squished images on mobile
 * Fix image offset on mobile
