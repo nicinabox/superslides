@@ -38,7 +38,9 @@
   $children = '';
 
   load_image = function($img, callback) {
-    return $("<img />").attr('src', $img.attr('src')).load(function() {
+    return $("<img>", {
+      src: $img.attr('src')
+    }).load(function() {
       if (typeof callback === 'function') {
         callback(this);
       }
@@ -53,6 +55,7 @@
         $img.data('original-width', image.width).removeAttr('width');
         return adjust_image_position($img);
       });
+      return;
     }
     if (height < $img.data('original-height')) {
       $img.css({

@@ -3,6 +3,9 @@
   width: 100%;
   height: 100%;
 }
+#slides .slides-control {
+  -webkit-transform: translateZ(0);
+}
 #slides .slides-container {
   display: none;
   margin: 0;
@@ -11,7 +14,6 @@
   position: relative;
 }
 #slides .slides-container img {
-  -webkit-backface-visibility: hidden;
   -ms-interpolation-mode: bicubic;
   max-width: none;
   min-width: 100%;
@@ -137,4 +139,8 @@
 }
 .slides-pagination a.active {
   background: #222;
+}
+
+.touch .slide img {
+  -webkit-backface-visibility: hidden;
 }

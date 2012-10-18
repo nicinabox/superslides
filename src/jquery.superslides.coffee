@@ -23,11 +23,12 @@ $children = ''
 
 # Private methods
 load_image = ($img, callback) ->
-    $("<img />").attr('src', $img.attr('src'))
-      .load ->
-        if typeof callback == 'function'
-          callback(this)
-        this
+    $("<img>",
+      src: $img.attr('src')
+    ).load ->
+      if typeof callback == 'function'
+        callback(this)
+      this
 
 adjust_image_position = ($img) ->
   unless $img.data('original-height') && $img.data('original-width')
@@ -47,6 +48,7 @@ adjust_image_position = ($img) ->
   else
     $img.css
       left: 0
+
   if $img.data('original-height') && $img.data('original-width')
     $container.trigger('slides.image_adjusted')
 
