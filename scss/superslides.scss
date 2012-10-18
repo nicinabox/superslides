@@ -1,5 +1,6 @@
 @import "compass";
 
+// Required
 #slides {
   overflow-x: hidden;
   width: 100%;
@@ -95,6 +96,15 @@
     }
   }
 }
+.touch {
+  .slide {
+    img {
+      -webkit-backface-visibility: hidden;
+    }
+  }
+}
+
+// Optional
 .slides-pagination {
   position: absolute;
   z-index: 3;
@@ -110,13 +120,6 @@
     margin: 2px;
     &.active {
       background: #222;
-    }
-  }
-}
-.touch {
-  .slide {
-    img {
-      -webkit-backface-visibility: hidden;
     }
   }
 }

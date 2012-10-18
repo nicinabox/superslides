@@ -7,18 +7,18 @@ run = (name, args) ->
   proc.on          'exit', (status) -> process.exit(1) if status != 0
 
 task 'sbuild', 'ST2 build', ->
-    coffee = spawn 'coffee', ['-co', 'build', 'src']
+    coffee = spawn 'coffee', ['-co', 'dist', 'src']
     coffee.stdout.on 'data', (data) ->
       exec 'cake minify'
       console.log data.toString().trim()
 
 task 'minify', 'Minify the resulting application file after build', ->
   filename = 'jquery.superslides'
-  exec "uglifyjs -o build/#{filename}.min.js build/#{filename}.js", (err, stdout, stderr) ->
+  exec "uglifyjs -o dist/#{filename}.min.js dist/#{filename}.js", (err, stdout, stderr) ->
     throw err if err
     console.log stdout + stderr
 
 task 'watch', 'Watch source files and build JS & CSS', (options) ->
-  run 'coffee',  ['-wco', 'build', 'src']
+  run 'coffee',  ['-wco', 'dist', 'src']
   run 'compass', ['watch']
   exec 'cake minify'
