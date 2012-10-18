@@ -49,19 +49,18 @@
   };
 
   adjust_image_position = function($img) {
+    var scale_width;
     if (!($img.data('original-height') && $img.data('original-width'))) {
       load_image($img, function(image) {
         $img.data('original-height', image.height).removeAttr('height');
         $img.data('original-width', image.width).removeAttr('width');
+        $img.data('aspect-ratio', image.width / image.height);
         return adjust_image_position($img);
       });
       return;
     }
-    if (height < $img.data('original-height')) {
-      $img.css({
-        top: -($img.data('original-height') - height) / 2
-      });
-    }
+    scale_width = height * $img.data('aspect-ratio');
+    console.log(height, width, scale_width);
     if (width < $img.data('original-width')) {
       $img.css({
         left: -($img.data('original-width') - width) / 2
@@ -69,6 +68,16 @@
     } else {
       $img.css({
         left: 0
+      });
+    }
+    if (scale_width > width) {
+      $img.css({
+        left: -(scale_width - width) / 2
+      });
+    }
+    if (height < $img.data('original-height')) {
+      $img.css({
+        top: -($img.data('original-height') - height) / 2
       });
     }
     if ($img.data('original-height') && $img.data('original-width')) {
