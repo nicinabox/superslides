@@ -3,6 +3,7 @@
 ### 0.4.1 - Unreleased
 
 * Fix squished images on mobile
+* Fix image offset on mobile
 * Add support for non-fullscreen images
 * Add support for scrollable content
 
