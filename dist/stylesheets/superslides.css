@@ -122,6 +122,10 @@
   padding-right: 20px;
 }
 
+.touch .slide img {
+  -webkit-backface-visibility: hidden;
+}
+
 .slides-pagination {
   position: absolute;
   z-index: 3;
@@ -139,8 +143,4 @@
 }
 .slides-pagination a.active {
   background: #222;
-}
-
-.touch .slide img {
-  -webkit-backface-visibility: hidden;
 }
