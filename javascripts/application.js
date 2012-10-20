@@ -8,9 +8,13 @@ $(document).ready(function() {
 
   // Update verion based on github tags
   var url = 'https://api.github.com/repos/nicinabox/superslides/git/refs/tags';
-  $.getJSON(url, function(data, textStatus, xhr) {
-    var version = data.pop().ref.split('/').pop();
-    $('.version').html(version);
+  $.ajax({
+    url: url,
+    dataType: 'jsonp',
+    success: function(data) {
+      var version = data.pop().ref.split('/').pop();
+      $('.version').html(version);
+    }
   });
 
 });
