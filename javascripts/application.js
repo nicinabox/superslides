@@ -8,7 +8,7 @@ $(document).ready(function() {
 
   // Update verion based on github tags
   var url = 'https://api.github.com/repos/nicinabox/superslides/git/refs/tags';
-  $.get(url, function(data, textStatus, xhr) {
+  $.getJSON(url, function(data, textStatus, xhr) {
     var version = data.pop().ref.split('/').pop();
     $('.version').html(version);
   });
