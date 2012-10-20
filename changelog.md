@@ -1,5 +1,9 @@
 # Changelog
 
+### 0.4.2 - Oct 20, 2012
+
+* Add append API method
+
 ### 0.4.1 - Oct 18, 2012
 
 * Fix squished images on mobile

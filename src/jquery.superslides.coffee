@@ -38,7 +38,6 @@ setup_containers = ->
 
     $container.hide()
 
-
 setup_children = ->
   if $.fn.superslides.options.scrollable
     $children.each ->
