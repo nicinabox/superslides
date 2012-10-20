@@ -273,7 +273,6 @@ $.fn.superslides = (options) ->
           $(this).append($("<nav>", { class: 'slides-pagination'}))
 
           $children.each (i) ->
-            console.log i
             addPaginationItem(i)
 
         .on "slides.animated", (e, current, next, prev) ->
@@ -282,7 +281,6 @@ $.fn.superslides = (options) ->
           $("a", $pagination).eq(current).addClass "active"
 
         .on "click", ".slides-pagination a", (e) ->
-          console.log options.hashchange
           e.preventDefault() unless options.hashchange
           index = this.hash.replace(/^#/, '')
           animate index
