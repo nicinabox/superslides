@@ -11,7 +11,8 @@ $(document).ready(function() {
   $.ajax({
     url: url,
     dataType: 'jsonp',
-    success: function(data) {
+    success: function(json) {
+      data = json.data;
       var version = data.pop().ref.split('/').pop();
       $('.version').html(version);
     }
