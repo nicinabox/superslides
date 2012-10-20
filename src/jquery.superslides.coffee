@@ -111,7 +111,8 @@ adjust_slides_size = ($el) ->
 
 addPaginationItem = (i) ->
   $pagination = $(".slides-pagination")
-  i = size - 1 # size is not zero indexed
+  unless i >= 0
+    i = size - 1 # size is not zero indexed
 
   $pagination.append $("<a>",
     href: "#" + i
@@ -272,6 +273,7 @@ $.fn.superslides = (options) ->
           $(this).append($("<nav>", { class: 'slides-pagination'}))
 
           $children.each (i) ->
+            console.log i
             addPaginationItem(i)
 
         .on "slides.animated", (e, current, next, prev) ->
@@ -280,6 +282,7 @@ $.fn.superslides = (options) ->
           $("a", $pagination).eq(current).addClass "active"
 
         .on "click", ".slides-pagination a", (e) ->
+          console.log options.hashchange
           e.preventDefault() unless options.hashchange
           index = this.hash.replace(/^#/, '')
           animate index

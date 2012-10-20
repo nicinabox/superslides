@@ -141,7 +141,9 @@
   addPaginationItem = function(i) {
     var $pagination;
     $pagination = $(".slides-pagination");
-    i = size - 1;
+    if (!(i >= 0)) {
+      i = size - 1;
+    }
     return $pagination.append($("<a>", {
       href: "#" + i
     }));
@@ -303,6 +305,7 @@
               "class": 'slides-pagination'
             }));
             return $children.each(function(i) {
+              console.log(i);
               return addPaginationItem(i);
             });
           }).on("slides.animated", function(e, current, next, prev) {
@@ -312,6 +315,7 @@
             return $("a", $pagination).eq(current).addClass("active");
           }).on("click", ".slides-pagination a", function(e) {
             var index;
+            console.log(options.hashchange);
             if (!options.hashchange) {
               e.preventDefault();
             }
