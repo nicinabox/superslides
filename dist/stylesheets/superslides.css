@@ -9,7 +9,8 @@ body {
 }
 #slides .slides-control {
   position: relative;
-  -webkit-transform: translateZ(0);
+  -webkit-transform: 0;
+  transform: 0;
 }
 #slides .slides-container {
   display: none;

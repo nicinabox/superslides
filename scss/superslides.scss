@@ -10,7 +10,7 @@ body {
   height: 100%;
   .slides-control {
     position: relative;
-    -webkit-transform: translateZ(0);
+    @include transform3d(0);
   }
   .slides-container {
     display: none;
