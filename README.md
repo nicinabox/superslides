@@ -112,7 +112,7 @@ Superslides is compatible with the [jQuery Animate Enhanced](http://playground.b
 
 ## Contributing
 
-If you'd like to contribute by fixing bugs, adding features, or otherwise, you should know that Superslides is written in [Coffeescript](http://coffeescript.org/) with [Jasmine](http://pivotal.github.com/jasmine/) and [Jasmine Headless Webkit](http://johnbintz.github.com/jasmine-headless-webkit/). Write a test for your feature and submit a pull request :)
+If you'd like to contribute by fixing bugs, adding features, or otherwise, you should know that Superslides is written in [Coffeescript](http://coffeescript.org/). Please modify files in src/ (dist/ is generated). Use demo/ to test your changes.
 
 ## Known Bugs & Caveats
 
