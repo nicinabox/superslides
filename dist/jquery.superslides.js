@@ -195,68 +195,67 @@
   animate = function(direction) {
     var next, position, prev,
       _this = this;
-    this.current = (this.current >= 0 ? this.current : null);
-    if (!(animating || direction >= size || +direction === this.current)) {
-      prev = this.current || +direction - 1 || 0;
-      animating = true;
-      switch (direction) {
-        case 'next':
+    if (animating || direction >= size || direction === this.current) {
+      return;
+    }
+    animating = true;
+    prev = this.current || direction - 1 || 0;
+    switch (direction) {
+      case 'next':
+        position = width * 2;
+        direction = -position;
+        next = this.current + 1;
+        if (size === next) {
+          next = 0;
+        }
+        break;
+      case 'prev':
+        position = direction = 0;
+        next = this.current - 1;
+        if (next === -1) {
+          next = size - 1;
+        }
+        break;
+      default:
+        next = +direction;
+        if (next > prev) {
           position = width * 2;
           direction = -position;
-          next = this.current + 1;
-          if (size === next) {
-            next = 0;
-          }
-          break;
-        case 'prev':
+        } else {
           position = direction = 0;
-          next = this.current - 1;
-          if (next === -1) {
-            next = size - 1;
-          }
-          break;
-        default:
-          next = +direction;
-          if (next > prev) {
-            position = width * 2;
-            direction = -position;
-          } else {
-            position = direction = 0;
-          }
-      }
-      this.current = next;
-      $children.removeClass('current');
-      $children.eq(this.current).css({
-        left: position,
-        display: 'block'
-      });
-      $control.animate({
-        useTranslate3d: (is_mobile ? true : false),
-        left: direction
-      }, $.fn.superslides.options.slide_speed, $.fn.superslides.options.slide_easing, function() {
-        $control.css({
-          left: -width
-        });
-        $children.eq(next).css({
-          left: width,
-          zIndex: 2
-        });
-        $children.eq(prev).css({
-          left: width,
-          display: 'none',
-          zIndex: 0
-        });
-        $children.eq(_this.current).addClass('current');
-        if (first_load) {
-          $container.fadeIn('fast');
-          $container.trigger('slides.initialized');
-          first_load = false;
         }
-        animating = false;
-        return $container.trigger('slides.animated', [_this.current, next, prev]);
-      });
-      return this.current;
     }
+    this.current = next;
+    $children.removeClass('current').eq(this.current).css({
+      left: position,
+      display: 'block'
+    });
+    $control.animate({
+      useTranslate3d: (is_mobile ? true : false),
+      left: direction
+    }, $.fn.superslides.options.slide_speed, $.fn.superslides.options.slide_easing, function() {
+      $control.css({
+        left: -width
+      });
+      $children.eq(next).css({
+        left: width,
+        zIndex: 2
+      });
+      $children.eq(prev).css({
+        left: width,
+        display: 'none',
+        zIndex: 0
+      });
+      $children.eq(_this.current).addClass('current');
+      if (first_load) {
+        $container.fadeIn('fast');
+        $container.trigger('slides.initialized');
+        first_load = false;
+      }
+      animating = false;
+      return $container.trigger('slides.animated', [_this.current, next, prev]);
+    });
+    return this.current;
   };
 
   $.fn.superslides = function(options) {
@@ -283,9 +282,7 @@
           width = $window.width();
           height = $window.height();
           adjustSlidesSize($children);
-          $control.width(width * multiplier).css({
-            height: height
-          });
+          $control.width(width * multiplier).height(height);
           if (size > 1) {
             return $control.css({
               left: -width

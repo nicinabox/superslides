@@ -150,67 +150,71 @@ append = ($el) ->
   update()
 
 animate = (direction) ->
-  this.current = (if this.current >= 0 then this.current else null)
-  unless animating || direction >= size || +direction == this.current
-    prev = this.current || +direction - 1 || 0
-    animating = true
-    switch direction
-      when 'next'
+  return if animating || # Mid slide
+            direction >= size || # Out of range
+            direction == this.current # The current slide
+
+  animating = true
+  prev = this.current ||
+         direction - 1 ||
+         0
+
+  switch direction
+    when 'next'
+      position = width * 2
+      direction = -position
+      next = this.current + 1
+      next = 0 if size == next
+    when 'prev'
+      position = direction = 0
+      next = this.current - 1
+      next = size - 1 if next == -1
+    else
+      next = +direction
+      if next > prev
         position = width * 2
         direction = -position
-        next = this.current + 1
-        next = 0 if size == next
-      when 'prev'
-        position = direction = 0
-        next = this.current - 1
-        next = size - 1 if next == -1
       else
-        next = +direction
-        if next > prev
-          position = width * 2
-          direction = -position
-        else
-          position = direction = 0
+        position = direction = 0
 
-    this.current = next
-    $children.removeClass('current')
+  this.current = next
+  $children.removeClass('current')
+           .eq(this.current).css
+              left: position
+              display: 'block'
 
-    $children.eq(this.current).css
-      left: position
-      display: 'block'
+  $control.animate(
+    useTranslate3d: (if is_mobile then true else false)
+    left: direction
+  , $.fn.superslides.options.slide_speed
+  , $.fn.superslides.options.slide_easing
+  , =>
+    # reset control position
+    $control.css
+      left: -width
 
-    $control.animate(
-      useTranslate3d: (if is_mobile then true else false)
-      left: direction
-    , $.fn.superslides.options.slide_speed
-    , $.fn.superslides.options.slide_easing
-    , =>
-      # reset control position
-      $control.css
-        left: -width
+    # reset and show next
+    $children.eq(next).css
+      left: width
+      zIndex: 2
 
-      # reset and show next
-      $children.eq(next).css
-        left: width
-        zIndex: 2
+    # reset previous slide
+    $children.eq(prev).css
+      left: width
+      display: 'none'
+      zIndex: 0
 
-      # reset previous slide
-      $children.eq(prev).css
-        left: width
-        display: 'none'
-        zIndex: 0
+    $children.eq(this.current).addClass('current')
 
-      $children.eq(this.current).addClass('current')
+    if first_load
+      $container.fadeIn('fast')
+      $container.trigger('slides.initialized')
+      first_load = false
 
-      if first_load
-        $container.fadeIn('fast')
-        $container.trigger('slides.initialized')
-        first_load = false
-
-      animating = false
-      $container.trigger('slides.animated', [this.current, next, prev])
-    )
-    this.current
+    animating = false
+    $container.trigger('slides.animated', [this.current, next, prev])
+  )
+  this.current
 
 
 # Plugin
@@ -250,8 +254,8 @@ $.fn.superslides = (options) ->
 
         adjustSlidesSize $children
 
-        $control.width(width * multiplier).css
-          height: height
+        $control.width(width * multiplier)
+                .height(height)
 
         if size > 1
           $control.css
