@@ -1,9 +1,14 @@
+body {
+  margin: 0;
+}
+
 #slides {
   overflow-x: hidden;
   width: 100%;
   height: 100%;
 }
 #slides .slides-control {
+  position: relative;
   -webkit-transform: translateZ(0);
 }
 #slides .slides-container {
@@ -14,6 +19,7 @@
   position: relative;
 }
 #slides .slides-container img {
+  -webkit-backface-visibility: hidden;
   -ms-interpolation-mode: bicubic;
   max-width: none;
   min-width: 100%;
@@ -21,6 +27,7 @@
   position: absolute;
   left: 0;
   top: 0;
+  z-index: -1;
 }
 #slides .slides-container img.keep-original {
   min-width: 0;
@@ -120,10 +127,6 @@
 }
 .slides-navigation a.next:hover {
   padding-right: 20px;
-}
-
-.touch .slide img {
-  -webkit-backface-visibility: hidden;
 }
 
 .slides-pagination {

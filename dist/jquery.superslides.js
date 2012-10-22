@@ -9,7 +9,7 @@
 
 
 (function() {
-  var $children, $container, $control, $nav, $window, addPaginationItem, adjust_image_position, adjust_slides_size, animate, animating, append, first_load, height, is_mobile, load_image, multiplier, play, play_interval, setup, setup_children, setup_containers, size, start, stop, update, width;
+  var $children, $container, $control, $nav, $window, addPaginationItem, adjust_image_position, adjust_slides_size, animate, animating, append, first_load, height, is_mobile, load_image, multiplier, play, play_interval, set_horizontal_position, set_vertical_position, setup, setup_children, setup_containers, size, start, stop, update, width;
 
   $window = $(window);
 
@@ -43,9 +43,6 @@
   };
 
   setup_containers = function() {
-    $control.css({
-      position: 'relative'
-    });
     if (size > 1) {
       $control.css({
         width: width * multiplier,
@@ -88,41 +85,45 @@
     });
   };
 
-  adjust_image_position = function($img) {
+  set_vertical_position = function($img) {
+    var scale_height;
+    scale_height = width / $img.data('aspect-ratio');
+    if (scale_height > height) {
+      return $img.css({
+        top: -(scale_height - height) / 2
+      });
+    } else {
+      return $img.css({
+        top: 0
+      });
+    }
+  };
+
+  set_horizontal_position = function($img) {
     var scale_width;
-    if (!($img.data('original-height') && $img.data('original-width'))) {
+    scale_width = height * $img.data('aspect-ratio');
+    if (scale_width > width) {
+      return $img.css({
+        left: -(scale_width - width) / 2
+      });
+    } else {
+      return $img.css({
+        left: 0
+      });
+    }
+  };
+
+  adjust_image_position = function($img) {
+    if (!$img.data('aspect-ratio')) {
       load_image($img, function(image) {
-        $img.data('original-height', image.height).removeAttr('height');
-        $img.data('original-width', image.width).removeAttr('width');
         $img.data('aspect-ratio', image.width / image.height);
         return adjust_image_position($img);
       });
       return;
     }
-    scale_width = height * $img.data('aspect-ratio');
-    if (width > $img.data('original-width')) {
-      $img.css({
-        left: 0
-      });
-    } else {
-      if (scale_width > width) {
-        $img.css({
-          left: -(scale_width - width) / 2
-        });
-      } else {
-        $img.css({
-          left: -($img.data('original-width') - width) / 2
-        });
-      }
-    }
-    if (height < $img.data('original-height')) {
-      $img.css({
-        top: -($img.data('original-height') - height) / 2
-      });
-    }
-    if ($img.data('original-height') && $img.data('original-width')) {
-      return $container.trigger('slides.image_adjusted');
-    }
+    set_horizontal_position($img);
+    set_vertical_position($img);
+    return $container.trigger('slides.image_adjusted');
   };
 
   adjust_slides_size = function($el) {

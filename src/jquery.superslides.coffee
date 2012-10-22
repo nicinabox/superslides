@@ -22,14 +22,11 @@ $nav = []
 $children = []
 
 # Private methods
-setup = () ->
+setup = ->
   setup_containers()
   setup_children()
 
 setup_containers = ->
-  $control.css
-    position: 'relative'
-
   if size > 1
     $control.css
       width: width * multiplier
@@ -65,36 +62,37 @@ load_image = ($img, callback) ->
       if callback instanceof Function
         callback(this)
 
+set_vertical_position = ($img) ->
+  scale_height = width / $img.data('aspect-ratio')
+
+  if scale_height > height
+    $img.css
+      top: -(scale_height - height) / 2
+  else
+    $img.css
+      top: 0
+
+set_horizontal_position = ($img) ->
+  scale_width = height * $img.data('aspect-ratio')
+
+  if scale_width > width
+    $img.css
+      left: -(scale_width - width) / 2
+  else
+    $img.css
+      left: 0
+
 adjust_image_position = ($img) ->
-  unless $img.data('original-height') && $img.data('original-width')
+  unless $img.data('aspect-ratio')
     load_image $img, (image) ->
-      $img.data('original-height', image.height).removeAttr('height')
-      $img.data('original-width', image.width).removeAttr('width')
       $img.data('aspect-ratio', image.width / image.height)
       adjust_image_position $img
     return
 
-  scale_width = height * $img.data('aspect-ratio')
+  set_horizontal_position($img)
+  set_vertical_position($img)
 
-  # Horizontal centering
-  if width > $img.data('original-width')
-    $img.css
-      left: 0
-  else
-    if scale_width > width
-      $img.css
-        left: -(scale_width - width) / 2
-    else
-      $img.css
-        left: -($img.data('original-width') - width) / 2
-
-  # Vertical centering
-  if height < $img.data('original-height')
-    $img.css
-      top: -($img.data('original-height') - height) / 2
-
-  if $img.data('original-height') && $img.data('original-width')
-    $container.trigger('slides.image_adjusted')
+  $container.trigger('slides.image_adjusted')
 
 adjust_slides_size = ($el) ->
   $el.each (i) ->
@@ -226,7 +224,6 @@ $.fn.superslides = (options) ->
 
     api[method].apply(this, args)
   else
-
     # Defaults
     options = $.fn.superslides.options = $.extend $.fn.superslides.options, options
 
