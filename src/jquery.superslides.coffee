@@ -23,10 +23,10 @@ $children = []
 
 # Private methods
 setup = ->
-  setup_containers()
-  setup_children()
+  setupContainers()
+  setupChildren()
 
-setup_containers = ->
+setupContainers = ->
   if size > 1
     $control.css
       width: width * multiplier
@@ -35,7 +35,7 @@ setup_containers = ->
 
     $container.hide()
 
-setup_children = ->
+setupChildren = ->
   if $.fn.superslides.options.scrollable
     $children.each ->
       $scrollable = $(this).find('.scrollable')
@@ -53,49 +53,49 @@ setup_children = ->
     left: width
     zIndex: 0
 
-  adjust_slides_size $children
+  adjustSlidesSize $children
 
-load_image = ($img, callback) ->
+loadImage = ($img, callback) ->
   $("<img>",
       src: $img.attr('src')
     ).load ->
       if callback instanceof Function
         callback(this)
 
-set_vertical_position = ($img) ->
+setVerticalPosition = ($img) ->
   scale_height = width / $img.data('aspect-ratio')
 
-  if scale_height > height
+  if scale_height >= height
     $img.css
       top: -(scale_height - height) / 2
   else
     $img.css
       top: 0
 
-set_horizontal_position = ($img) ->
+setHorizontalPosition = ($img) ->
   scale_width = height * $img.data('aspect-ratio')
 
-  if scale_width > width
+  if scale_width >= width
     $img.css
       left: -(scale_width - width) / 2
   else
     $img.css
       left: 0
 
-adjust_image_position = ($img) ->
+adjustImagePosition = ($img) ->
   unless $img.data('aspect-ratio')
-    load_image $img, (image) ->
+    loadImage $img, (image) ->
       $img.removeAttr('width').removeAttr('height')
       $img.data('aspect-ratio', image.width / image.height)
-      adjust_image_position $img
+      adjustImagePosition $img
     return
 
-  set_horizontal_position($img)
-  set_vertical_position($img)
+  setHorizontalPosition($img)
+  setVerticalPosition($img)
 
   $container.trigger('slides.image_adjusted')
 
-adjust_slides_size = ($el) ->
+adjustSlidesSize = ($el) ->
   $el.each (i) ->
     $(this).width(width).height(height)
 
@@ -103,7 +103,7 @@ adjust_slides_size = ($el) ->
       $(this).css
         left: width
 
-    adjust_image_position $('img', this).not('.keep-original')
+    adjustImagePosition $('img', this).not('.keep-original')
 
   $container.trigger('slides.sized')
 
@@ -140,7 +140,7 @@ update = ->
   $children = $container.children()
   size = $children.length
 
-  setup_children()
+  setupChildren()
   addPaginationItem()
 
   $container.trigger('slides.updated')
@@ -248,7 +248,7 @@ $.fn.superslides = (options) ->
         width = $window.width()
         height = $window.height()
 
-        adjust_slides_size $children
+        adjustSlidesSize $children
 
         $control.width(width * multiplier).css
           height: height

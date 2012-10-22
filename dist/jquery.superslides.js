@@ -9,7 +9,7 @@
 
 
 (function() {
-  var $children, $container, $control, $nav, $window, addPaginationItem, adjust_image_position, adjust_slides_size, animate, animating, append, first_load, height, is_mobile, load_image, multiplier, play, play_interval, set_horizontal_position, set_vertical_position, setup, setup_children, setup_containers, size, start, stop, update, width;
+  var $children, $container, $control, $nav, $window, addPaginationItem, adjustImagePosition, adjustSlidesSize, animate, animating, append, first_load, height, is_mobile, loadImage, multiplier, play, play_interval, setHorizontalPosition, setVerticalPosition, setup, setupChildren, setupContainers, size, start, stop, update, width;
 
   $window = $(window);
 
@@ -38,11 +38,11 @@
   $children = [];
 
   setup = function() {
-    setup_containers();
-    return setup_children();
+    setupContainers();
+    return setupChildren();
   };
 
-  setup_containers = function() {
+  setupContainers = function() {
     if (size > 1) {
       $control.css({
         width: width * multiplier,
@@ -53,7 +53,7 @@
     }
   };
 
-  setup_children = function() {
+  setupChildren = function() {
     if ($.fn.superslides.options.scrollable) {
       $children.each(function() {
         var $scrollable;
@@ -72,10 +72,10 @@
       left: width,
       zIndex: 0
     });
-    return adjust_slides_size($children);
+    return adjustSlidesSize($children);
   };
 
-  load_image = function($img, callback) {
+  loadImage = function($img, callback) {
     return $("<img>", {
       src: $img.attr('src')
     }).load(function() {
@@ -85,10 +85,10 @@
     });
   };
 
-  set_vertical_position = function($img) {
+  setVerticalPosition = function($img) {
     var scale_height;
     scale_height = width / $img.data('aspect-ratio');
-    if (scale_height > height) {
+    if (scale_height >= height) {
       return $img.css({
         top: -(scale_height - height) / 2
       });
@@ -99,10 +99,10 @@
     }
   };
 
-  set_horizontal_position = function($img) {
+  setHorizontalPosition = function($img) {
     var scale_width;
     scale_width = height * $img.data('aspect-ratio');
-    if (scale_width > width) {
+    if (scale_width >= width) {
       return $img.css({
         left: -(scale_width - width) / 2
       });
@@ -113,21 +113,21 @@
     }
   };
 
-  adjust_image_position = function($img) {
+  adjustImagePosition = function($img) {
     if (!$img.data('aspect-ratio')) {
-      load_image($img, function(image) {
+      loadImage($img, function(image) {
         $img.removeAttr('width').removeAttr('height');
         $img.data('aspect-ratio', image.width / image.height);
-        return adjust_image_position($img);
+        return adjustImagePosition($img);
       });
       return;
     }
-    set_horizontal_position($img);
-    set_vertical_position($img);
+    setHorizontalPosition($img);
+    setVerticalPosition($img);
     return $container.trigger('slides.image_adjusted');
   };
 
-  adjust_slides_size = function($el) {
+  adjustSlidesSize = function($el) {
     $el.each(function(i) {
       $(this).width(width).height(height);
       if (size > 1) {
@@ -135,7 +135,7 @@
           left: width
         });
       }
-      return adjust_image_position($('img', this).not('.keep-original'));
+      return adjustImagePosition($('img', this).not('.keep-original'));
     });
     return $container.trigger('slides.sized');
   };
@@ -182,7 +182,7 @@
   update = function() {
     $children = $container.children();
     size = $children.length;
-    setup_children();
+    setupChildren();
     addPaginationItem();
     return $container.trigger('slides.updated');
   };
@@ -282,7 +282,7 @@
         $(window).resize(function(e) {
           width = $window.width();
           height = $window.height();
-          adjust_slides_size($children);
+          adjustSlidesSize($children);
           $control.width(width * multiplier).css({
             height: height
           });
