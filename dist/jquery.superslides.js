@@ -116,6 +116,7 @@
   adjust_image_position = function($img) {
     if (!$img.data('aspect-ratio')) {
       load_image($img, function(image) {
+        $img.removeAttr('width').removeAttr('height');
         $img.data('aspect-ratio', image.width / image.height);
         return adjust_image_position($img);
       });

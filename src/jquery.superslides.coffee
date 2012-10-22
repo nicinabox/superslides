@@ -85,6 +85,7 @@ set_horizontal_position = ($img) ->
 adjust_image_position = ($img) ->
   unless $img.data('aspect-ratio')
     load_image $img, (image) ->
+      $img.removeAttr('width').removeAttr('height')
       $img.data('aspect-ratio', image.width / image.height)
       adjust_image_position $img
     return
