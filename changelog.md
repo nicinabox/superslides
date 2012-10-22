@@ -1,5 +1,10 @@
 # Changelog
 
+### 0.4.3 - Unreleased
+
+* Refactors
+* Fix flicker in Safari
+
 ### 0.4.2 - Oct 20, 2012
 
 * Add append API method
