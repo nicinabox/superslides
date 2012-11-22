@@ -138,7 +138,7 @@ play = ->
 
 update = ->
   $children = $container.children()
-  size = $children.length
+  $.fn.superslides.api.size = size = $children.length
 
   setupChildren()
   addPaginationItem()
@@ -241,7 +241,7 @@ $.fn.superslides = (options) ->
     $nav = $(".#{options.nav_class}")
     $children = $container.children()
 
-    size = $children.length
+    $.fn.superslides.api.size = size = $children.length
     multiplier = (if size == 1 then 1 else 3)
 
     this.each ->
