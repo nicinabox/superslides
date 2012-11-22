@@ -27,13 +27,10 @@ setup = ->
   setupChildren()
 
 setupContainers = ->
-  if size > 1
-    $control.css
-      width: width * multiplier
-      height: height
-      left: -width
-
-    $container.hide()
+  $control.css
+    width: width * multiplier
+    height: height
+    left: -width if size > 1
 
 setupChildren = ->
   if $.fn.superslides.options.scrollable
@@ -45,13 +42,14 @@ setupChildren = ->
       $scrollable.find('img').not('.keep-original')
                   .insertBefore($scrollable)
 
-  $children.not('.current').css
-    display: 'none'
-    position: 'absolute'
-    overflow: 'hidden'
-    top: 0
-    left: width
-    zIndex: 0
+  if size > 1
+    $children.not('.current').css
+      display: 'none'
+      position: 'absolute'
+      overflow: 'hidden'
+      top: 0
+      left: width
+      zIndex: 0
 
   adjustSlidesSize $children
 
@@ -125,6 +123,9 @@ start = ->
 
     animate index
     play()
+  else
+    $container.fadeIn('fast')
+    $(".#{$.fn.superslides.options.nav_class}").hide()
 
 stop = ->
   clearInterval play_interval
