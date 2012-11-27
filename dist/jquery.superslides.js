@@ -43,14 +43,11 @@
   };
 
   setupContainers = function() {
-    if (size > 1) {
-      $control.css({
-        width: width * multiplier,
-        height: height,
-        left: -width
-      });
-      return $container.hide();
-    }
+    return $control.css({
+      width: width * multiplier,
+      height: height,
+      left: size > 1 ? -width : void 0
+    });
   };
 
   setupChildren = function() {
@@ -64,14 +61,16 @@
         return $scrollable.find('img').not('.keep-original').insertBefore($scrollable);
       });
     }
-    $children.not('.current').css({
-      display: 'none',
-      position: 'absolute',
-      overflow: 'hidden',
-      top: 0,
-      left: width,
-      zIndex: 0
-    });
+    if (size > 1) {
+      $children.not('.current').css({
+        display: 'none',
+        position: 'absolute',
+        overflow: 'hidden',
+        top: 0,
+        left: width,
+        zIndex: 0
+      });
+    }
     return adjustSlidesSize($children);
   };
 
@@ -161,6 +160,9 @@
       }
       animate(index);
       return play();
+    } else {
+      $container.fadeIn('fast');
+      return $("." + $.fn.superslides.options.nav_class).hide();
     }
   };
 
@@ -181,7 +183,7 @@
 
   update = function() {
     $children = $container.children();
-    size = $children.length;
+    $.fn.superslides.api.size = size = $children.length;
     setupChildren();
     addPaginationItem();
     return $container.trigger('slides.updated');
@@ -273,7 +275,7 @@
       $container = $("." + options.container_class);
       $nav = $("." + options.nav_class);
       $children = $container.children();
-      size = $children.length;
+      $.fn.superslides.api.size = size = $children.length;
       multiplier = (size === 1 ? 1 : 3);
       return this.each(function() {
         var _this = this;
