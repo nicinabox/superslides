@@ -24,7 +24,7 @@
       $li.after($clone);
     };
 
-    test('Init and assign object to data', function() {
+    test('Initialize and store object in data attribute', function() {
       ok($slides.data('superslides'));
     });
 
