@@ -1,9 +1,19 @@
+var env = {
+  development: (function () {
+    return window.location.hostname == 'localhost';
+  })(),
+  production: (function() {
+    return window.location.hostname == 'nicinabox.github.com';
+  })()
+};
+
 $(document).ready(function() {
   $('#slides').superslides({
     play: true,
     slide_easing: 'easeInOutCubic',
     slide_speed: 800,
-    pagination: true
+    pagination: true,
+    hashchange: true
   });
 
   // Update verion based on github tags
@@ -18,4 +28,9 @@ $(document).ready(function() {
     }
   });
 
+  $(document).on('click', '#download', function(e) {
+    window.location.hash = "#download";
+    _gauges.push(['track']);
+    e.preventDefault();
+  });
 });
