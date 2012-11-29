@@ -31,6 +31,5 @@ $(document).ready(function() {
   $(document).on('click', '#download', function(e) {
     window.location.hash = "#download";
     _gauges.push(['track']);
-    e.preventDefault();
   });
 });
