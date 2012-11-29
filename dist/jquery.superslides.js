@@ -46,33 +46,30 @@
   };
 
   $.fn.superslides = function(option) {
-    var $this, data;
+    var $this, data, options;
     if (typeof option === "string") {
       $this = $(this);
       data = $this.data("superslides");
       return data[option].call($this);
     }
+    options = $.extend({
+      delay: 5000,
+      play: false,
+      slide_speed: 'normal',
+      slide_easing: 'linear',
+      nav_class: 'slides-navigation',
+      container_class: 'slides-container',
+      pagination: false,
+      hashchange: false,
+      scrollable: true
+    }, option);
     return this.each(function() {
-      var options;
-      options = $.extend($.fn.superslides.options, option);
       $this = $(this);
       data = $this.data("superslides");
       if (!data) {
         return $this.data("superslides", (data = new Superslides(this, options)));
       }
     });
-  };
-
-  $.fn.superslides.options = {
-    delay: 5000,
-    play: false,
-    slide_speed: 'normal',
-    slide_easing: 'linear',
-    nav_class: 'slides-navigation',
-    container_class: 'slides-container',
-    pagination: false,
-    hashchange: false,
-    scrollable: true
   };
 
 }).call(this);
