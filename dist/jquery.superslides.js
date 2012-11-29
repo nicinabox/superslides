@@ -11,19 +11,24 @@
 (function() {
 
   window.Superslides = function(el, options) {
-    var api;
+    var api,
+      _this = this;
     api = {
       size: function() {
         return $("." + options.container_class).children().length;
       },
-      start: function() {
-        return start();
-      },
       stop: function() {
-        return stop();
+        return clearInterval(this.play_id);
       },
       play: function() {
-        return play();
+        if (options.play) {
+          if (api.play_id) {
+            this.stop();
+          }
+          return api.play_id = setInterval(function() {
+            return 'nope';
+          }, options.delay);
+        }
       },
       append: function($el) {
         return append($el);
@@ -37,9 +42,6 @@
       },
       prev: function() {
         return animate('prev');
-      },
-      test: function() {
-        return 'test';
       }
     };
     return api;

@@ -9,23 +9,26 @@ window.Superslides = (el, options) ->
   api =
     size: ->
       $(".#{options.container_class}").children().length
-    start: ->
-      start()
     stop: ->
-      stop()
+      clearInterval @play_id
     play: ->
-      play()
+      if options.play
+        @stop() if api.play_id
+
+        api.play_id = setInterval ->
+          'nope'
+          # animate 'next'
+        , options.delay
+
     append: ($el) ->
       append($el)
-    animate: (direction) ->
+    animate: (direction) =>
       stop()
       animate(direction)
     next: ->
       animate('next')
     prev: ->
       animate('prev')
-    test: ->
-      'test'
   api
 
 # Plugin
@@ -48,7 +51,6 @@ $.fn.superslides = (option) ->
   , option
 
   @each ->
-
     $this = $(this)
     data = $this.data("superslides")
     $this.data "superslides", (data = new Superslides(this, options)) unless data
