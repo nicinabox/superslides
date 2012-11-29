@@ -12,7 +12,7 @@
   var Superslides, name;
 
   Superslides = function(el, options) {
-    var next, parse, prev,
+    var $container, next, parse, prev, update,
       _this = this;
     if (options == null) {
       options = {};
@@ -28,6 +28,7 @@
       hashchange: false,
       scrollable: true
     }, options);
+    $container = $("." + this.options.container_class);
     next = function() {
       var index;
       index = _this.current + 1;
@@ -56,8 +57,11 @@
           return 0;
       }
     };
+    update = function() {
+      return $container.trigger('slides.updated');
+    };
     this.size = function() {
-      return $("." + _this.options.container_class).children().length;
+      return $container.children().length;
     };
     this.stop = function() {
       clearInterval(_this.play_id);
@@ -79,6 +83,9 @@
     this.current = 0;
     this.next = next();
     this.prev = prev();
+    $(el).on('DOMSubtreeModified', function(e) {
+      return update();
+    });
     return this;
   };
 

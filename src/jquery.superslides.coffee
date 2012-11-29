@@ -18,6 +18,8 @@ Superslides = (el, options = {}) ->
     scrollable: true
   , options
 
+  $container = $(".#{@options.container_class}")
+
   # Private
   next = =>
     index = @current + 1
@@ -43,9 +45,12 @@ Superslides = (el, options = {}) ->
       else #bogus
         0
 
+  update = =>
+    $container.trigger('slides.updated')
+
   # Public
   @size = =>
-    $(".#{@options.container_class}").children().length
+    $container.children().length
 
   @stop = =>
     clearInterval @play_id
@@ -65,6 +70,10 @@ Superslides = (el, options = {}) ->
   @current = 0
   @next = next()
   @prev = prev()
+
+  # Events
+  $(el).on 'DOMSubtreeModified', (e) ->
+    update()
 
   this
 

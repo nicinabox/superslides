@@ -43,17 +43,29 @@
       ok(!$slides.data('superslides').play_id);
     });
 
-    // test('.animate()', function() {
-    // });
-
     test('.current', function() {
       equal($slides.superslides('current'), 0, 'current == 0');
     });
+
     test('.prev', function() {
       equal($slides.superslides('prev'), 0, 'prev == 0');
     });
+
     test('.next', function() {
       equal($slides.superslides('next'), 0, 'next == 0');
+    });
+
+    module('Events');
+    test('slides.updated', function() {
+      expect(1);
+      $slides.on('slides.updated', function(e) {
+        ok('true');
+      });
+
+      $li = $slides.find('li').first();
+      $clone = $li.clone();
+      $li.after($clone);
+
     });
   });
 
