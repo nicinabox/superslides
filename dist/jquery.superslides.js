@@ -220,6 +220,12 @@
         break;
       default:
         next = +direction;
+        if (isNaN(next)) {
+          console.log('isnan');
+          animating = false;
+          return false;
+          break;
+        }
         if (next > prev) {
           position = width * 2;
           direction = -position;
