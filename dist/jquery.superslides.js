@@ -12,7 +12,7 @@
   var Superslides, name;
 
   Superslides = function(el, options) {
-    var parse,
+    var next, parse, prev,
       _this = this;
     if (options == null) {
       options = {};
@@ -28,21 +28,34 @@
       hashchange: false,
       scrollable: true
     }, options);
+    next = function() {
+      var index;
+      index = _this.current + 1;
+      if (index === _this.size()) {
+        index = 0;
+      }
+      return index;
+    };
+    prev = function() {
+      var index;
+      index = _this.current - 1;
+      if (index === -1) {
+        index = _this.size() - 1;
+      }
+      return index;
+    };
     parse = function(direction) {
       switch (true) {
         case /next/.test(direction):
-          return 'next';
+          return next();
         case /prev/.test(direction):
-          return 'prev';
+          return prev();
         case /\d/.test(direction):
           return direction;
         default:
           return 0;
       }
     };
-    this.curr = 0;
-    this.next = this.curr + 1;
-    this.prev = this.curr - 1;
     this.size = function() {
       return $("." + _this.options.container_class).children().length;
     };
@@ -63,17 +76,24 @@
     this.animate = function(direction) {
       return direction = parse(direction);
     };
+    this.current = 0;
+    this.next = next();
+    this.prev = prev();
     return this;
   };
 
   name = 'superslides';
 
   $.fn[name] = function(option, args) {
-    var $this, data;
+    var $this, data, method;
     if (typeof option === "string") {
       $this = $(this);
       data = $this.data(name);
-      return data[option].call($this, args);
+      method = data[option];
+      if (typeof method === 'function') {
+        method = method.call($this, args);
+      }
+      return method;
     }
     return this.each(function() {
       var options;

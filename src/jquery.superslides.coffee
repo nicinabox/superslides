@@ -19,13 +19,23 @@ Superslides = (el, options = {}) ->
   , options
 
   # Private
-  parse = (direction) ->
+  next = =>
+    index = @current + 1
+    index = 0 if index == @size()
+    index
+
+  prev = =>
+    index = @current - 1
+    index = @size() - 1 if index == -1
+    index
+
+  parse = (direction) =>
     switch true
       when /next/.test(direction)
-        'next'
+        next()
 
       when /prev/.test(direction)
-        'prev'
+        prev()
 
       when /\d/.test(direction)
         direction
@@ -34,10 +44,6 @@ Superslides = (el, options = {}) ->
         0
 
   # Public
-  @curr    = 0
-  @next    = @curr + 1
-  @prev    = @curr - 1
-
   @size = =>
     $(".#{@options.container_class}").children().length
 
@@ -56,6 +62,10 @@ Superslides = (el, options = {}) ->
   @animate = (direction) =>
     direction = parse(direction)
 
+  @current = 0
+  @next = next()
+  @prev = prev()
+
   this
 
 # Plugin
@@ -64,7 +74,11 @@ $.fn[name] = (option, args) ->
   if typeof option is "string"
     $this = $(this)
     data = $this.data(name)
-    return data[option].call($this, args)
+
+    method = data[option]
+    if typeof method == 'function'
+      method = method.call($this, args)
+    return method
 
   @each ->
     $this = $(this)

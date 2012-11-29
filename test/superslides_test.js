@@ -18,7 +18,7 @@
   $(document).ready(testSetup.init);
 
   $(function() {
-    test('It initializes', function() {
+    test('Init and assign object to data', function() {
       ok($slides.data('superslides'));
     });
 
@@ -43,18 +43,18 @@
       ok(!$slides.data('superslides').play_id);
     });
 
-    // test('.animate("next")', function() {
-    //   $slides.superslides('animate', 'next');
+    // test('.animate()', function() {
     // });
-    // test('.animate("prev")', function() {
-    //   $slides.superslides('animate', 'prev');
-    // });
-    // test('.animate(1)', function() {
-    //   $slides.superslides('animate', 1);
-    // });
-    // test('.animate("bogus")', function() {
-    //   $slides.superslides('animate', 'bogus');
-    // });
+
+    test('.current', function() {
+      equal($slides.superslides('current'), 0, 'current == 0');
+    });
+    test('.prev', function() {
+      equal($slides.superslides('prev'), 0, 'prev == 0');
+    });
+    test('.next', function() {
+      equal($slides.superslides('next'), 0, 'next == 0');
+    });
   });
 
 }(jQuery));
