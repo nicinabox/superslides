@@ -5,10 +5,21 @@
   http://nicinabox.github.com/superslides/
 ###
 
-Superslides = (el, options) ->
+Superslides = (el, options = {}) ->
+  @options = $.extend
+    delay: 5000
+    play: false
+    slide_speed: 'normal'
+    slide_easing: 'linear'
+    nav_class: 'slides-navigation'
+    container_class: 'slides-container'
+    pagination: false
+    hashchange: false
+    scrollable: true
+  , options
+
   # Private
   parse = (direction) ->
-    console.log this
     switch true
       when /next/.test(direction)
         'next'
@@ -22,14 +33,13 @@ Superslides = (el, options) ->
       else #bogus
         0
 
-
   # Public
-  @curr = 0
-  @next = @curr + 1
-  @prev = @curr - 1
+  @curr    = 0
+  @next    = @curr + 1
+  @prev    = @curr - 1
 
   @size = =>
-    $(".#{options.container_class}").children().length
+    $(".#{@options.container_class}").children().length
 
   @stop = =>
     clearInterval @play_id
@@ -45,29 +55,20 @@ Superslides = (el, options) ->
 
   @animate = (direction) =>
     direction = parse(direction)
-    console.log direction
+
   this
 
 # Plugin
-$.fn.superslides = (option, args) ->
+name = 'superslides'
+$.fn[name] = (option, args) ->
   if typeof option is "string"
     $this = $(this)
-    data = $this.data("superslides")
-    return data[option].call $this, args
-
-  options = $.extend
-    delay: 5000
-    play: false
-    slide_speed: 'normal'
-    slide_easing: 'linear'
-    nav_class: 'slides-navigation'
-    container_class: 'slides-container'
-    pagination: false
-    hashchange: false
-    scrollable: true
-  , option
+    data = $this.data(name)
+    return data[option].call($this, args)
 
   @each ->
     $this = $(this)
-    data = $this.data("superslides")
-    $this.data "superslides", (data = new Superslides(this, options)) unless data
+    data = $this.data(name)
+    options = typeof option == 'object' && option
+
+    $this.data name, (data = new Superslides(this, options)) unless data

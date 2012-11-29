@@ -9,13 +9,26 @@
 
 
 (function() {
-  var Superslides;
+  var Superslides, name;
 
   Superslides = function(el, options) {
     var parse,
       _this = this;
+    if (options == null) {
+      options = {};
+    }
+    this.options = $.extend({
+      delay: 5000,
+      play: false,
+      slide_speed: 'normal',
+      slide_easing: 'linear',
+      nav_class: 'slides-navigation',
+      container_class: 'slides-container',
+      pagination: false,
+      hashchange: false,
+      scrollable: true
+    }, options);
     parse = function(direction) {
-      console.log(this);
       switch (true) {
         case /next/.test(direction):
           return 'next';
@@ -31,7 +44,7 @@
     this.next = this.curr + 1;
     this.prev = this.curr - 1;
     this.size = function() {
-      return $("." + options.container_class).children().length;
+      return $("." + _this.options.container_class).children().length;
     };
     this.stop = function() {
       clearInterval(_this.play_id);
@@ -48,35 +61,27 @@
       }
     };
     this.animate = function(direction) {
-      direction = parse(direction);
-      return console.log(direction);
+      return direction = parse(direction);
     };
     return this;
   };
 
-  $.fn.superslides = function(option, args) {
-    var $this, data, options;
+  name = 'superslides';
+
+  $.fn[name] = function(option, args) {
+    var $this, data;
     if (typeof option === "string") {
       $this = $(this);
-      data = $this.data("superslides");
+      data = $this.data(name);
       return data[option].call($this, args);
     }
-    options = $.extend({
-      delay: 5000,
-      play: false,
-      slide_speed: 'normal',
-      slide_easing: 'linear',
-      nav_class: 'slides-navigation',
-      container_class: 'slides-container',
-      pagination: false,
-      hashchange: false,
-      scrollable: true
-    }, option);
     return this.each(function() {
+      var options;
       $this = $(this);
-      data = $this.data("superslides");
+      data = $this.data(name);
+      options = typeof option === 'object' && option;
       if (!data) {
-        return $this.data("superslides", (data = new Superslides(this, options)));
+        return $this.data(name, (data = new Superslides(this, options)));
       }
     });
   };
