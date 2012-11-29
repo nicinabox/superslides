@@ -11,40 +11,25 @@
 (function() {
 
   window.Superslides = function(el, options) {
-    var api,
-      _this = this;
-    api = {
-      size: function() {
-        return $("." + options.container_class).children().length;
-      },
-      stop: function() {
-        return clearInterval(this.play_id);
-      },
-      play: function() {
-        if (options.play) {
-          if (api.play_id) {
-            this.stop();
-          }
-          return api.play_id = setInterval(function() {
-            return 'nope';
-          }, options.delay);
+    var _this = this;
+    this.size = function() {
+      return $("." + options.container_class).children().length;
+    };
+    this.stop = function() {
+      clearInterval(_this.play_id);
+      return delete _this.play_id;
+    };
+    this.start = function() {
+      if (options.play) {
+        if (_this.play_id) {
+          _this.stop();
         }
-      },
-      append: function($el) {
-        return append($el);
-      },
-      animate: function(direction) {
-        stop();
-        return animate(direction);
-      },
-      next: function() {
-        return animate('next');
-      },
-      prev: function() {
-        return animate('prev');
+        return _this.play_id = setInterval(function() {
+          return false;
+        }, options.delay);
       }
     };
-    return api;
+    return this;
   };
 
   $.fn.superslides = function(option) {

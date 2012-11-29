@@ -13,19 +13,24 @@ $(function() {
     ok($slider.data('superslides'));
   });
 
-  module('API');
+  module('API', {
+    setup: function() {
+      $slider.superslides('stop');
+    },
+    teardown: function() {
+    }
+  });
   test('.size()', function() {
     size = $slider.superslides('size');
     equal(size, 1, 'should be 1');
   });
 
-  test('.play()', function() {
-    $slider.superslides('play');
+  test('.start()', function() {
+    $slider.superslides('start');
     ok($slider.data('superslides').play_id);
   });
 
   test('.stop()', function() {
-    $slider.superslides('stop');
     ok(!$slider.data('superslides').play_id);
   });
 });
