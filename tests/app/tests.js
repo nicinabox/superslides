@@ -33,4 +33,17 @@ $(function() {
   test('.stop()', function() {
     ok(!$slider.data('superslides').play_id);
   });
+
+  test('.animate("next")', function() {
+    $slider.superslides('animate', 'next');
+  });
+  test('.animate("prev")', function() {
+    $slider.superslides('animate', 'prev');
+  });
+  test('.animate(1)', function() {
+    $slider.superslides('animate', 1);
+  });
+  test('.animate("bogus")', function() {
+    $slider.superslides('animate', 'bogus');
+  });
 });

@@ -1,31 +1,59 @@
 ###
-  Superslides 0.4.3
+  Superslides 0.5-wip
   Fullscreen slideshow plugin for jQuery
   by Nic Aitch @nicinabox
   http://nicinabox.github.com/superslides/
 ###
 
-window.Superslides = (el, options) ->
+Superslides = (el, options) ->
+  # Private
+  parse = (direction) ->
+    console.log this
+    switch true
+      when /next/.test(direction)
+        'next'
+
+      when /prev/.test(direction)
+        'prev'
+
+      when /\d/.test(direction)
+        direction
+
+      else #bogus
+        0
+
+
+  # Public
+  @curr = 0
+  @next = @curr + 1
+  @prev = @curr - 1
+
   @size = =>
     $(".#{options.container_class}").children().length
+
   @stop = =>
     clearInterval @play_id
     delete @play_id
+
   @start = =>
     if options.play
       @stop() if @play_id
 
-      @play_id = setInterval ->
+      @play_id = setInterval =>
         false
       , options.delay
+
+  @animate = (direction) =>
+    direction = parse(direction)
+    console.log direction
   this
 
 # Plugin
-$.fn.superslides = (option) ->
+$.fn.superslides = (option, args) ->
   if typeof option is "string"
     $this = $(this)
     data = $this.data("superslides")
-    return data[option].call $this
+    return data[option].call $this, args
 
   options = $.extend
     delay: 5000
