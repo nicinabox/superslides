@@ -18,8 +18,21 @@
   $(document).ready(testSetup.init);
 
   $(function() {
+    var addSlide = function($slides) {
+      $li = $slides.find('li').first();
+      $clone = $li.clone();
+      $li.after($clone);
+    };
+
     test('Init and assign object to data', function() {
       ok($slides.data('superslides'));
+    });
+
+    test('update()', function() {
+      addSlide($slides);
+      equal($slides.superslides('current'), 0, 'current == 0');
+      equal($slides.superslides('next'), 1, 'next == 1');
+      equal($slides.superslides('prev'), 1, 'prev == 1');
     });
 
     module('API', {
@@ -62,10 +75,7 @@
         ok('true');
       });
 
-      $li = $slides.find('li').first();
-      $clone = $li.clone();
-      $li.after($clone);
-
+      addSlide($slides);
     });
   });
 

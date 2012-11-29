@@ -46,7 +46,13 @@ Superslides = (el, options = {}) ->
         0
 
   update = =>
+    positions()
     $container.trigger('slides.updated')
+
+  positions = =>
+    @current = 0
+    @next = next()
+    @prev = prev()
 
   # Public
   @size = =>
@@ -67,9 +73,7 @@ Superslides = (el, options = {}) ->
   @animate = (direction) =>
     direction = parse(direction)
 
-  @current = 0
-  @next = next()
-  @prev = prev()
+  positions()
 
   # Events
   $(el).on 'DOMSubtreeModified', (e) ->
