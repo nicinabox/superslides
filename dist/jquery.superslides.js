@@ -215,7 +215,11 @@
           break;
         default:
           next = +direction;
-          if (isNaN(next)) return false; break;
+          if (isNaN(next)) {
+            animating = false;
+            return false;
+            break;
+          }
           if (next > prev) {
             position = width * 2;
             direction = -position;
