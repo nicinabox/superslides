@@ -117,6 +117,23 @@ Superslides = (el, options = {}) ->
 
     $container.trigger('slides.sized')
 
+  animator = (callback) =>
+    position = width * 2
+    offset = -position
+
+    $children.removeClass('current')
+    $children.eq(@current).addClass('current').css
+      left: position
+      display: 'block'
+
+    $control.animate
+      useTranslate3d: @mobile
+      left: offset
+    , options.slide_speed
+    , options.slide_easing
+    , =>
+      callback() if typeof callback == 'function'
+
 
   # Public
   @destroy = =>
@@ -147,20 +164,7 @@ Superslides = (el, options = {}) ->
   @animate = (direction = 'next') =>
     parse(direction)
 
-    position = width * 2
-    offset = -position
-
-    $children.removeClass('current')
-    $children.eq(@current).addClass('current').css
-      left: position
-      display: 'block'
-
-    $control.animate
-      useTranslate3d: @mobile
-      left: offset
-    , options.slide_speed
-    , options.slide_easing
-    , =>
+    animator =>
       positions(@next)
       $container.trigger('slides.animated')
 
