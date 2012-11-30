@@ -100,6 +100,10 @@ $slides = [];
       ok(!$slides.data('superslides'), 'should not have data superslides');
     });
 
+    test('.mobile', function() {
+      ok(!$slides.superslides('mobile'));
+    });
+
     test('.current', function() {
       equal($slides.superslides('current'), 0, 'single slide - current == 0');
 

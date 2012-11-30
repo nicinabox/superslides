@@ -29,7 +29,10 @@ Superslides = (el, options = {}) ->
 
     $container.wrap($control)
     $container.trigger('slides.init')
+
+    @mobile = navigator.userAgent.match(/mobile/i)
     @start()
+
     this
 
   next = =>
