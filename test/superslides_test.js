@@ -18,8 +18,8 @@
 
   $(function() {
     var addSlide = function($slides) {
-      $li = $slides.find('li').first();
-      $clone = $li.clone();
+      var $li = $slides.find('li').first();
+      var $clone = $li.clone();
       $li.after($clone);
     };
 
@@ -42,7 +42,7 @@
       }
     });
     test('.size()', function() {
-      size = $slides.superslides('size');
+      var size = $slides.superslides('size');
       equal(size, 1, 'should be 1');
     });
 
