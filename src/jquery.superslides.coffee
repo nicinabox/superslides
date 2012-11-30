@@ -55,6 +55,9 @@ Superslides = (el, options = {}) ->
     @prev = prev()
 
   # Public
+  @destroy = =>
+    $(el).removeData('superslides')
+
   @size = =>
     $container.children().length
 

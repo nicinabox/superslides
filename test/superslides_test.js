@@ -56,6 +56,11 @@
       ok(!$slides.data('superslides').play_id);
     });
 
+    test('.destroy()', function() {
+      $slides.superslides('destroy');
+      ok(!$slides.data('superslides'));
+    });
+
     test('.current', function() {
       equal($slides.superslides('current'), 0, 'current == 0');
     });
