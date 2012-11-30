@@ -94,8 +94,8 @@ Superslides = (el, options = {}) ->
 
   unless init
     init = false
-    @start()
     $container.trigger('slides.init')
+    @start()
 
   this
 

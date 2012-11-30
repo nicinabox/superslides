@@ -102,6 +102,24 @@
     });
 
     module('API Events');
+    test('slides.init', function() {
+      expect(1);
+      $slides.on('slides.init', function(e) {
+        ok('true');
+      });
+
+      rebuild($slides);
+    });
+
+    test('slides.started', function() {
+      expect(1);
+      $slides.on('slides.started', function(e) {
+        ok('true');
+      });
+
+      rebuild($slides);
+    });
+
     test('slides.changed', function() {
       expect(1);
       $slides.on('slides.changed', function(e) {
@@ -111,14 +129,6 @@
       addSlide($slides);
     });
 
-    test('slides.init', function() {
-      expect(1);
-      $slides.on('slides.init', function(e) {
-        ok('true');
-      });
-
-      rebuild($slides);
-    });
   });
 
 }(jQuery));

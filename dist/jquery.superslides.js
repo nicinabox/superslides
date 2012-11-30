@@ -101,8 +101,8 @@
     });
     if (!init) {
       init = false;
-      this.start();
       $container.trigger('slides.init');
+      this.start();
     }
     return this;
   };
