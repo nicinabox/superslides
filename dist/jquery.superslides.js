@@ -12,7 +12,7 @@
   var Superslides, name;
 
   Superslides = function(el, options) {
-    var $container, init, next, parse, positions, prev, update,
+    var $container, init, initialize, next, parse, positions, prev, update,
       _this = this;
     if (options == null) {
       options = {};
@@ -30,6 +30,16 @@
     }, options);
     init = false;
     $container = $("." + this.options.container_class);
+    initialize = function() {
+      if (init) {
+        return;
+      }
+      init = true;
+      $container.wrap('<div class="slides-control" />');
+      $container.trigger('slides.init');
+      _this.start();
+      return _this;
+    };
     next = function() {
       var index;
       index = _this.current + 1;
@@ -99,12 +109,7 @@
     $(el).on('DOMSubtreeModified', function(e) {
       return update();
     });
-    if (!init) {
-      init = false;
-      $container.trigger('slides.init');
-      this.start();
-    }
-    return this;
+    return initialize();
   };
 
   name = 'superslides';

@@ -25,8 +25,11 @@
       $slides.superslides(options);
     };
 
-    test('Initialize and store object in data attribute', function() {
-      ok($slides.data('superslides'));
+    test('Initialize', function() {
+      ok($slides.data('superslides'), 'store object in data attribute');
+
+      var $control = $slides.find('.slides-container').parent();
+      equal($control.attr('class'), 'slides-control', 'wrap container in control element');
     });
 
     test('It should start on init', function() {
@@ -88,6 +91,9 @@
       $slides.superslides('destroy');
       ok(!$slides.data('superslides'), 'should not have data superslides');
     });
+
+    // test('.animate()', function() {
+    // });
 
     test('.current', function() {
       equal($slides.superslides('current'), 0, 'current == 0');

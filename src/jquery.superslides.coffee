@@ -22,6 +22,15 @@ Superslides = (el, options = {}) ->
   $container = $(".#{@options.container_class}")
 
   # Private
+  initialize = =>
+    return if init
+    init = true
+
+    $container.wrap('<div class="slides-control" />')
+    $container.trigger('slides.init')
+    @start()
+    this
+
   next = =>
     index = @current + 1
     index = 0 if index == @size()
@@ -92,12 +101,7 @@ Superslides = (el, options = {}) ->
   $(el).on 'DOMSubtreeModified', (e) ->
     update()
 
-  unless init
-    init = false
-    $container.trigger('slides.init')
-    @start()
-
-  this
+  initialize()
 
 # Plugin
 name = 'superslides'
