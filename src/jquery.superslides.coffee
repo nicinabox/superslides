@@ -48,16 +48,17 @@ Superslides = (el, options = {}) ->
 
   update = =>
     positions()
-    $container.trigger('slides.updated')
+    $container.trigger('slides.changed')
 
   positions = =>
-    @current = 0
+    @current ||= 0
     @next = next()
     @prev = prev()
+    false
 
   # Public
   @destroy = =>
-    $(el).removeData('superslides')
+    $(el).removeData()
 
   @size = =>
     $container.children().length
@@ -67,15 +68,23 @@ Superslides = (el, options = {}) ->
     delete @play_id
 
   @start = =>
+    @animate 'next'
+
     if options.play
       @stop() if @play_id
 
       @play_id = setInterval =>
+        # @animate 'next'
         false
       , options.delay
 
+    $(el).trigger('slides.started')
+
   @animate = (direction) =>
-    direction = parse(direction)
+    parse(direction)
+
+    $container.find('.current').removeClass('current')
+    $container.children().eq(@next).addClass('current')
 
   positions()
 
@@ -85,6 +94,7 @@ Superslides = (el, options = {}) ->
 
   unless init
     init = false
+    @start()
     $container.trigger('slides.init')
 
   this

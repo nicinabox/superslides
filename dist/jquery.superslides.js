@@ -60,15 +60,16 @@
     };
     update = function() {
       positions();
-      return $container.trigger('slides.updated');
+      return $container.trigger('slides.changed');
     };
     positions = function() {
-      _this.current = 0;
+      _this.current || (_this.current = 0);
       _this.next = next();
-      return _this.prev = prev();
+      _this.prev = prev();
+      return false;
     };
     this.destroy = function() {
-      return $(el).removeData('superslides');
+      return $(el).removeData();
     };
     this.size = function() {
       return $container.children().length;
@@ -78,17 +79,21 @@
       return delete _this.play_id;
     };
     this.start = function() {
+      _this.animate('next');
       if (options.play) {
         if (_this.play_id) {
           _this.stop();
         }
-        return _this.play_id = setInterval(function() {
+        _this.play_id = setInterval(function() {
           return false;
         }, options.delay);
       }
+      return $(el).trigger('slides.started');
     };
     this.animate = function(direction) {
-      return direction = parse(direction);
+      parse(direction);
+      $container.find('.current').removeClass('current');
+      return $container.children().eq(_this.next).addClass('current');
     };
     positions();
     $(el).on('DOMSubtreeModified', function(e) {
@@ -96,6 +101,7 @@
     });
     if (!init) {
       init = false;
+      this.start();
       $container.trigger('slides.init');
     }
     return this;
