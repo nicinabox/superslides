@@ -82,6 +82,15 @@
 
       addSlide($slides);
     });
+
+    test('slides.init', function() {
+      expect(1);
+      $slides.on('slides.init', function(e) {
+        ok('true');
+      });
+      $slides.superslides('destroy');
+      $slides.superslides();
+    });
   });
 
 }(jQuery));

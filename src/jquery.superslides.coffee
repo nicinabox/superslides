@@ -18,6 +18,7 @@ Superslides = (el, options = {}) ->
     scrollable: true
   , options
 
+  init = false
   $container = $(".#{@options.container_class}")
 
   # Private
@@ -81,6 +82,10 @@ Superslides = (el, options = {}) ->
   # Events
   $(el).on 'DOMSubtreeModified', (e) ->
     update()
+
+  unless init
+    init = false
+    $container.trigger('slides.init')
 
   this
 
