@@ -11,7 +11,6 @@
     },
     init: function() {
       QUnit.testStart = testSetup.testStart;
-      QUnit.config.reorder = false;
     }
   };
 
