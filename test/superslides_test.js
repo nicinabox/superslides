@@ -1,6 +1,7 @@
 /*global QUnit:false, module:false, test:false, asyncTest:false, expect:false*/
 /*global start:false, stop:false ok:false, equal:false, notEqual:false, deepEqual:false*/
 /*global notDeepEqual:false, strictEqual:false, notStrictEqual:false, raises:false*/
+$slides = [];
 (function($) {
   var testSetup = {
     testStart: function(data) {
@@ -17,8 +18,6 @@
   $(function() {
     var addSlide = function($slides, count) {
       count = count || 1;
-      // console.log($slides.superslides('size'))
-      // console.log(count)
       var clones = [];
       var $li = $slides.find('li').first();
 
