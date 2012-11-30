@@ -100,6 +100,21 @@ $slides = [];
       ok(!$slides.data('superslides'), 'should not have data superslides');
     });
 
+    test('.animate()', function() {
+      stop();
+
+      $slides.on('slides.animated', function(e) {
+        start();
+
+        equal($slides.superslides('current'), 1);
+        equal($slides.superslides('next'), 2);
+        equal($slides.superslides('prev'), 0);
+      });
+
+      addSlide($slides, 2);
+      $slides.superslides('animate');
+    });
+
     test('.mobile', function() {
       ok(!$slides.superslides('mobile'));
     });
@@ -155,6 +170,18 @@ $slides = [];
       });
 
       addSlide($slides);
+    });
+
+    test('slides.animated', function() {
+      stop();
+
+      $slides.on('slides.animated', function(e) {
+        start();
+        ok('true');
+      });
+
+      addSlide($slides);
+      $slides.superslides('animate');
     });
 
   });

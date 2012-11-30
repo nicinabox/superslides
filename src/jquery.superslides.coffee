@@ -70,7 +70,7 @@ Superslides = (el, options = {}) ->
         direction
 
       else #bogus
-        0
+        next()
 
   parseHash = (hash) =>
     hash ||= window.location.hash
@@ -80,10 +80,10 @@ Superslides = (el, options = {}) ->
     positions()
     $container.trigger('slides.changed')
 
-  positions = =>
-    @current ||= 0
-    @next      = next()
-    @prev      = prev()
+  positions = (current) =>
+    @current = current || 0
+    @next    = next()
+    @prev    = prev()
     false
 
   setupContainers = ->
@@ -142,10 +142,10 @@ Superslides = (el, options = {}) ->
         false
       , options.delay
 
-    $(el).trigger('slides.started')
+    $container.trigger('slides.started')
 
-  @animate = (direction) =>
-    parseHash() || parse(direction)
+  @animate = (direction = 'next') =>
+    parse(direction)
 
     position = width * 2
     offset = -position
@@ -161,7 +161,8 @@ Superslides = (el, options = {}) ->
     , options.slide_speed
     , options.slide_easing
     , =>
-      false
+      positions(@next)
+      $container.trigger('slides.animated')
 
   positions()
 
