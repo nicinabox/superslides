@@ -12,7 +12,7 @@
   var Superslides, name;
 
   Superslides = function(el, options) {
-    var $container, init, initialize, next, parse, positions, prev, update,
+    var $container, $control, init, initialize, next, parse, parseHash, positions, prev, update,
       _this = this;
     if (options == null) {
       options = {};
@@ -30,12 +30,15 @@
     }, options);
     init = false;
     $container = $("." + this.options.container_class);
+    $control = $('<div>', {
+      "class": 'slides-control'
+    });
     initialize = function() {
       if (init) {
         return;
       }
       init = true;
-      $container.wrap('<div class="slides-control" />');
+      $container.wrap($control);
       $container.trigger('slides.init');
       _this.start();
       return _this;
@@ -67,6 +70,10 @@
         default:
           return 0;
       }
+    };
+    parseHash = function(hash) {
+      hash || (hash = window.location.hash);
+      return hash.replace(/^#/, '');
     };
     update = function() {
       positions();
@@ -101,7 +108,7 @@
       return $(el).trigger('slides.started');
     };
     this.animate = function(direction) {
-      parse(direction);
+      parseHash() || parse(direction);
       $container.find('.current').removeClass('current');
       return $container.children().eq(_this.next).addClass('current');
     };

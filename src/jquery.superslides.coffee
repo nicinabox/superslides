@@ -20,13 +20,14 @@ Superslides = (el, options = {}) ->
 
   init = false
   $container = $(".#{@options.container_class}")
+  $control   = $('<div>', class: 'slides-control')
 
   # Private
   initialize = =>
     return if init
     init = true
 
-    $container.wrap('<div class="slides-control" />')
+    $container.wrap($control)
     $container.trigger('slides.init')
     @start()
     this
@@ -54,6 +55,10 @@ Superslides = (el, options = {}) ->
 
       else #bogus
         0
+
+  parseHash = (hash) =>
+    hash ||= window.location.hash
+    hash.replace(/^#/, '')
 
   update = =>
     positions()
@@ -90,7 +95,7 @@ Superslides = (el, options = {}) ->
     $(el).trigger('slides.started')
 
   @animate = (direction) =>
-    parse(direction)
+    parseHash() || parse(direction)
 
     $container.find('.current').removeClass('current')
     $container.children().eq(@next).addClass('current')
