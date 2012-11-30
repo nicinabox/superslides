@@ -18,22 +18,35 @@ Superslides = (el, options = {}) ->
     scrollable: true
   , options
 
-  init = false
+  $window    = $(window)
   $container = $(".#{@options.container_class}")
+  $children  = $container.children()
   $control   = $('<div>', class: 'slides-control')
+  multiplier = 1
+  init       = false
+  width      = $window.width()
+  height     = $window.height()
 
   # Private
   initialize = =>
     return if init
     init = true
+    multiplier = findMultiplier()
 
-    $container.wrap($control)
+    $control = $container.wrap($control)
+
+    setupContainers()
+    setupChildren()
+
     $container.trigger('slides.init')
 
     @mobile = navigator.userAgent.match(/mobile/i)
     @start()
 
     this
+
+  findMultiplier = =>
+    if @size() == 1 then 1 else 3
 
   next = =>
     index = @current + 1
@@ -69,9 +82,41 @@ Superslides = (el, options = {}) ->
 
   positions = =>
     @current ||= 0
-    @next = next()
-    @prev = prev()
+    @next      = next()
+    @prev      = prev()
     false
+
+  setupContainers = ->
+    $control.css
+      width: width * multiplier
+      height: height
+      left: -width # if @size() > 1
+
+  setupChildren = =>
+    # if @size() > 1
+    $children.not('.current').css
+      display: 'none'
+      position: 'absolute'
+      overflow: 'hidden'
+      top: 0
+      left: width
+      zIndex: 0
+
+    adjustSlidesSize $children
+
+  adjustSlidesSize = ($el) =>
+    that = this
+    $el.each (i) ->
+      $(this).width(width).height(height)
+
+      # if that.size() > 1
+      $(this).css
+        left: width
+
+      # adjustImagePosition $('img', this).not('.keep-original')
+
+    $container.trigger('slides.sized')
+
 
   # Public
   @destroy = =>
@@ -85,6 +130,8 @@ Superslides = (el, options = {}) ->
     delete @play_id
 
   @start = =>
+    $container.fadeIn('fast')
+
     @animate 'next'
 
     if options.play
@@ -100,8 +147,21 @@ Superslides = (el, options = {}) ->
   @animate = (direction) =>
     parseHash() || parse(direction)
 
-    $container.find('.current').removeClass('current')
-    $container.children().eq(@next).addClass('current')
+    position = width * 2
+    offset = -position
+
+    $children.removeClass('current')
+    $children.eq(@current).addClass('current').css
+      left: position
+      display: 'block'
+
+    $control.animate
+      useTranslate3d: @mobile
+      left: offset
+    , options.slide_speed
+    , options.slide_easing
+    , =>
+      false
 
   positions()
 
