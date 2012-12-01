@@ -181,6 +181,38 @@
       equal($slides.superslides('next'), 1);
     });
 
+    module('hashchange');
+    asyncTest('Uses hash index on init', function() {
+      addSlide(2);
+
+      $slides.on('slides.animated', function(e) {
+        var $current = $slides.find('.current');
+        equal($current.index(), 2, '#2 should be slide index 2');
+
+        start();
+        window.location.hash = '';
+      });
+
+      window.location.hash = '2';
+      $slides.superslides();
+    });
+
+    asyncTest('Uses hash when changed', 1, function() {
+      addSlide(2);
+      $slides.superslides();
+      $slides.data('superslides').animating = false;
+
+      $slides.on('slides.animated', function(e) {
+        var $current = $slides.find('.current');
+        equal($current.index(), 2, '#2 should be slide index 2');
+
+        start();
+        window.location.hash = '';
+      });
+
+      window.location.hash = '2';
+    });
+
     module('');
     test('Initialize', function() {
       $slides.superslides();
@@ -204,22 +236,6 @@
       $slides.superslides();
       var $current = $slides.find('.current');
       equal($current.index(), 0);
-    });
-
-    module('hashchange');
-    asyncTest('Uses hash index on init', function() {
-      addSlide(2);
-
-      $slides.on('slides.animated', function(e) {
-        var $current = $slides.find('.current');
-        equal($current.index(), 2, '#2 should be slide index 2');
-
-        start();
-        window.location.hash = '';
-      });
-
-      window.location.hash = '2';
-      $slides.superslides();
     });
 
 
