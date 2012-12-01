@@ -143,7 +143,7 @@
 
     test('.mobile', function() {
       $slides.superslides();
-      ok(!$slides.superslides('mobile'));
+      equal($slides.superslides('mobile'), (/mobile/i).test(navigator.userAgent));
     });
 
     test('.current - single slide', function() {

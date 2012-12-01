@@ -28,7 +28,7 @@ Superslides = (el, options = {}) ->
     init = true
     multiplier = findMultiplier()
     positions()
-    @mobile = navigator.userAgent.match(/mobile/i)
+    @mobile = (/mobile/i).test(navigator.userAgent)
 
     $control = $container.wrap($control)
 
