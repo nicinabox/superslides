@@ -38,14 +38,14 @@ module.exports = function(grunt) {
       files: ['test/**/*.html']
     },
     coffeelint: {
-      app: ['src/*.coffee']
+      app: ['test/*.js', 'src/*.coffee']
     },
     lint: {
       files: ['grunt.js']
     },
     watch: {
       files: ['<config:coffeelint.app>', '<config:lint.files>'],
-      tasks: 'qunit'
+      tasks: 'compile qunit'
     },
     jshint: {
       options: {
@@ -70,5 +70,6 @@ module.exports = function(grunt) {
 
   // Default task.
   grunt.registerTask('default', 'coffee qunit concat min');
+  grunt.registerTask('compile', 'coffee concat min');
 
 };
