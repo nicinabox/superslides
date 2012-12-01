@@ -39,7 +39,7 @@ Superslides = function(el, options) {
     init = true;
     multiplier = findMultiplier();
     positions();
-    _this.mobile = navigator.userAgent.match(/mobile/i);
+    _this.mobile = /mobile/i.test(navigator.userAgent);
     $control = $container.wrap($control);
     $container.trigger('slides.init');
     _this.start();
