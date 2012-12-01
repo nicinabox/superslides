@@ -70,6 +70,7 @@ module.exports = function(grunt) {
 
   // Default task.
   grunt.registerTask('default', 'coffee qunit concat min');
-  grunt.registerTask('compile', 'coffee concat min');
+  grunt.registerTask('compile', 'lint coffee concat min');
+  grunt.registerTask('run', 'server watch');
 
 };
