@@ -1,11 +1,11 @@
 {
-  "name": "superslides",
+  "name": "jquery.superslides",
   "title": "Superslides",
   "description": "A fullscreen, hardware accelerated slider for jQuery.",
   "version": "0.5.0",
   "homepage": "https://github.com/nicinabox/superslides",
   "author": {
-    "name": "Nic Haynes",
+    "name": "Nic Aitch",
     "email": "nic@nicinabox.com",
     "url": "http://nicinabox.com"
   },

@@ -1,5 +1,7 @@
 /*global module:false*/
 module.exports = function(grunt) {
+  grunt.loadNpmTasks('grunt-coffee');
+  grunt.loadNpmTasks('grunt-coffeelint');
 
   // Project configuration.
   grunt.initConfig({
@@ -11,9 +13,18 @@ module.exports = function(grunt) {
         '* Copyright (c) <%= grunt.template.today("yyyy") %> <%= pkg.author.name %>;' +
         ' Licensed <%= _.pluck(pkg.licenses, "type").join(", ") %> */'
     },
+    coffee: {
+      app: {
+        src: ['src/**/*.coffee'],
+        dest: 'dist',
+        options: {
+          bare: true
+        }
+      }
+    },
     concat: {
       dist: {
-        src: ['<banner:meta.banner>', '<file_strip_banner:src/<%= pkg.name %>.js>'],
+        src: ['<banner:meta.banner>', '<file_strip_banner:dist/<%= pkg.name %>.js>'],
         dest: 'dist/<%= pkg.name %>.js'
       }
     },
@@ -26,11 +37,14 @@ module.exports = function(grunt) {
     qunit: {
       files: ['test/**/*.html']
     },
+    coffeelint: {
+      app: ['src/*.coffee']
+    },
     lint: {
-      files: ['grunt.js', 'dist/**/*.js', 'test/**/*.js']
+      files: ['grunt.js']
     },
     watch: {
-      files: '<config:lint.files>',
+      files: ['<config:coffeelint.app>', '<config:lint.files>'],
       tasks: 'qunit'
     },
     jshint: {
@@ -55,6 +69,6 @@ module.exports = function(grunt) {
   });
 
   // Default task.
-  grunt.registerTask('default', 'lint qunit concat min');
+  grunt.registerTask('default', 'coffee qunit concat min');
 
 };
