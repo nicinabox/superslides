@@ -18,6 +18,7 @@ Superslides = (el, options = {}) ->
     scrollable: true
   , options
 
+  that       = this
   $window    = $(window)
   $container = $(".#{@options.container_class}")
   $children  = $container.children()
@@ -38,10 +39,11 @@ Superslides = (el, options = {}) ->
     setupContainers()
     setupChildren()
 
-    $container.trigger('slides.init')
-
     @mobile = navigator.userAgent.match(/mobile/i)
+
+    $container.trigger('slides.init')
     @start()
+    $window.trigger 'hashchange'
 
     this
 
@@ -72,9 +74,8 @@ Superslides = (el, options = {}) ->
       else #bogus
         next()
 
-  parseHash = (hash) =>
-    hash ||= window.location.hash
-    hash.replace(/^#/, '')
+  parseHash = (hash = window.location.hash) =>
+    +hash.replace(/^#/, '')
 
   update = =>
     positions()
@@ -122,7 +123,7 @@ Superslides = (el, options = {}) ->
     offset = -position
 
     $children.removeClass('current')
-    $children.eq(@current).addClass('current').css
+    $children.eq(@next).addClass('current').css
       left: position
       display: 'block'
 
@@ -133,6 +134,9 @@ Superslides = (el, options = {}) ->
     , options.slide_easing
     , =>
       callback() if typeof callback == 'function'
+
+      positions(@next)
+      $container.trigger('slides.animated')
 
 
   # Public
@@ -161,18 +165,21 @@ Superslides = (el, options = {}) ->
 
     $container.trigger('slides.started')
 
-  @animate = (direction = 'next') =>
-    parse(direction)
+  @animate = (direction = 'next', callback) =>
+    index = parse(direction)
+    positions(index - 1) if index == direction
 
-    animator =>
-      positions(@next)
-      $container.trigger('slides.animated')
+    animator(callback)
 
   positions()
 
   # Events
-  $(el).on 'DOMSubtreeModified', (e) ->
+  $container.on 'DOMSubtreeModified', (e) ->
     update()
+
+  $window.on 'hashchange', (e) ->
+    index = parseHash()
+    that.animate(index) if index
 
   initialize()
 

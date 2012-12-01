@@ -55,15 +55,21 @@ $slides = [];
       equal($slides.superslides('prev'), 2, 'prev == 2');
     });
 
-    test('Starts on window hash index', function() {
+    test('Supports hashchange at index (zero-indexed)', function() {
+      stop();
       addSlide($slides, 2);
 
-      location.hash = '#2';
-      rebuild($slides);
+      $(window).on('slides.animated', function(e) {
+        start();
+        var $current = $slides.find('.current');
+        equal($current.index(), 2, '#3 should be slide index 2');
 
-      var $current = $slides.find('.current');
-      equal($current.index(), 1); // zero-indexed
-      location.hash = '';
+        window.location.hash = '';
+        $(window).off('slides.animated');
+      });
+
+      window.location.hash = '2';
+      rebuild($slides);
     });
 
     test('Adds ".current" to current slide', function() {
