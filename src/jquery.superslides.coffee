@@ -1,10 +1,3 @@
-###
-  Superslides 0.5-wip
-  Fullscreen slideshow plugin for jQuery
-  by Nic Aitch @nicinabox
-  http://nicinabox.github.com/superslides/
-###
-
 Superslides = (el, options = {}) ->
   @options = $.extend
     delay: 5000
@@ -31,20 +24,19 @@ Superslides = (el, options = {}) ->
   # Private
   initialize = =>
     return if init
+
     init = true
     multiplier = findMultiplier()
+    positions()
+    @mobile = navigator.userAgent.match(/mobile/i)
 
     $control = $container.wrap($control)
 
-    setupContainers()
-    setupChildren()
-
-    @mobile = navigator.userAgent.match(/mobile/i)
+    # setupContainers()
+    # setupChildren()
 
     $container.trigger('slides.init')
     @start()
-    $window.trigger 'hashchange'
-
     this
 
   findMultiplier = =>
@@ -75,11 +67,8 @@ Superslides = (el, options = {}) ->
         next()
 
   parseHash = (hash = window.location.hash) =>
-    +hash.replace(/^#/, '')
-
-  update = =>
-    positions()
-    $container.trigger('slides.changed')
+    hash = hash.replace(/^#/, '')
+    +hash if hash
 
   positions = (current) =>
     @current = current || 0
@@ -116,11 +105,12 @@ Superslides = (el, options = {}) ->
 
       # adjustImagePosition $('img', this).not('.keep-original')
 
-    $container.trigger('slides.sized')
+    # $container.trigger('slides.sized')
 
   animator = (callback) =>
+    that     = this
     position = width * 2
-    offset = -position
+    offset   = -position
 
     $children.removeClass('current')
     $children.eq(@next).addClass('current').css
@@ -136,10 +126,17 @@ Superslides = (el, options = {}) ->
       callback() if typeof callback == 'function'
 
       positions(@next)
+      @animating = false
       $container.trigger('slides.animated')
 
 
   # Public
+  @$el = $(el)
+
+  @update = =>
+    positions()
+    $container.trigger('slides.changed')
+
   @destroy = =>
     $(el).removeData()
 
@@ -151,11 +148,11 @@ Superslides = (el, options = {}) ->
     delete @play_id
 
   @start = =>
-    $container.fadeIn('fast')
+    $window.trigger 'hashchange'
+    @animate 'next', =>
+      $container.fadeIn('fast')
 
-    @animate 'next'
-
-    if options.play
+    if @options.play
       @stop() if @play_id
 
       @play_id = setInterval =>
@@ -166,17 +163,18 @@ Superslides = (el, options = {}) ->
     $container.trigger('slides.started')
 
   @animate = (direction = 'next', callback) =>
-    index = parse(direction)
+    return if @animating
+
+    @animating = true
+    index      = parse(direction)
+    return if index > @size()
+
+    # Reset positions
     positions(index - 1) if index == direction
 
     animator(callback)
 
-  positions()
-
   # Events
-  $container.on 'DOMSubtreeModified', (e) ->
-    update()
-
   $window.on 'hashchange', (e) ->
     index = parseHash()
     that.animate(index) if index
