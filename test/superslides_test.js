@@ -58,10 +58,8 @@
       });
 
       $slides.superslides();
-      setTimeout(function() {
-        addSlide(2);
-        $slides.superslides('update');
-      }, 100);
+      addSlide(2);
+      $slides.superslides('update');
     });
 
     asyncTest('slides.animated', function() {
