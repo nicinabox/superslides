@@ -52,8 +52,8 @@
       $slides.superslides();
     });
 
-    asyncTest('slides.changed', 1, function() {
-      $slides.on('slides.changed', function(e) {
+    asyncTest('slides.updated', 1, function() {
+      $slides.on('slides.updated', function(e) {
         ok(true);
         start();
       });
@@ -115,7 +115,7 @@
     });
 
     asyncTest('.update()', function() {
-      $slides.on('slides.changed', function() {
+      $slides.on('slides.updated', function() {
         equal($slides.superslides('current'), 0, 'current == 0');
         equal($slides.superslides('next'), 1, 'next == 1');
         equal($slides.superslides('prev'), 2, 'prev == 2');
@@ -153,10 +153,13 @@
       equal($slides.superslides('mobile'), (/mobile/i).test(navigator.userAgent));
     });
 
-    test('.current - single slide', function() {
+    asyncTest('.current - single slide', function() {
       $slides.superslides();
 
-      equal($slides.superslides('current'), 0);
+      $slides.on('slides.init', function() {
+        equal($slides.superslides('current'), 0);
+        start();
+      });
     });
 
     asyncTest('.current - 3 slides', function() {

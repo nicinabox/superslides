@@ -38,7 +38,6 @@ Superslides = (el, options = {}) ->
 
   setupContainers = ->
     # Center control
-    # console.log(width * multiplier, -width)
     $control.css
       width: width * multiplier
       height: height
@@ -50,7 +49,7 @@ Superslides = (el, options = {}) ->
       position: 'absolute'
       overflow: 'hidden'
       top: 0
-      left: width
+      # left: width
       zIndex: 0
 
     adjustSlidesSize $children
@@ -98,8 +97,8 @@ Superslides = (el, options = {}) ->
     $el.each (i) ->
       $(this).width(width).height(height)
 
-      $(this).css
-        left: width
+      # $(this).css
+      #   left: width
 
       adjustImagePosition $('img', this).not('.keep-original')
 
@@ -115,11 +114,10 @@ Superslides = (el, options = {}) ->
 
   prev = =>
     index = @current - 1
-    index = @size() - 1 if index == -1
-    # index = 0 unless init
+    index = @size() - 1 if index < 0
     index
 
-  parse = (direction) =>
+  upcomingSlide = (direction) =>
     switch true
       when /next/.test(direction)
         next()
@@ -131,43 +129,57 @@ Superslides = (el, options = {}) ->
         direction
 
       else #bogus
-        next()
+        false
 
   parseHash = (hash = window.location.hash) =>
     hash = hash.replace(/^#/, '')
     +hash if hash
 
-  positions = (current) =>
-    @current = current || 0
+  positions = (current = -1) =>
+    if init && @current >= 0
+      current = @current if current < 0
+
+    @current = current
     @next    = next()
     @prev    = prev()
     false
 
+  animator = (upcoming_slide, callback) =>
+    that           = this
+    position       = width
+    offset         = -position
+    outgoing_slide = @current
 
-  animator = (callback) =>
-    that     = this
-    position = width * 2
-    offset   = -position
-
-    if !init && @current == 0
-      next_index = @current
-    else
-      next_index = @next
-
-    $children.removeClass('current')
-    $children.eq(next_index).addClass('current').css
-      left: position
-      display: 'block'
+    $children
+      .removeClass('current')
+      .eq(upcoming_slide)
+        .addClass('current')
+        .css
+          # left: position
+          display: 'block'
 
     $control.animate
       useTranslate3d: @mobile
-      left: offset
-    , options.slide_speed
-    , options.slide_easing
+      left: 0
+    , @options.slide_speed
+    , @options.slide_easing
     , =>
-      callback() if typeof callback == 'function'
+      positions(upcoming_slide)
 
-      positions(@next)
+      # $control.css
+      #   left: -width
+
+      # $children.eq(next_index).css
+      #   left: width
+      #   zIndex: 2
+
+      # reset last slide
+      $children.eq(outgoing_slide).css
+        # left: width
+        display: 'none'
+        zIndex: 0
+
+      callback() if typeof callback == 'function'
       @animating = false
 
       if init
@@ -180,9 +192,22 @@ Superslides = (el, options = {}) ->
   # Public
   @$el = $(el)
 
+  @animate = (direction = 'next', callback) =>
+    return if @animating
+
+    @animating = true
+
+    upcoming_slide = upcomingSlide(direction)
+    return if upcoming_slide > @size()
+
+    # Reset positions
+    positions(upcoming_slide - 1) if upcoming_slide == direction
+
+    animator(upcoming_slide, callback)
+
   @update = =>
-    positions()
-    $container.trigger('slides.changed')
+    positions(@current)
+    $container.trigger('slides.updated')
 
   @destroy = =>
     $(el).removeData()
@@ -206,21 +231,9 @@ Superslides = (el, options = {}) ->
       @play_id = setInterval =>
         # @animate 'next'
         false
-      , options.delay
+      , @options.delay
 
     $container.trigger('slides.started')
-
-  @animate = (direction = 'next', callback) =>
-    return if @animating
-
-    @animating = true
-    index      = parse(direction)
-    return if index > @size()
-
-    # Reset positions
-    positions(index - 1) if index == direction
-
-    animator(callback)
 
   # Events
   $window
@@ -235,13 +248,14 @@ Superslides = (el, options = {}) ->
     adjustSlidesSize $children
     setupContainers()
 
-  .on 'click', ".#{options.nav_class} a", (e) ->
+  $(document)
+  .on 'click', ".#{@options.nav_class} a", (e) ->
     e.preventDefault()
     that.stop()
     if $(this).hasClass('next')
-      animate 'next'
+      that.animate 'next'
     else
-      animate 'prev'
+      that.animate 'prev'
 
   initialize()
 
