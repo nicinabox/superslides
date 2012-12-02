@@ -5,7 +5,7 @@
 var Superslides, name;
 
 Superslides = function(el, options) {
-  var $children, $container, $control, $window, adjustImagePosition, adjustSlidesSize, animator, findMultiplier, height, init, initialize, loadImage, multiplier, next, parse, parseHash, positions, prev, setHorizontalPosition, setVerticalPosition, setupChildren, setupContainers, that, width,
+  var $children, $container, $control, $window, adjustImagePosition, adjustSlidesSize, animator, findMultiplier, height, init, initialize, loadImage, multiplier, next, parseHash, positions, prev, setHorizontalPosition, setVerticalPosition, setupChildren, setupContainers, that, upcomingSlide, width,
     _this = this;
   if (options == null) {
     options = {};
@@ -57,7 +57,6 @@ Superslides = function(el, options) {
       position: 'absolute',
       overflow: 'hidden',
       top: 0,
-      left: width,
       zIndex: 0
     });
     return adjustSlidesSize($children);
@@ -113,9 +112,6 @@ Superslides = function(el, options) {
     that = _this;
     return $el.each(function(i) {
       $(this).width(width).height(height);
-      $(this).css({
-        left: width
-      });
       return adjustImagePosition($('img', this).not('.keep-original'));
     });
   };
@@ -137,12 +133,12 @@ Superslides = function(el, options) {
   prev = function() {
     var index;
     index = _this.current - 1;
-    if (index === -1) {
+    if (index < 0) {
       index = _this.size() - 1;
     }
     return index;
   };
-  parse = function(direction) {
+  upcomingSlide = function(direction) {
     switch (true) {
       case /next/.test(direction):
         return next();
@@ -151,7 +147,7 @@ Superslides = function(el, options) {
       case /\d/.test(direction):
         return direction;
       default:
-        return next();
+        return false;
     }
   };
   parseHash = function(hash) {
@@ -164,34 +160,40 @@ Superslides = function(el, options) {
     }
   };
   positions = function(current) {
-    _this.current = current || 0;
+    if (current == null) {
+      current = -1;
+    }
+    if (init && _this.current >= 0) {
+      if (current < 0) {
+        current = _this.current;
+      }
+    }
+    _this.current = current;
     _this.next = next();
     _this.prev = prev();
     return false;
   };
-  animator = function(callback) {
-    var next_index, offset, position;
+  animator = function(upcoming_slide, callback) {
+    var offset, outgoing_slide, position;
     that = _this;
-    position = width * 2;
+    position = width;
     offset = -position;
-    if (!init && _this.current === 0) {
-      next_index = _this.current;
-    } else {
-      next_index = _this.next;
-    }
-    $children.removeClass('current');
-    $children.eq(next_index).addClass('current').css({
-      left: position,
+    outgoing_slide = _this.current;
+    $children.removeClass('current').eq(upcoming_slide).addClass('current').css({
       display: 'block'
     });
     return $control.animate({
       useTranslate3d: _this.mobile,
-      left: offset
-    }, options.slide_speed, options.slide_easing, function() {
+      left: 0
+    }, _this.options.slide_speed, _this.options.slide_easing, function() {
+      positions(upcoming_slide);
+      $children.eq(outgoing_slide).css({
+        display: 'none',
+        zIndex: 0
+      });
       if (typeof callback === 'function') {
         callback();
       }
-      positions(_this.next);
       _this.animating = false;
       if (init) {
         return $container.trigger('slides.animated');
@@ -203,9 +205,27 @@ Superslides = function(el, options) {
     });
   };
   this.$el = $(el);
+  this.animate = function(direction, callback) {
+    var upcoming_slide;
+    if (direction == null) {
+      direction = 'next';
+    }
+    if (_this.animating) {
+      return;
+    }
+    _this.animating = true;
+    upcoming_slide = upcomingSlide(direction);
+    if (upcoming_slide > _this.size()) {
+      return;
+    }
+    if (upcoming_slide === direction) {
+      positions(upcoming_slide - 1);
+    }
+    return animator(upcoming_slide, callback);
+  };
   this.update = function() {
-    positions();
-    return $container.trigger('slides.changed');
+    positions(_this.current);
+    return $container.trigger('slides.updated');
   };
   this.destroy = function() {
     return $(el).removeData();
@@ -229,27 +249,9 @@ Superslides = function(el, options) {
       }
       _this.play_id = setInterval(function() {
         return false;
-      }, options.delay);
+      }, _this.options.delay);
     }
     return $container.trigger('slides.started');
-  };
-  this.animate = function(direction, callback) {
-    var index;
-    if (direction == null) {
-      direction = 'next';
-    }
-    if (_this.animating) {
-      return;
-    }
-    _this.animating = true;
-    index = parse(direction);
-    if (index > _this.size()) {
-      return;
-    }
-    if (index === direction) {
-      positions(index - 1);
-    }
-    return animator(callback);
   };
   $window.on('hashchange', function(e) {
     var index;
@@ -262,13 +264,14 @@ Superslides = function(el, options) {
     height = $window.height();
     adjustSlidesSize($children);
     return setupContainers();
-  }).on('click', "." + options.nav_class + " a", function(e) {
+  });
+  $(document).on('click', "." + this.options.nav_class + " a", function(e) {
     e.preventDefault();
     that.stop();
     if ($(this).hasClass('next')) {
-      return animate('next');
+      return that.animate('next');
     } else {
-      return animate('prev');
+      return that.animate('prev');
     }
   });
   return initialize();
