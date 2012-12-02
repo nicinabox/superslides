@@ -1,9 +1,11 @@
 # Changelog
 
-### 0.4.3 - Unreleased
+### 0.4.3 - Oct Dec 2, 2012
 
 * Refactors
 * Fix flicker in Safari
+* Fix hash bug on load
+* Include size in API
 
 ### 0.4.2 - Oct 20, 2012
 
