@@ -25,31 +25,98 @@ Superslides = (el, options = {}) ->
   initialize = =>
     return if init
 
-    init = true
     multiplier = findMultiplier()
     positions()
     @mobile = (/mobile/i).test(navigator.userAgent)
 
-    $control = $container.wrap($control)
+    $control = $container.wrap($control).parent('.slides-control')
 
-    # setupContainers()
-    # setupChildren()
+    setupContainers()
 
-    $container.trigger('slides.init')
     @start()
     this
+
+  setupContainers = ->
+    # Center control
+    # console.log(width * multiplier, -width)
+    $control.css
+      width: width * multiplier
+      height: height
+      left: -width
+
+  setupChildren = =>
+    $children.not('.current').css
+      display: 'none'
+      position: 'absolute'
+      overflow: 'hidden'
+      top: 0
+      left: width
+      zIndex: 0
+
+    adjustSlidesSize $children
+
+  loadImage = ($img, callback) =>
+    $("<img>",
+        src: $img.attr('src')
+      ).load ->
+        if callback instanceof Function
+          callback(this)
+
+  setVerticalPosition = ($img) ->
+    scale_height = width / $img.data('aspect-ratio')
+
+    if scale_height >= height
+      $img.css
+        top: -(scale_height - height) / 2
+    else
+      $img.css
+        top: 0
+
+  setHorizontalPosition = ($img) ->
+    scale_width = height * $img.data('aspect-ratio')
+
+    if scale_width >= width
+      $img.css
+        left: -(scale_width - width) / 2
+    else
+      $img.css
+        left: 0
+
+  adjustImagePosition = ($img) =>
+    unless $img.data('aspect-ratio')
+      loadImage $img, (image) ->
+        $img.removeAttr('width').removeAttr('height')
+        $img.data('aspect-ratio', image.width / image.height)
+        adjustImagePosition $img
+      return
+
+    setHorizontalPosition($img)
+    setVerticalPosition($img)
+
+  adjustSlidesSize = ($el) =>
+    that = this
+    $el.each (i) ->
+      $(this).width(width).height(height)
+
+      $(this).css
+        left: width
+
+      adjustImagePosition $('img', this).not('.keep-original')
+
+    # $container.trigger('slides.sized')
 
   findMultiplier = =>
     if @size() == 1 then 1 else 3
 
   next = =>
     index = @current + 1
-    index = 0 if index == @size()
+    index = 0 if (index == @size())
     index
 
   prev = =>
     index = @current - 1
     index = @size() - 1 if index == -1
+    # index = 0 unless init
     index
 
   parse = (direction) =>
@@ -76,44 +143,19 @@ Superslides = (el, options = {}) ->
     @prev    = prev()
     false
 
-  setupContainers = ->
-    $control.css
-      width: width * multiplier
-      height: height
-      left: -width # if @size() > 1
-
-  setupChildren = =>
-    # if @size() > 1
-    $children.not('.current').css
-      display: 'none'
-      position: 'absolute'
-      overflow: 'hidden'
-      top: 0
-      left: width
-      zIndex: 0
-
-    adjustSlidesSize $children
-
-  adjustSlidesSize = ($el) =>
-    that = this
-    $el.each (i) ->
-      $(this).width(width).height(height)
-
-      # if that.size() > 1
-      $(this).css
-        left: width
-
-      # adjustImagePosition $('img', this).not('.keep-original')
-
-    # $container.trigger('slides.sized')
 
   animator = (callback) =>
     that     = this
     position = width * 2
     offset   = -position
 
+    if !init && @current == 0
+      next_index = @current
+    else
+      next_index = @next
+
     $children.removeClass('current')
-    $children.eq(@next).addClass('current').css
+    $children.eq(next_index).addClass('current').css
       left: position
       display: 'block'
 
@@ -127,8 +169,13 @@ Superslides = (el, options = {}) ->
 
       positions(@next)
       @animating = false
-      $container.trigger('slides.animated')
 
+      if init
+        $container.trigger('slides.animated')
+      else
+        init = true
+        positions(0)
+        $container.trigger('slides.init')
 
   # Public
   @$el = $(el)
@@ -148,6 +195,7 @@ Superslides = (el, options = {}) ->
     delete @play_id
 
   @start = =>
+    setupChildren()
     $window.trigger 'hashchange'
     @animate 'next', =>
       $container.fadeIn('fast')
@@ -175,9 +223,25 @@ Superslides = (el, options = {}) ->
     animator(callback)
 
   # Events
-  $window.on 'hashchange', (e) ->
+  $window
+  .on 'hashchange', (e) ->
     index = parseHash()
     that.animate(index) if index
+
+  .on 'resize', (e) ->
+    width = $window.width()
+    height = $window.height()
+
+    adjustSlidesSize $children
+    setupContainers()
+
+  .on 'click', ".#{options.nav_class} a", (e) ->
+    e.preventDefault()
+    that.stop()
+    if $(this).hasClass('next')
+      animate 'next'
+    else
+      animate 'prev'
 
   initialize()
 

@@ -34,12 +34,13 @@
 
     module('API Events');
     asyncTest('slides.init', 1, function() {
+      $slides.superslides();
+
       $slides.on('slides.init', function(e) {
-        ok('true');
+        ok(true);
         start();
       });
 
-      $slides.superslides();
     });
 
     asyncTest('slides.started', 1, function() {
@@ -63,13 +64,16 @@
     });
 
     asyncTest('slides.animated', function() {
+      addSlide(2);
+      $slides.superslides();
+      $slides.data('superslides').animating = false;
+
       $slides.on('slides.animated', function(e) {
         ok(true);
         start();
       });
 
-      addSlide($slides);
-      $slides.superslides();
+      $slides.superslides('animate');
     });
 
     module('API');
@@ -80,7 +84,6 @@
 
     test('.size() - 3', function() {
       addSlide(2);
-      // console.log($slides.html())
       $slides.superslides();
       equal($slides.superslides('size'), 3, 'should be 3');
     });
@@ -120,15 +123,14 @@
       });
 
       $slides.superslides();
-      setTimeout(function() {
+      $slides.on('slides.init', function() {
         addSlide(2);
         $slides.superslides('update');
-      }, 100);
+      });
     });
 
     asyncTest('.animate()', function() {
       addSlide(2);
-      $slides.superslides();
 
       $slides.on('slides.animated', function(e) {
         equal($slides.superslides('current'), 1);
@@ -138,7 +140,12 @@
         start();
       });
 
-      $slides.superslides('animate');
+      $slides.on('slides.init', function() {
+        $slides.superslides('animate');
+      });
+
+      $slides.superslides();
+
     });
 
     test('.mobile', function() {
@@ -152,11 +159,14 @@
       equal($slides.superslides('current'), 0);
     });
 
-    test('.current - 3 slides', function() {
+    asyncTest('.current - 3 slides', function() {
       addSlide(2);
       $slides.superslides();
 
-      equal($slides.superslides('current'), 0);
+      $slides.on('slides.init', function() {
+        equal($slides.superslides('current'), 0);
+        start();
+      });
     });
 
     test('.prev - 0 slides', function() {
@@ -164,10 +174,15 @@
       equal($slides.superslides('prev'), 0);
     });
 
-    test('prev - 3 slides', function() {
+    asyncTest('prev - 3 slides', function() {
       addSlide(2);
       $slides.superslides();
-      equal($slides.superslides('prev'), 2);
+
+      $slides.on('slides.init', function() {
+        equal($slides.superslides('prev'), 2);
+        start();
+      });
+
     });
 
     test('.next - 0 slides', function() {
@@ -175,17 +190,21 @@
       equal($slides.superslides('next'), 0);
     });
 
-    test('.next - 3 slides', function() {
+    asyncTest('.next - 3 slides', function() {
       addSlide(2);
       $slides.superslides();
-      equal($slides.superslides('next'), 1);
+
+      $slides.on('slides.init', function() {
+        equal($slides.superslides('next'), 1);
+        start();
+      });
     });
 
     module('hashchange');
     asyncTest('Uses hash index on init', function() {
       addSlide(2);
 
-      $slides.on('slides.animated', function(e) {
+      $slides.on('slides.init', function(e) {
         var $current = $slides.find('.current');
         equal($current.index(), 2, '#2 should be slide index 2');
 
@@ -224,7 +243,7 @@
     });
 
     asyncTest('It should start on init', function() {
-      $slides.on('slides.animated', function() {
+      $slides.on('slides.started', function() {
         ok(true, 'Started');
         start();
       });
@@ -237,7 +256,6 @@
       var $current = $slides.find('.current');
       equal($current.index(), 0);
     });
-
 
   });
 
