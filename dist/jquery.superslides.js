@@ -1,11 +1,11 @@
-/*! Superslides - v0.5.0 - 2012-12-01
+/*! Superslides - v0.5.0 - 2012-12-02
 * https://github.com/nicinabox/superslides
 * Copyright (c) 2012 Nic Aitch; Licensed MIT */
 
 var Superslides, name;
 
 Superslides = function(el, options) {
-  var $children, $container, $control, $window, adjustSlidesSize, animator, findMultiplier, height, init, initialize, multiplier, next, parse, parseHash, positions, prev, setupChildren, setupContainers, that, width,
+  var $children, $container, $control, $window, adjustImagePosition, adjustSlidesSize, animator, findMultiplier, height, init, initialize, loadImage, multiplier, next, parse, parseHash, positions, prev, setHorizontalPosition, setVerticalPosition, setupChildren, setupContainers, that, width,
     _this = this;
   if (options == null) {
     options = {};
@@ -36,14 +36,88 @@ Superslides = function(el, options) {
     if (init) {
       return;
     }
-    init = true;
     multiplier = findMultiplier();
     positions();
     _this.mobile = /mobile/i.test(navigator.userAgent);
-    $control = $container.wrap($control);
-    $container.trigger('slides.init');
+    $control = $container.wrap($control).parent('.slides-control');
+    setupContainers();
     _this.start();
     return _this;
+  };
+  setupContainers = function() {
+    return $control.css({
+      width: width * multiplier,
+      height: height,
+      left: -width
+    });
+  };
+  setupChildren = function() {
+    $children.not('.current').css({
+      display: 'none',
+      position: 'absolute',
+      overflow: 'hidden',
+      top: 0,
+      left: width,
+      zIndex: 0
+    });
+    return adjustSlidesSize($children);
+  };
+  loadImage = function($img, callback) {
+    return $("<img>", {
+      src: $img.attr('src')
+    }).load(function() {
+      if (callback instanceof Function) {
+        return callback(this);
+      }
+    });
+  };
+  setVerticalPosition = function($img) {
+    var scale_height;
+    scale_height = width / $img.data('aspect-ratio');
+    if (scale_height >= height) {
+      return $img.css({
+        top: -(scale_height - height) / 2
+      });
+    } else {
+      return $img.css({
+        top: 0
+      });
+    }
+  };
+  setHorizontalPosition = function($img) {
+    var scale_width;
+    scale_width = height * $img.data('aspect-ratio');
+    if (scale_width >= width) {
+      return $img.css({
+        left: -(scale_width - width) / 2
+      });
+    } else {
+      return $img.css({
+        left: 0
+      });
+    }
+  };
+  adjustImagePosition = function($img) {
+    if (!$img.data('aspect-ratio')) {
+      loadImage($img, function(image) {
+        $img.removeAttr('width').removeAttr('height');
+        $img.data('aspect-ratio', image.width / image.height);
+        return adjustImagePosition($img);
+      });
+      return;
+    }
+    setHorizontalPosition($img);
+    return setVerticalPosition($img);
+  };
+  adjustSlidesSize = function($el) {
+    that = _this;
+    return $el.each(function(i) {
+      $(this).width(width).height(height);
+      $(this).css({
+        left: width
+      });
+      return adjustImagePosition($('img', this).not('.keep-original'));
+    });
   };
   findMultiplier = function() {
     if (_this.size() === 1) {
@@ -95,40 +169,18 @@ Superslides = function(el, options) {
     _this.prev = prev();
     return false;
   };
-  setupContainers = function() {
-    return $control.css({
-      width: width * multiplier,
-      height: height,
-      left: -width
-    });
-  };
-  setupChildren = function() {
-    $children.not('.current').css({
-      display: 'none',
-      position: 'absolute',
-      overflow: 'hidden',
-      top: 0,
-      left: width,
-      zIndex: 0
-    });
-    return adjustSlidesSize($children);
-  };
-  adjustSlidesSize = function($el) {
-    that = _this;
-    return $el.each(function(i) {
-      $(this).width(width).height(height);
-      return $(this).css({
-        left: width
-      });
-    });
-  };
   animator = function(callback) {
-    var offset, position;
+    var next_index, offset, position;
     that = _this;
     position = width * 2;
     offset = -position;
+    if (!init && _this.current === 0) {
+      next_index = _this.current;
+    } else {
+      next_index = _this.next;
+    }
     $children.removeClass('current');
-    $children.eq(_this.next).addClass('current').css({
+    $children.eq(next_index).addClass('current').css({
       left: position,
       display: 'block'
     });
@@ -141,7 +193,13 @@ Superslides = function(el, options) {
       }
       positions(_this.next);
       _this.animating = false;
-      return $container.trigger('slides.animated');
+      if (init) {
+        return $container.trigger('slides.animated');
+      } else {
+        init = true;
+        positions(0);
+        return $container.trigger('slides.init');
+      }
     });
   };
   this.$el = $(el);
@@ -160,6 +218,7 @@ Superslides = function(el, options) {
     return delete _this.play_id;
   };
   this.start = function() {
+    setupChildren();
     $window.trigger('hashchange');
     _this.animate('next', function() {
       return $container.fadeIn('fast');
@@ -197,6 +256,19 @@ Superslides = function(el, options) {
     index = parseHash();
     if (index) {
       return that.animate(index);
+    }
+  }).on('resize', function(e) {
+    width = $window.width();
+    height = $window.height();
+    adjustSlidesSize($children);
+    return setupContainers();
+  }).on('click', "." + options.nav_class + " a", function(e) {
+    e.preventDefault();
+    that.stop();
+    if ($(this).hasClass('next')) {
+      return animate('next');
+    } else {
+      return animate('prev');
     }
   });
   return initialize();
