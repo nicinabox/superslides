@@ -11,7 +11,6 @@ Superslides = (el, options = {}) ->
     scrollable: true
   , options
 
-  that       = this
   $window    = $(window)
   $container = $(".#{@options.container_class}")
   $children  = $container.children()
@@ -32,6 +31,7 @@ Superslides = (el, options = {}) ->
     $control = $container.wrap($control).parent('.slides-control')
 
     setupContainers()
+    setupChildren()
 
     @start()
     this
@@ -49,7 +49,7 @@ Superslides = (el, options = {}) ->
       position: 'absolute'
       overflow: 'hidden'
       top: 0
-      # left: width
+      left: width
       zIndex: 0
 
     adjustSlidesSize $children
@@ -93,7 +93,6 @@ Superslides = (el, options = {}) ->
     setVerticalPosition($img)
 
   adjustSlidesSize = ($el) =>
-    that = this
     $el.each (i) ->
       $(this).width(width).height(height)
 
@@ -146,36 +145,40 @@ Superslides = (el, options = {}) ->
 
   animator = (upcoming_slide, callback) =>
     that           = this
-    position       = width
+    position       = width * 2
     offset         = -position
     outgoing_slide = @current
+
+    if upcoming_slide < outgoing_slide
+      position = 0
+      offset   = 0
 
     $children
       .removeClass('current')
       .eq(upcoming_slide)
         .addClass('current')
         .css
-          # left: position
+          left: (if init then position else width)
           display: 'block'
 
     $control.animate
       useTranslate3d: @mobile
-      left: 0
+      left: offset
     , @options.slide_speed
     , @options.slide_easing
     , =>
       positions(upcoming_slide)
 
-      # $control.css
-      #   left: -width
+      $control.css
+        left: -width
 
-      # $children.eq(next_index).css
-      #   left: width
-      #   zIndex: 2
+      $children.eq(upcoming_slide).css
+        left: width
+        zIndex: 2
 
       # reset last slide
       $children.eq(outgoing_slide).css
-        # left: width
+        left: width
         display: 'none'
         zIndex: 0
 
@@ -239,7 +242,7 @@ Superslides = (el, options = {}) ->
   $window
   .on 'hashchange', (e) ->
     index = parseHash()
-    that.animate(index) if index
+    _this.animate(index) if index
 
   .on 'resize', (e) ->
     width = $window.width()
@@ -251,11 +254,11 @@ Superslides = (el, options = {}) ->
   $(document)
   .on 'click', ".#{@options.nav_class} a", (e) ->
     e.preventDefault()
-    that.stop()
+    _this.stop()
     if $(this).hasClass('next')
-      that.animate 'next'
+      _this.animate 'next'
     else
-      that.animate 'prev'
+      _this.animate 'prev'
 
   initialize()
 
