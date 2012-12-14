@@ -216,12 +216,16 @@
       });
 
       window.location.hash = '2';
-      $slides.superslides();
+      $slides.superslides({
+        hashchange: true
+      });
     });
 
     asyncTest('Uses hash when changed', 1, function() {
       addSlide(2);
-      $slides.superslides();
+      $slides.superslides({
+        hashchange: true
+      });
       $slides.data('superslides').animating = false;
 
       $slides.on('slides.animated', function(e) {

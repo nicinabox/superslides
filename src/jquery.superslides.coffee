@@ -220,15 +220,10 @@ Superslides = (el, options = {}) ->
 
   @animate = (direction = 'next', callback) =>
     return if @animating
-
     @animating = true
 
     upcoming_slide = upcomingSlide(direction)
-
     return if upcoming_slide >= @size()
-
-    # Reset positions
-    positions(upcoming_slide - 1) if upcoming_slide == direction
 
     animator(upcoming_slide, callback)
 
@@ -248,7 +243,7 @@ Superslides = (el, options = {}) ->
 
   @start = =>
     setupChildren()
-    $window.trigger 'hashchange'
+    $window.trigger 'hashchange' if @options.hashchange
 
     @animate 'next'
 
@@ -266,7 +261,7 @@ Superslides = (el, options = {}) ->
   $window
   .on 'hashchange', (e) =>
     index = parseHash()
-    if index
+    if index >= 0
       @animate index
 
   .on 'resize', (e) ->
@@ -276,6 +271,7 @@ Superslides = (el, options = {}) ->
     setupContainers()
     adjustSlidesSize $children
 
+
   $(document)
   .on 'click', ".#{@options.classes.nav} a", (e) ->
     e.preventDefault()
@@ -284,6 +280,12 @@ Superslides = (el, options = {}) ->
       _this.animate 'next'
     else
       _this.animate 'prev'
+
+  .on 'click', ".#{@options.classes.pagination} a", (e) ->
+    unless _this.options.hashchange
+      e.preventDefault()
+      index = this.hash.replace(/^#/, '')
+      _this.animate index
 
   initialize()
 
