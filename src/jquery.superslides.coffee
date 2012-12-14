@@ -3,7 +3,7 @@ Superslides = (el, options = {}) ->
     play: false
     slide_speed: 'normal'
     slide_easing: 'linear'
-    pagination: false
+    pagination: true
     hashchange: false
     scrollable: true
     classes:
@@ -12,14 +12,15 @@ Superslides = (el, options = {}) ->
       pagination: 'slides-pagination'
   , options
 
-  $window    = $(window)
-  $container = $(".#{@options.classes.container}")
-  $children  = $container.children()
-  $control   = $('<div>', class: 'slides-control')
-  multiplier = 1
-  init       = false
-  width      = $window.width()
-  height     = $window.height()
+  $window     = $(window)
+  $container  = $(".#{@options.classes.container}")
+  $children   = $container.children()
+  $pagination = $("<nav>", class: @options.classes.pagination)
+  $control    = $('<div>', class: 'slides-control')
+  multiplier  = 1
+  init        = false
+  width       = $window.width()
+  height      = $window.height()
 
   # Private
   initialize = =>
@@ -33,6 +34,7 @@ Superslides = (el, options = {}) ->
 
     setupContainers()
     setupChildren()
+    addPagination()
 
     @start()
     this
@@ -54,6 +56,21 @@ Superslides = (el, options = {}) ->
       zIndex: 0
 
     adjustSlidesSize $children
+
+  addPagination = =>
+    return unless @options.pagination
+    $(el).append($pagination)
+
+    $children.each (i) ->
+      addPaginationItem(i)
+
+  addPaginationItem = (i) =>
+    unless i >= 0
+      i = @size() - 1 # size is not zero indexed
+
+    $pagination.append $("<a>",
+      href: "##{i}"
+    )
 
   loadImage = ($img, callback) =>
     $("<img>",
@@ -101,8 +118,6 @@ Superslides = (el, options = {}) ->
         left: width
 
       adjustImagePosition $('img', this).not('.keep-original')
-
-    # $container.trigger('slides.sized')
 
   findMultiplier = =>
     if @size() == 1 then 1 else 3
@@ -163,6 +178,11 @@ Superslides = (el, options = {}) ->
         .css
           left: upcoming_position
           display: 'block'
+
+    $pagination.children()
+      .removeClass('current')
+      .eq(upcoming_slide)
+        .addClass('current')
 
     $control.animate
       useTranslate3d: @mobile
