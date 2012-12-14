@@ -216,12 +216,11 @@ Superslides = (el, options = {}) ->
       @animating = false
 
       if init
-        $container.trigger('slides.animated')
+        $container.trigger('animated.slides')
       else
         init = true
-        # positions(0)
         $container.fadeIn('fast')
-        $container.trigger('slides.init')
+        $container.trigger('init.slides')
 
   # Public
   @$el = $(el)
@@ -237,7 +236,7 @@ Superslides = (el, options = {}) ->
 
   @update = =>
     positions(@current)
-    $container.trigger('slides.updated')
+    $container.trigger('updated.slides')
 
   @destroy = =>
     $(el).removeData()
@@ -263,7 +262,7 @@ Superslides = (el, options = {}) ->
         false
       , @options.play
 
-    $container.trigger('slides.started')
+    $container.trigger('started.slides')
 
   # Events
   $window
@@ -293,7 +292,7 @@ Superslides = (el, options = {}) ->
   .on 'click', ".#{@options.classes.pagination} a", (e) ->
     unless that.options.hashchange
       e.preventDefault()
-      index = this.hash.replace(/^#/, '')
+      index = parseHash(this.hash)
       that.animate index
 
   initialize()

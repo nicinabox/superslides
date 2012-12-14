@@ -36,15 +36,15 @@
     asyncTest('slides.init', 1, function() {
       $slides.superslides();
 
-      $slides.on('slides.init', function(e) {
+      $slides.on('init.slides', function(e) {
         ok(true);
         start();
       });
 
     });
 
-    asyncTest('slides.started', 1, function() {
-      $slides.on('slides.started', function(e) {
+    asyncTest('started.slides', 1, function() {
+      $slides.on('started.slides', function(e) {
         ok(true);
         start();
       });
@@ -52,8 +52,8 @@
       $slides.superslides();
     });
 
-    asyncTest('slides.updated', 1, function() {
-      $slides.on('slides.updated', function(e) {
+    asyncTest('updated.slides', 1, function() {
+      $slides.on('updated.slides', function(e) {
         ok(true);
         start();
       });
@@ -63,12 +63,12 @@
       $slides.superslides('update');
     });
 
-    asyncTest('slides.animated', function() {
+    asyncTest('animated.slides', function() {
       addSlide(2);
       $slides.superslides();
       $slides.data('superslides').animating = false;
 
-      $slides.on('slides.animated', function(e) {
+      $slides.on('animated.slides', function(e) {
         ok(true);
         start();
       });
@@ -115,7 +115,7 @@
     });
 
     asyncTest('.update()', function() {
-      $slides.on('slides.updated', function() {
+      $slides.on('updated.slides', function() {
         equal($slides.superslides('current'), 0, 'current == 0');
         equal($slides.superslides('next'), 1, 'next == 1');
         equal($slides.superslides('prev'), 2, 'prev == 2');
@@ -123,7 +123,7 @@
       });
 
       $slides.superslides();
-      $slides.on('slides.init', function() {
+      $slides.on('init.slides', function() {
         addSlide(2);
         $slides.superslides('update');
       });
@@ -132,7 +132,7 @@
     asyncTest('.animate()', function() {
       addSlide(2);
 
-      $slides.on('slides.animated', function(e) {
+      $slides.on('animated.slides', function(e) {
         equal($slides.superslides('current'), 1);
         equal($slides.superslides('next'), 2);
         equal($slides.superslides('prev'), 0);
@@ -140,7 +140,7 @@
         start();
       });
 
-      $slides.on('slides.init', function() {
+      $slides.on('init.slides', function() {
         $slides.superslides('animate');
       });
 
@@ -156,7 +156,7 @@
     asyncTest('.current - single slide', function() {
       $slides.superslides();
 
-      $slides.on('slides.init', function() {
+      $slides.on('init.slides', function() {
         equal($slides.superslides('current'), 0);
         start();
       });
@@ -166,7 +166,7 @@
       addSlide(2);
       $slides.superslides();
 
-      $slides.on('slides.init', function() {
+      $slides.on('init.slides', function() {
         equal($slides.superslides('current'), 0);
         start();
       });
@@ -181,7 +181,7 @@
       addSlide(2);
       $slides.superslides();
 
-      $slides.on('slides.init', function() {
+      $slides.on('init.slides', function() {
         equal($slides.superslides('prev'), 2);
         start();
       });
@@ -197,7 +197,7 @@
       addSlide(2);
       $slides.superslides();
 
-      $slides.on('slides.init', function() {
+      $slides.on('init.slides', function() {
         equal($slides.superslides('next'), 1);
         start();
       });
@@ -207,7 +207,7 @@
     asyncTest('Uses hash index on init', function() {
       addSlide(2);
 
-      $slides.on('slides.init', function(e) {
+      $slides.on('init.slides', function(e) {
         var current = $slides.superslides('current');
         equal(current, 2, '#2 should be slide index 2');
 
@@ -228,7 +228,7 @@
       });
       $slides.data('superslides').animating = false;
 
-      $slides.on('slides.animated', function(e) {
+      $slides.on('animated.slides', function(e) {
         var current = $slides.superslides('current');
         equal(current, 2, '#2 should be slide index 2');
 
@@ -250,7 +250,7 @@
     });
 
     asyncTest('It should start on init', function() {
-      $slides.on('slides.started', function() {
+      $slides.on('started.slides', function() {
         ok(true, 'Started');
         start();
       });
