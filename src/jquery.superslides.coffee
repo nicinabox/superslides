@@ -45,7 +45,7 @@ Superslides = (el, options = {}) ->
       left: -width
 
   setupChildren = =>
-    $children.not('.current').css
+    $children.css
       display: 'none'
       position: 'absolute'
       overflow: 'hidden'
@@ -97,8 +97,8 @@ Superslides = (el, options = {}) ->
     $el.each (i) ->
       $(this).width(width).height(height)
 
-      # $(this).css
-      #   left: width
+      $(this).css
+        left: width
 
       adjustImagePosition $('img', this).not('.keep-original')
 
