@@ -1,30 +1,34 @@
-/*! Superslides - v0.5.0 - 2012-12-02
+/*! Superslides - v0.5.0 - 2012-12-14
 * https://github.com/nicinabox/superslides
 * Copyright (c) 2012 Nic Aitch; Licensed MIT */
 
-var Superslides, name;
+var Superslides, plugin;
 
 Superslides = function(el, options) {
-  var $children, $container, $control, $window, adjustImagePosition, adjustSlidesSize, animator, findMultiplier, height, init, initialize, loadImage, multiplier, next, parseHash, positions, prev, setHorizontalPosition, setVerticalPosition, setupChildren, setupContainers, that, upcomingSlide, width,
+  var $children, $container, $control, $pagination, $window, addPagination, addPaginationItem, adjustImagePosition, adjustSlidesSize, animator, findMultiplier, height, init, initialize, loadImage, multiplier, next, parseHash, positions, prev, setHorizontalPosition, setVerticalPosition, setupChildren, setupContainers, upcomingSlide, width,
     _this = this;
   if (options == null) {
     options = {};
   }
   this.options = $.extend({
-    delay: 5000,
     play: false,
     slide_speed: 'normal',
     slide_easing: 'linear',
-    nav_class: 'slides-navigation',
-    container_class: 'slides-container',
-    pagination: false,
+    pagination: true,
     hashchange: false,
-    scrollable: true
+    scrollable: true,
+    classes: {
+      nav: 'slides-navigation',
+      container: 'slides-container',
+      pagination: 'slides-pagination'
+    }
   }, options);
-  that = this;
   $window = $(window);
-  $container = $("." + this.options.container_class);
+  $container = $("." + this.options.classes.container);
   $children = $container.children();
+  $pagination = $("<nav>", {
+    "class": this.options.classes.pagination
+  });
   $control = $('<div>', {
     "class": 'slides-control'
   });
@@ -41,6 +45,8 @@ Superslides = function(el, options) {
     _this.mobile = /mobile/i.test(navigator.userAgent);
     $control = $container.wrap($control).parent('.slides-control');
     setupContainers();
+    setupChildren();
+    addPagination();
     _this.start();
     return _this;
   };
@@ -52,14 +58,32 @@ Superslides = function(el, options) {
     });
   };
   setupChildren = function() {
-    $children.not('.current').css({
+    $children.css({
       display: 'none',
       position: 'absolute',
       overflow: 'hidden',
       top: 0,
+      left: width,
       zIndex: 0
     });
     return adjustSlidesSize($children);
+  };
+  addPagination = function() {
+    if (!_this.options.pagination) {
+      return;
+    }
+    $(el).append($pagination);
+    return $children.each(function(i) {
+      return addPaginationItem(i);
+    });
+  };
+  addPaginationItem = function(i) {
+    if (!(i >= 0)) {
+      i = _this.size() - 1;
+    }
+    return $pagination.append($("<a>", {
+      href: "#" + i
+    }));
   };
   loadImage = function($img, callback) {
     return $("<img>", {
@@ -109,9 +133,11 @@ Superslides = function(el, options) {
     return setVerticalPosition($img);
   };
   adjustSlidesSize = function($el) {
-    that = _this;
     return $el.each(function(i) {
       $(this).width(width).height(height);
+      $(this).css({
+        left: width
+      });
       return adjustImagePosition($('img', this).not('.keep-original'));
     });
   };
@@ -174,20 +200,35 @@ Superslides = function(el, options) {
     return false;
   };
   animator = function(upcoming_slide, callback) {
-    var offset, outgoing_slide, position;
+    var offset, outgoing_slide, position, that, upcoming_position;
     that = _this;
-    position = width;
+    position = width * 2;
     offset = -position;
     outgoing_slide = _this.current;
+    if (upcoming_slide === _this.prev) {
+      position = 0;
+      offset = 0;
+    }
+    upcoming_position = position;
     $children.removeClass('current').eq(upcoming_slide).addClass('current').css({
+      left: upcoming_position,
       display: 'block'
     });
+    $pagination.children().removeClass('current').eq(upcoming_slide).addClass('current');
     return $control.animate({
       useTranslate3d: _this.mobile,
-      left: 0
+      left: offset
     }, _this.options.slide_speed, _this.options.slide_easing, function() {
       positions(upcoming_slide);
+      $control.css({
+        left: -width
+      });
+      $children.eq(upcoming_slide).css({
+        left: width,
+        zIndex: 2
+      });
       $children.eq(outgoing_slide).css({
+        left: width,
         display: 'none',
         zIndex: 0
       });
@@ -248,8 +289,9 @@ Superslides = function(el, options) {
         _this.stop();
       }
       _this.play_id = setInterval(function() {
+        _this.animate('next');
         return false;
-      }, _this.options.delay);
+      }, _this.options.play);
     }
     return $container.trigger('slides.started');
   };
@@ -257,46 +299,45 @@ Superslides = function(el, options) {
     var index;
     index = parseHash();
     if (index) {
-      return that.animate(index);
+      return _this.animate(index);
     }
   }).on('resize', function(e) {
     width = $window.width();
     height = $window.height();
-    adjustSlidesSize($children);
-    return setupContainers();
+    setupContainers();
+    return adjustSlidesSize($children);
   });
-  $(document).on('click', "." + this.options.nav_class + " a", function(e) {
+  $(document).on('click', "." + this.options.classes.nav + " a", function(e) {
     e.preventDefault();
-    that.stop();
+    _this.stop();
     if ($(this).hasClass('next')) {
-      return that.animate('next');
+      return _this.animate('next');
     } else {
-      return that.animate('prev');
+      return _this.animate('prev');
     }
   });
   return initialize();
 };
 
-name = 'superslides';
+plugin = 'superslides';
 
-$.fn[name] = function(option, args) {
-  var $this, data, method;
-  if (typeof option === "string") {
+$.fn[plugin] = function(option, args) {
+  var result;
+  result = [];
+  this.each(function() {
+    var $this, data, options;
     $this = $(this);
-    data = $this.data(name);
-    method = data[option];
-    if (typeof method === 'function') {
-      method = method.call($this, args);
-    }
-    return method;
-  }
-  return this.each(function() {
-    var options;
-    $this = $(this);
-    data = $this.data(name);
+    data = $this.data(plugin);
     options = typeof option === 'object' && option;
     if (!data) {
-      return $this.data(name, (data = new Superslides(this, options)));
+      result = $this.data(plugin, (data = new Superslides(this, options)));
+    }
+    if (typeof option === "string") {
+      result = data[option];
+      if (typeof result === 'function') {
+        return result = result.call(this, args);
+      }
     }
   });
+  return result;
 };

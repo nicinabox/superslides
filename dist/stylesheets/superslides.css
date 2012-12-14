@@ -145,6 +145,6 @@ body {
   display: inline-block;
   margin: 2px;
 }
-.slides-pagination a.active {
+.slides-pagination a.current {
   background: #222;
 }
