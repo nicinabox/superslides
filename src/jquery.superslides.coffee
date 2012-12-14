@@ -149,16 +149,18 @@ Superslides = (el, options = {}) ->
     offset         = -position
     outgoing_slide = @current
 
-    if upcoming_slide < outgoing_slide
+    if upcoming_slide == @prev
       position = 0
       offset   = 0
+
+    upcoming_position = position
 
     $children
       .removeClass('current')
       .eq(upcoming_slide)
         .addClass('current')
         .css
-          left: (if init then position else width)
+          left: upcoming_position
           display: 'block'
 
     $control.animate
