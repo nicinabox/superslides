@@ -3,15 +3,17 @@ Superslides = (el, options = {}) ->
     play: false
     slide_speed: 'normal'
     slide_easing: 'linear'
-    nav_class: 'slides-navigation'
-    container_class: 'slides-container'
     pagination: false
     hashchange: false
     scrollable: true
+    classes:
+      nav: 'slides-navigation'
+      container: 'slides-container'
+      pagination: 'slides-pagination'
   , options
 
   $window    = $(window)
-  $container = $(".#{@options.container_class}")
+  $container = $(".#{@options.classes.container}")
   $children  = $container.children()
   $control   = $('<div>', class: 'slides-control')
   multiplier = 1
@@ -249,11 +251,11 @@ Superslides = (el, options = {}) ->
     width = $window.width()
     height = $window.height()
 
-    adjustSlidesSize $children
     setupContainers()
+    adjustSlidesSize $children
 
   $(document)
-  .on 'click', ".#{@options.nav_class} a", (e) ->
+  .on 'click', ".#{@options.classes.nav} a", (e) ->
     e.preventDefault()
     _this.stop()
     if $(this).hasClass('next')
