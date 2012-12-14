@@ -219,7 +219,6 @@ Superslides = (el, options = {}) ->
     $(el).removeData()
 
   @size = =>
-    # console.log $container
     $container.children().length
 
   @stop = =>
@@ -236,7 +235,7 @@ Superslides = (el, options = {}) ->
       @stop() if @play_id
 
       @play_id = setInterval =>
-        # @animate 'next'
+        @animate 'next'
         false
       , @options.play
 
