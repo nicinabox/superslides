@@ -208,8 +208,8 @@
       addSlide(2);
 
       $slides.on('slides.init', function(e) {
-        var $current = $slides.find('.current');
-        equal($current.index(), 2, '#2 should be slide index 2');
+        var current = $slides.superslides('current');
+        equal(current, 2, '#2 should be slide index 2');
 
         start();
         window.location.hash = '';
@@ -225,8 +225,8 @@
       $slides.data('superslides').animating = false;
 
       $slides.on('slides.animated', function(e) {
-        var $current = $slides.find('.current');
-        equal($current.index(), 2, '#2 should be slide index 2');
+        var current = $slides.superslides('current');
+        equal(current, 2, '#2 should be slide index 2');
 
         start();
         window.location.hash = '';

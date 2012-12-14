@@ -33,13 +33,13 @@ Superslides = (el, options = {}) ->
     $control = $container.wrap($control).parent('.slides-control')
 
     setupContainers()
-    setupChildren()
     addPagination()
 
     @start()
     this
 
   setupContainers = ->
+
     # Center control
     $control.css
       width: width * multiplier
@@ -160,7 +160,6 @@ Superslides = (el, options = {}) ->
     false
 
   animator = (upcoming_slide, callback) =>
-    that           = this
     position       = width * 2
     offset         = -position
     outgoing_slide = @current
@@ -212,7 +211,8 @@ Superslides = (el, options = {}) ->
         $container.trigger('slides.animated')
       else
         init = true
-        positions(0)
+        # positions(0)
+        $container.fadeIn('fast')
         $container.trigger('slides.init')
 
   # Public
@@ -224,7 +224,8 @@ Superslides = (el, options = {}) ->
     @animating = true
 
     upcoming_slide = upcomingSlide(direction)
-    return if upcoming_slide > @size()
+
+    return if upcoming_slide >= @size()
 
     # Reset positions
     positions(upcoming_slide - 1) if upcoming_slide == direction
@@ -248,8 +249,8 @@ Superslides = (el, options = {}) ->
   @start = =>
     setupChildren()
     $window.trigger 'hashchange'
-    @animate 'next', =>
-      $container.fadeIn('fast')
+
+    @animate 'next'
 
     if @options.play
       @stop() if @play_id
@@ -263,9 +264,10 @@ Superslides = (el, options = {}) ->
 
   # Events
   $window
-  .on 'hashchange', (e) ->
+  .on 'hashchange', (e) =>
     index = parseHash()
-    _this.animate(index) if index
+    if index
+      @animate index
 
   .on 'resize', (e) ->
     width = $window.width()
@@ -300,4 +302,5 @@ $.fn[plugin] = (option, args) ->
       result = data[option]
       if typeof result == 'function'
         result = result.call(this, args)
+
   result
