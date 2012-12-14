@@ -74,14 +74,13 @@ body {
 }
 
 .slides-navigation {
-  width: 85%;
   margin: 0 auto;
   position: relative;
   z-index: 3;
   top: -50%;
 }
 .slides-navigation a {
-  position: fixed;
+  position: absolute;
   display: block;
   color: black;
   background: white;
