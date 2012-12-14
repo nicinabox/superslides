@@ -1,5 +1,11 @@
 # Changelog
 
+### 0.5.0 - Unreleased
+
+* Ground up rebuild
+* New API
+* Fix current/next/prev bug
+
 ### 0.4.3 - Oct Dec 2, 2012
 
 * Refactors
