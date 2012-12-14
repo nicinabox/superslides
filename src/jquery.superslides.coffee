@@ -219,6 +219,7 @@ Superslides = (el, options = {}) ->
     $(el).removeData()
 
   @size = =>
+    # console.log $container
     $container.children().length
 
   @stop = =>
@@ -266,20 +267,18 @@ Superslides = (el, options = {}) ->
   initialize()
 
 # Plugin
-name = 'superslides'
-$.fn[name] = (option, args) ->
-  if typeof option is "string"
-    $this = $(this)
-    data = $this.data(name)
-
-    method = data[option]
-    if typeof method == 'function'
-      method = method.call($this, args)
-    return method
-
+plugin = 'superslides'
+$.fn[plugin] = (option, args) ->
+  result = []
   @each ->
-    $this = $(this)
-    data = $this.data(name)
+    $this   = $(this)
+    data    = $this.data(plugin)
     options = typeof option == 'object' && option
 
-    $this.data name, (data = new Superslides(this, options)) unless data
+    result = $this.data plugin, (data = new Superslides(this, options)) unless data
+
+    if typeof option == "string"
+      result = data[option]
+      if typeof result == 'function'
+        result = result.call(this, args)
+  result
