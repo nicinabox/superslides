@@ -77,15 +77,15 @@
     });
 
     module('API');
-    test('.size() - 1', function() {
+    test('.size() should be 1', function() {
       $slides.superslides();
-      equal($slides.superslides('size'), 1, 'should be 1');
+      equal($slides.superslides('size'), 1);
     });
 
-    test('.size() - 3', function() {
+    test('.size() should be 3', function() {
       addSlide(2);
       $slides.superslides();
-      equal($slides.superslides('size'), 3, 'should be 3');
+      equal($slides.superslides('size'), 3);
     });
 
     asyncTest('.start() - with options.play', function() {
