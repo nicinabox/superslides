@@ -219,12 +219,28 @@
         $(this).css({
           left: width
         });
-        return adjustImagePosition($('img', this).not("." + that.options.classes.preserve));
-      });
-    };
-    findMultiplier = function() {
-      if (_this.size() === 1) {
-        return 1;
+      }
+      return adjustImagePosition($('img', this).not('.keep-original'));
+    });
+    return $container.trigger('slides.sized');
+  };
+
+  addPaginationItem = function(i) {
+    var $pagination;
+    $pagination = $(".slides-pagination");
+    if (!(i >= 0)) {
+      i = size - 1;
+    }
+    return $pagination.append($("<a>", {
+      href: "" + window.location.href + "#" + i
+    }));
+  };
+
+  start = function() {
+    var index;
+    if (size > 1) {
+      if (location.hash) {
+        index = location.hash.replace(/^#/, '');
       } else {
         return 3;
       }
