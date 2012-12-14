@@ -12,6 +12,7 @@ Superslides = (el, options = {}) ->
       pagination: 'slides-pagination'
   , options
 
+  that        = this
   $window     = $(window)
   $container  = $(".#{@options.classes.container}")
   $children   = $container.children()
@@ -39,7 +40,6 @@ Superslides = (el, options = {}) ->
     this
 
   setupContainers = ->
-
     # Center control
     $control.css
       width: width * multiplier
@@ -56,6 +56,13 @@ Superslides = (el, options = {}) ->
       zIndex: 0
 
     adjustSlidesSize $children
+
+  setupNextPrev = =>
+    $(".#{@options.classes.nav} a").each ->
+      if $(this).hasClass('next')
+        this.hash = that.next
+      else
+        this.hash = that.prev
 
   addPagination = =>
     return unless @options.pagination
@@ -205,6 +212,7 @@ Superslides = (el, options = {}) ->
         zIndex: 0
 
       callback() if typeof callback == 'function'
+      setupNextPrev()
       @animating = false
 
       if init
@@ -274,18 +282,19 @@ Superslides = (el, options = {}) ->
 
   $(document)
   .on 'click', ".#{@options.classes.nav} a", (e) ->
-    e.preventDefault()
-    _this.stop()
+    e.preventDefault() unless that.options.hashchange
+
+    that.stop()
     if $(this).hasClass('next')
-      _this.animate 'next'
+      that.animate 'next'
     else
-      _this.animate 'prev'
+      that.animate 'prev'
 
   .on 'click', ".#{@options.classes.pagination} a", (e) ->
-    unless _this.options.hashchange
+    unless that.options.hashchange
       e.preventDefault()
       index = this.hash.replace(/^#/, '')
-      _this.animate index
+      that.animate index
 
   initialize()
 
