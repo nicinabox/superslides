@@ -1,6 +1,5 @@
 Superslides = (el, options = {}) ->
   @options = $.extend
-    delay: 5000
     play: false
     slide_speed: 'normal'
     slide_easing: 'linear'
@@ -236,7 +235,7 @@ Superslides = (el, options = {}) ->
       @play_id = setInterval =>
         # @animate 'next'
         false
-      , @options.delay
+      , @options.play
 
     $container.trigger('slides.started')
 
