@@ -282,7 +282,8 @@ Superslides = function(el, options) {
   };
   this.stop = function() {
     clearInterval(_this.play_id);
-    return delete _this.play_id;
+    delete _this.play_id;
+    return $container.trigger('stopped.slides');
   };
   this.start = function() {
     setupChildren();
