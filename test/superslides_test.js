@@ -130,12 +130,16 @@
     asyncTest('.update()', function() {
       $slides.on('updated.slides', function() {
         var $pagination = $slides.find('.slides-pagination');
+        var $navigation = $slides.find('.slides-navigation');
+
         equal($slides.superslides('current'), 0, 'current == 0');
         equal($slides.superslides('next'), 1, 'next == 1');
         equal($slides.superslides('prev'), 2, 'prev == 2');
 
-        console.log($pagination)
         equal($pagination.children().length, 3, 'updates pagination');
+        equal($pagination.children('.current').index(), 0, 'sets active pagination item');
+
+        ok($navigation.is(':visible'), 'navigation is visible');
 
         start();
       });

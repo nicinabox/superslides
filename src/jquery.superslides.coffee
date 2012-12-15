@@ -32,10 +32,10 @@ Superslides = (el, options = {}) ->
     @mobile = (/mobile/i).test(navigator.userAgent)
 
     $control = $container.wrap($control).parent('.slides-control')
-    $(".#{@options.classes.nav}").hide() if @size() <= 1
 
     setupContainers()
     addPagination()
+    toggleNav()
 
     @start()
     this
@@ -57,6 +57,12 @@ Superslides = (el, options = {}) ->
 
     adjustSlidesSize $children
 
+  toggleNav = =>
+    if @size() > 1
+      $(".#{@options.classes.nav}").show()
+    else
+      $(".#{@options.classes.nav}").hide()
+
   setupNextPrev = =>
     $(".#{@options.classes.nav} a").each ->
       if $(this).hasClass('next')
@@ -64,29 +70,27 @@ Superslides = (el, options = {}) ->
       else
         this.hash = that.prev
 
-  addPagination = =>
-    return if !@options.pagination or @size() == 1
-    $(el).append($pagination)
-
-    $children.each (i) ->
-      addPaginationItem(i)
-
   addPaginationItem = (i) =>
     unless i >= 0
       i = @size() - 1 # size is not zero indexed
 
-    $pagination.append $("<a>", href: "##{i}")
+    $pagination.append $("<a>",
+      href: "##{i}"
+      class: "current" if @current == $pagination.children().length
+    )
 
-  updatePagination = =>
+  addPagination = =>
     return if !@options.pagination or @size() == 1
 
     if $(el).find(".#{@options.classes.pagination}").length
       last_index = $pagination.children().last().index()
+      array      = $children
     else
-      last_index = 0
       $(el).append($pagination)
+      last_index = 0
+      array      = new Array(@size() - last_index)
 
-    $.each new Array(@size() - last_index), (i) ->
+    $.each array, (i) ->
       addPaginationItem(i)
 
   loadImage = ($img, callback) =>
@@ -247,7 +251,9 @@ Superslides = (el, options = {}) ->
 
   @update = =>
     positions(@current)
-    updatePagination()
+    addPagination()
+    toggleNav()
+
     $container.trigger('updated.slides')
 
   @destroy = =>
@@ -272,7 +278,6 @@ Superslides = (el, options = {}) ->
 
       @play_id = setInterval =>
         @animate 'next'
-        false
       , @options.play
 
     $container.trigger('started.slides')
