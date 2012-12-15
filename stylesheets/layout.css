@@ -1,5 +1,5 @@
 body {
-  font-family: 'PT Sans', sans-serif;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
 a {
@@ -42,16 +42,28 @@ pre {
 }
 
 .container {
-  background: none;
+  background: white;
+  background: rgba(255, 255, 255, 0.2);
+  width: 40%;
+  left: 90px;
+  top: 25%;
+  padding: 10px 20px;
 }
 
 .slides-navigation a {
-  position: absolute;
-  -webkit-border-radius: 20px;
-  -moz-border-radius: 20px;
-  -ms-border-radius: 20px;
-  -o-border-radius: 20px;
-  border-radius: 20px;
+  -webkit-border-radius: 30px;
+  -moz-border-radius: 30px;
+  -ms-border-radius: 30px;
+  -o-border-radius: 30px;
+  border-radius: 30px;
+  display: block;
+  text-decoration: none;
   border: 3px solid #fff;
-  padding: 10px;
+  color: white;
+  font-weight: bold;
+  padding: 2px 13px;
+  font-size: 26px;
+  margin: 0 25px;
+  text-shadow: 0 1px 1px #000;
+  text-align: center;
 }
