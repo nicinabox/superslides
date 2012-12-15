@@ -180,12 +180,16 @@ Superslides = (el, options = {}) ->
     @prev    = prev()
     false
 
-  animator = (upcoming_slide, callback) =>
+  animator = (direction, callback) =>
+    upcoming_slide = upcomingSlide(direction)
+    return if upcoming_slide >= @size()
+
     position       = width * 2
     offset         = -position
     outgoing_slide = @current
 
-    if upcoming_slide == @prev
+    if direction == 'prev' or
+       direction < outgoing_slide
       position = 0
       offset   = 0
 
@@ -244,10 +248,7 @@ Superslides = (el, options = {}) ->
     return if @animating
     @animating = true
 
-    upcoming_slide = upcomingSlide(direction)
-    return if upcoming_slide >= @size()
-
-    animator(upcoming_slide, callback)
+    animator(direction, callback)
 
   @update = =>
     positions(@current)
