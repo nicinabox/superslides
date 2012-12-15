@@ -5,7 +5,7 @@
 var Superslides, plugin;
 
 Superslides = function(el, options) {
-  var $children, $container, $control, $pagination, $window, addPagination, addPaginationItem, adjustImagePosition, adjustSlidesSize, animator, findMultiplier, height, init, initialize, loadImage, multiplier, next, parseHash, positions, prev, setHorizontalPosition, setVerticalPosition, setupChildren, setupContainers, setupNextPrev, that, upcomingSlide, width,
+  var $children, $container, $control, $pagination, $window, addPagination, addPaginationItem, adjustImagePosition, adjustSlidesSize, animator, findMultiplier, height, init, initialize, loadImage, multiplier, next, parseHash, positions, prev, setHorizontalPosition, setVerticalPosition, setupChildren, setupContainers, setupNextPrev, that, toggleNav, upcomingSlide, width,
     _this = this;
   if (options == null) {
     options = {};
@@ -47,6 +47,7 @@ Superslides = function(el, options) {
     $control = $container.wrap($control).parent('.slides-control');
     setupContainers();
     addPagination();
+    toggleNav();
     _this.start();
     return _this;
   };
@@ -68,6 +69,13 @@ Superslides = function(el, options) {
     });
     return adjustSlidesSize($children);
   };
+  toggleNav = function() {
+    if (_this.size() > 1) {
+      return $("." + _this.options.classes.nav).show();
+    } else {
+      return $("." + _this.options.classes.nav).hide();
+    }
+  };
   setupNextPrev = function() {
     return $("." + _this.options.classes.nav + " a").each(function() {
       if ($(this).hasClass('next')) {
@@ -77,22 +85,31 @@ Superslides = function(el, options) {
       }
     });
   };
-  addPagination = function() {
-    if (!_this.options.pagination) {
-      return;
-    }
-    $(el).append($pagination);
-    return $children.each(function(i) {
-      return addPaginationItem(i);
-    });
-  };
   addPaginationItem = function(i) {
     if (!(i >= 0)) {
       i = _this.size() - 1;
     }
     return $pagination.append($("<a>", {
-      href: "#" + i
+      href: "#" + i,
+      "class": _this.current === $pagination.children().length ? "current" : void 0
     }));
+  };
+  addPagination = function() {
+    var array, last_index;
+    if (!_this.options.pagination || _this.size() === 1) {
+      return;
+    }
+    if ($(el).find("." + _this.options.classes.pagination).length) {
+      last_index = $pagination.children().last().index();
+      array = $children;
+    } else {
+      $(el).append($pagination);
+      last_index = 0;
+      array = new Array(_this.size() - last_index);
+    }
+    return $.each(array, function(i) {
+      return addPaginationItem(i);
+    });
   };
   loadImage = function($img, callback) {
     return $("<img>", {
@@ -228,18 +245,20 @@ Superslides = function(el, options) {
       left: offset
     }, _this.options.slide_speed, _this.options.slide_easing, function() {
       positions(upcoming_slide);
-      $control.css({
-        left: -width
-      });
-      $children.eq(upcoming_slide).css({
-        left: width,
-        zIndex: 2
-      });
-      $children.eq(outgoing_slide).css({
-        left: width,
-        display: 'none',
-        zIndex: 0
-      });
+      if (_this.size() > 1) {
+        $control.css({
+          left: -width
+        });
+        $children.eq(upcoming_slide).css({
+          left: width,
+          zIndex: 2
+        });
+        $children.eq(outgoing_slide).css({
+          left: width,
+          display: 'none',
+          zIndex: 0
+        });
+      }
       if (typeof callback === 'function') {
         callback();
       }
@@ -272,6 +291,8 @@ Superslides = function(el, options) {
   };
   this.update = function() {
     positions(_this.current);
+    addPagination();
+    toggleNav();
     return $container.trigger('updated.slides');
   };
   this.destroy = function() {
@@ -296,8 +317,7 @@ Superslides = function(el, options) {
         _this.stop();
       }
       _this.play_id = setInterval(function() {
-        _this.animate('next');
-        return false;
+        return _this.animate('next');
       }, _this.options.play);
     }
     return $container.trigger('started.slides');
