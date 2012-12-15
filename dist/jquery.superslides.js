@@ -225,12 +225,16 @@ Superslides = function(el, options) {
     _this.prev = prev();
     return false;
   };
-  animator = function(upcoming_slide, callback) {
-    var offset, outgoing_slide, position, upcoming_position;
+  animator = function(direction, callback) {
+    var offset, outgoing_slide, position, upcoming_position, upcoming_slide;
+    upcoming_slide = upcomingSlide(direction);
+    if (upcoming_slide >= _this.size()) {
+      return;
+    }
     position = width * 2;
     offset = -position;
     outgoing_slide = _this.current;
-    if (upcoming_slide === _this.prev) {
+    if (direction === 'prev' || direction < outgoing_slide) {
       position = 0;
       offset = 0;
     }
@@ -275,7 +279,6 @@ Superslides = function(el, options) {
   };
   this.$el = $(el);
   this.animate = function(direction, callback) {
-    var upcoming_slide;
     if (direction == null) {
       direction = 'next';
     }
@@ -283,11 +286,7 @@ Superslides = function(el, options) {
       return;
     }
     _this.animating = true;
-    upcoming_slide = upcomingSlide(direction);
-    if (upcoming_slide >= _this.size()) {
-      return;
-    }
-    return animator(upcoming_slide, callback);
+    return animator(direction, callback);
   };
   this.update = function() {
     positions(_this.current);
