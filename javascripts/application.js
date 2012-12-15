@@ -1,15 +1,5 @@
-var env = {
-  development: (function () {
-    return window.location.hostname == 'localhost';
-  })(),
-  production: (function() {
-    return window.location.hostname == 'nicinabox.github.com';
-  })()
-};
-
 $(document).ready(function() {
   $('#slides').superslides({
-    play: 5000,
     slide_easing: 'easeInOutCubic',
     slide_speed: 800,
     pagination: true,
