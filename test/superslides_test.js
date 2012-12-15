@@ -129,9 +129,14 @@
 
     asyncTest('.update()', function() {
       $slides.on('updated.slides', function() {
+        var $pagination = $slides.find('.slides-pagination');
         equal($slides.superslides('current'), 0, 'current == 0');
         equal($slides.superslides('next'), 1, 'next == 1');
         equal($slides.superslides('prev'), 2, 'prev == 2');
+
+        console.log($pagination)
+        equal($pagination.children().length, 3, 'updates pagination');
+
         start();
       });
 
@@ -164,15 +169,6 @@
     test('.mobile', function() {
       $slides.superslides();
       equal($slides.superslides('mobile'), (/mobile/i).test(navigator.userAgent));
-    });
-
-    asyncTest('.current - single slide', function() {
-      $slides.superslides();
-
-      $slides.on('init.slides', function() {
-        equal($slides.superslides('current'), 0);
-        start();
-      });
     });
 
     asyncTest('.current - 3 slides', function() {
@@ -252,6 +248,28 @@
       window.location.hash = '2';
     });
 
+    module('Single slide');
+    test('Pagination does not display', function() {
+      $slides.superslides();
+      var $pagination = $slides.find('.slides-pagination');
+      equal($pagination.length, 0);
+    });
+
+    test('Navigation does not display', function() {
+      $slides.superslides();
+      var $nav = $slides.find('.slides-navigation');
+      ok(!$nav.is(':visible'));
+    });
+
+    asyncTest('.current', function() {
+      $slides.superslides();
+
+      $slides.on('init.slides', function() {
+        equal($slides.superslides('current'), 0);
+        start();
+      });
+    });
+
     module('');
     test('Initialize', function() {
       $slides.superslides();
@@ -275,6 +293,13 @@
       $slides.superslides();
       var $current = $slides.find('.current');
       equal($current.index(), 0);
+    });
+
+    test('it shows navigation', function() {
+      addSlide(2);
+      $slides.superslides();
+      var $nav = $slides.find('.slides-navigation');
+      ok($nav.is(':visible'));
     });
 
   });

@@ -32,6 +32,7 @@ Superslides = (el, options = {}) ->
     @mobile = (/mobile/i).test(navigator.userAgent)
 
     $control = $container.wrap($control).parent('.slides-control')
+    $(".#{@options.classes.nav}").hide() if @size() <= 1
 
     setupContainers()
     addPagination()
@@ -40,7 +41,6 @@ Superslides = (el, options = {}) ->
     this
 
   setupContainers = ->
-    # Center control
     $control.css
       width: width * multiplier
       height: height
@@ -65,7 +65,7 @@ Superslides = (el, options = {}) ->
         this.hash = that.prev
 
   addPagination = =>
-    return unless @options.pagination
+    return if !@options.pagination or @size() == 1
     $(el).append($pagination)
 
     $children.each (i) ->
@@ -75,9 +75,19 @@ Superslides = (el, options = {}) ->
     unless i >= 0
       i = @size() - 1 # size is not zero indexed
 
-    $pagination.append $("<a>",
-      href: "##{i}"
-    )
+    $pagination.append $("<a>", href: "##{i}")
+
+  updatePagination = =>
+    return if !@options.pagination or @size() == 1
+
+    if $(el).find(".#{@options.classes.pagination}").length
+      last_index = $pagination.children().last().index()
+    else
+      last_index = 0
+      $(el).append($pagination)
+
+    $.each new Array(@size() - last_index), (i) ->
+      addPaginationItem(i)
 
   loadImage = ($img, callback) =>
     $("<img>",
@@ -198,18 +208,19 @@ Superslides = (el, options = {}) ->
     , =>
       positions(upcoming_slide)
 
-      $control.css
-        left: -width
+      if @size() > 1
+        $control.css
+          left: -width
 
-      $children.eq(upcoming_slide).css
-        left: width
-        zIndex: 2
+        $children.eq(upcoming_slide).css
+          left: width
+          zIndex: 2
 
-      # reset last slide
-      $children.eq(outgoing_slide).css
-        left: width
-        display: 'none'
-        zIndex: 0
+        # reset last slide
+        $children.eq(outgoing_slide).css
+          left: width
+          display: 'none'
+          zIndex: 0
 
       callback() if typeof callback == 'function'
       setupNextPrev()
@@ -236,6 +247,7 @@ Superslides = (el, options = {}) ->
 
   @update = =>
     positions(@current)
+    updatePagination()
     $container.trigger('updated.slides')
 
   @destroy = =>
