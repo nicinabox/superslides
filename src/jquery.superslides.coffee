@@ -182,7 +182,7 @@ Superslides = (el, options = {}) ->
 
   animator = (direction, callback) =>
     upcoming_slide = upcomingSlide(direction)
-    return if upcoming_slide >= @size()
+    return if upcoming_slide > @size() - 1
 
     position       = width * 2
     offset         = -position
@@ -225,10 +225,14 @@ Superslides = (el, options = {}) ->
           zIndex: 2
 
         # reset last slide
-        $children.eq(outgoing_slide).css
-          left: width
-          display: 'none'
-          zIndex: 0
+        if outgoing_slide > 0
+          $children.eq(outgoing_slide).css
+            left: width
+            display: 'none'
+            zIndex: 0
+
+      if @options.hashchange
+        window.location.hash = @current
 
       callback() if typeof callback == 'function'
       setupNextPrev()
@@ -287,7 +291,7 @@ Superslides = (el, options = {}) ->
   $window
   .on 'hashchange', (e) =>
     index = parseHash()
-    if index >= 0
+    if index >= 0 && index != @current
       @animate index
 
   .on 'resize', (e) ->

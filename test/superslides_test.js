@@ -252,6 +252,24 @@
       window.location.hash = '2';
     });
 
+    asyncTest('It updates the window hash on animate', 1, function() {
+      addSlide(2);
+
+      $slides.on('animated.slides', function() {
+        equal(window.location.hash, '#1', 'hash should be #1');
+        start();
+        window.location.hash = '';
+      });
+
+      $slides.on('init.slides', function() {
+        $slides.superslides('animate', 1);
+      });
+
+      $slides.superslides({
+        hashchange: true
+      });
+    });
+
     module('Single slide');
     test('Pagination does not display', function() {
       $slides.superslides();
