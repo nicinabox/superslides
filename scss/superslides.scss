@@ -41,17 +41,9 @@ body {
       background: none;
       &.current {
         display: block;
-        z-index: 1;
       }
       .container {
-        width: 55%;
-        margin: 0 auto 30px auto;
         position: relative;
-        top: 25%;
-        min-height: 300px;
-        padding: 30px;
-        background: white;
-        background: rgba(255, 255, 255, 0.9);
       }
     }
   }
@@ -68,42 +60,24 @@ body {
   }
 }
 
+// Optional
 .slides-navigation {
-  width: 85%;
   margin: 0 auto;
-  position: relative;
+  position: absolute;
   z-index: 3;
-  top: -50%;
+  top: 46%;
+  width: 100%;
   a {
-    position: fixed;
+    position: absolute;
     display: block;
-    color: black;
-    background: white;
-    text-decoration: none;
-    display: block;
-    padding: 20px 10px;
-    width: 70px;
-    text-align: center;
-    top: 46%;
-    @include transition(padding 0.2s ease-out);
     &.prev {
       left: 0;
-      @include border-right-radius(40px);
-      &:hover {
-        padding-left: 20px;
-      }
     }
     &.next {
       right: 0;
-      @include border-left-radius(40px);
-      &:hover {
-        padding-right: 20px;
-      }
     }
   }
 }
-
-// Optional
 .slides-pagination {
   position: absolute;
   z-index: 3;
