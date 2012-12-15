@@ -1,4 +1,10 @@
 $(document).ready(function() {
+  $(document).on('init.slides', function() {
+    $('.loading-container').fadeOut(function() {
+      $(this).remove();
+    });
+  });
+
   $('#slides').superslides({
     slide_easing: 'easeInOutCubic',
     slide_speed: 800,
@@ -6,14 +12,15 @@ $(document).ready(function() {
     hashchange: true
   });
 
+
   // Update verion based on github tags
   var url = 'https://api.github.com/repos/nicinabox/superslides/git/refs/tags';
   $.ajax({
     url: url,
     dataType: 'jsonp',
     success: function(json) {
-      data = json.data;
-      var version = data.pop().ref.split('/').pop();
+      var data = json.data,
+          version = data.pop().ref.split('/').pop();
       $('.version').html(version);
     }
   });
