@@ -247,6 +247,7 @@ Superslides = (el, options = {}) ->
   @stop = =>
     clearInterval @play_id
     delete @play_id
+    $container.trigger('stopped.slides')
 
   @start = =>
     setupChildren()

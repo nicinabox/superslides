@@ -52,6 +52,19 @@
       $slides.superslides();
     });
 
+    asyncTest('stopped.slides', 1, function() {
+      $slides.on('stopped.slides', function(e) {
+        ok(true);
+        start();
+      });
+
+      $slides.on('init.slides', function(e) {
+        $slides.superslides('stop');
+      });
+
+      $slides.superslides();
+    });
+
     asyncTest('updated.slides', 1, function() {
       $slides.on('updated.slides', function(e) {
         ok(true);
