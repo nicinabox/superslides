@@ -5,7 +5,7 @@
 var Superslides, plugin;
 
 Superslides = function(el, options) {
-  var $children, $container, $control, $pagination, $window, addPagination, addPaginationItem, adjustImagePosition, adjustSlidesSize, animator, findMultiplier, height, init, initialize, loadImage, multiplier, next, parseHash, positions, prev, setHorizontalPosition, setVerticalPosition, setupChildren, setupContainers, setupNextPrev, that, upcomingSlide, width,
+  var $children, $container, $control, $pagination, $window, addPagination, addPaginationItem, adjustImagePosition, adjustSlidesSize, animator, findMultiplier, height, init, initialize, loadImage, multiplier, next, parseHash, positions, prev, setHorizontalPosition, setVerticalPosition, setupChildren, setupContainers, setupNextPrev, that, upcomingSlide, updatePagination, width,
     _this = this;
   if (options == null) {
     options = {};
@@ -45,6 +45,9 @@ Superslides = function(el, options) {
     positions();
     _this.mobile = /mobile/i.test(navigator.userAgent);
     $control = $container.wrap($control).parent('.slides-control');
+    if (_this.size() <= 1) {
+      $("." + _this.options.classes.nav).hide();
+    }
     setupContainers();
     addPagination();
     _this.start();
@@ -78,7 +81,7 @@ Superslides = function(el, options) {
     });
   };
   addPagination = function() {
-    if (!_this.options.pagination) {
+    if (!_this.options.pagination || _this.size() === 1) {
       return;
     }
     $(el).append($pagination);
@@ -93,6 +96,21 @@ Superslides = function(el, options) {
     return $pagination.append($("<a>", {
       href: "#" + i
     }));
+  };
+  updatePagination = function() {
+    var last_index;
+    if (!_this.options.pagination || _this.size() === 1) {
+      return;
+    }
+    if ($(el).find("." + _this.options.classes.pagination).length) {
+      last_index = $pagination.children().last().index();
+    } else {
+      last_index = 0;
+      $(el).append($pagination);
+    }
+    return $.each(new Array(_this.size() - last_index), function(i) {
+      return addPaginationItem(i);
+    });
   };
   loadImage = function($img, callback) {
     return $("<img>", {
@@ -228,18 +246,20 @@ Superslides = function(el, options) {
       left: offset
     }, _this.options.slide_speed, _this.options.slide_easing, function() {
       positions(upcoming_slide);
-      $control.css({
-        left: -width
-      });
-      $children.eq(upcoming_slide).css({
-        left: width,
-        zIndex: 2
-      });
-      $children.eq(outgoing_slide).css({
-        left: width,
-        display: 'none',
-        zIndex: 0
-      });
+      if (_this.size() > 1) {
+        $control.css({
+          left: -width
+        });
+        $children.eq(upcoming_slide).css({
+          left: width,
+          zIndex: 2
+        });
+        $children.eq(outgoing_slide).css({
+          left: width,
+          display: 'none',
+          zIndex: 0
+        });
+      }
       if (typeof callback === 'function') {
         callback();
       }
@@ -272,6 +292,7 @@ Superslides = function(el, options) {
   };
   this.update = function() {
     positions(_this.current);
+    updatePagination();
     return $container.trigger('updated.slides');
   };
   this.destroy = function() {
