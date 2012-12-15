@@ -26,6 +26,37 @@ pre {
   font-size: 12px;
 }
 
+h1 {
+  font-weight: normal;
+  font-weight: 300;
+  color: white;
+  text-shadow: 0 1px 1px #000;
+}
+
+h1 {
+  font-size: 49px;
+}
+
+h2 {
+  font-size: 42px;
+}
+
+h3 {
+  font-size: 30px;
+}
+
+h4 {
+  font-size: 26px;
+}
+
+h5 {
+  font-size: 19px;
+}
+
+h6 {
+  font-size: 16px;
+}
+
 .button {
   font-weight: bold;
   padding: 10px 18px 9px;
@@ -42,11 +73,10 @@ pre {
 }
 
 .container {
-  background: white;
-  background: rgba(255, 255, 255, 0.2);
   width: 40%;
+  max-width: 450px;
   left: 90px;
-  top: 25%;
+  top: 10%;
   padding: 10px 20px;
 }
 
@@ -66,4 +96,14 @@ pre {
   margin: 0 25px;
   text-shadow: 0 1px 1px #000;
   text-align: center;
+}
+
+.slides-pagination a {
+  border-color: white;
+  -webkit-box-shadow: 0 1px 1px black;
+  -moz-box-shadow: 0 1px 1px black;
+  box-shadow: 0 1px 1px black;
+}
+.slides-pagination a.current {
+  background: white;
 }
