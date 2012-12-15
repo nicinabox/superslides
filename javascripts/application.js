@@ -19,9 +19,14 @@ $(document).ready(function() {
     url: url,
     dataType: 'jsonp',
     success: function(json) {
-      var data = json.data,
-          version = data.pop().ref.split('/').pop();
+      var data          = json.data,
+          version       = data.pop().ref.split('/').pop(),
+          regex_version = /\d\.\d\.\d?/,
+          download_link = $('#download').attr('href');
+
       $('.version').html(version);
+      $('#download').attr('href', download_link.replace(regex_version, version));
+
     }
   });
 
