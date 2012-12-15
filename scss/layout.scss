@@ -1,4 +1,4 @@
-@import 'bourbon/bourbon';
+@import 'compass';
 
 body {
   font-family: 'PT Sans', sans-serif;
@@ -25,7 +25,6 @@ pre {
   font-size: 12px;
 }
 .button {
-  @include button('simple', #8dbb01);
   font-weight: bold;
   padding: 10px 18px 9px;
   text-align: center;
@@ -38,12 +37,15 @@ pre {
   color: #888;
   font-size: 12px;
 }
-.column {
-  float: left;
-  width: 48%;
-  margin-right: 20px;
-  + .column {
-    margin-right: 0;
+.container {
+  background: none;
+}
+
+.slides-navigation {
+  a {
+    position: absolute;
+    @include border-radius(20px);
+    border: 3px solid #fff;
+    padding: 10px;
   }
-  
 }
