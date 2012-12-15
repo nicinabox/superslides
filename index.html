@@ -8,32 +8,64 @@
   <link rel="stylesheet" href="stylesheets/layout.css">
 </head>
 <body>
-  <a href="https://github.com/nicinabox/superslides"><img style="position: absolute; z-index: 21; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png" alt="Fork me on GitHub"></a>
+  <a href="https://github.com/nicinabox/superslides"><img style="position: absolute; z-index: 21; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+
+  <ul id="connect">
+    <li>
+      <a href="#" class="button">
+        <i class="icon-heart"></i>
+        Download
+      </a>
+    </li>
+    <li>
+      <span class="version">0.5.0</span>
+      <span class="size">8kb minified</span>
+    </li>
+  </ul>
 
   <div id="slides">
     <ul class="slides-container">
       <li>
-        <img src="http://farm6.staticflickr.com/5183/5569921669_89eb63b6af_b.jpg" />
+        <img src="/images/floor-kid.jpg" alt="">
         <div class="container">
           <h1>Superslides is a fullscreen slider for jQuery.</h1>
+          <p>It does some fun stuff; you might like it.</p>
         </div>
       </li>
       <li>
-        <img src="http://farm8.staticflickr.com/7002/6682067407_e790062923_b.jpg" />
+        <img src="/images/building.jpg" alt="">
         <div class="container">
-          <h1>Something here.</h1>
+          <h1>It's responsive.</h1>
         </div>
       </li>
       <li>
-        <img src="http://farm8.staticflickr.com/7021/6682161207_e61b928ace_b.jpg" />
+        <img src="/images/girl.jpg" alt="">
         <div class="container">
-          <h1>Something else.</h1>
+          <h1>It's got a sweet control API.</h1>
+          <p>And it's got events.</p>
+        </div>
+      </li>
+      <li>
+        <img src="/images/kids.jpg" alt="">
+        <!-- <img src="/images/dapper-man.jpg" alt=""> -->
+        <div class="container">
+          <h1>Thanks!</h1>
+          <p>
+            You can read the docs, create an issue, or fix a bug on <a href="#">Github</a>.
+          </p>
+          <p>
+            <a href="#">@nicinabox</a> made this. All these photos are by the amazing <a href="#">Ryan Green</a>.
+          </p>
         </div>
       </li>
     </ul>
     <nav class="slides-navigation">
-      <a href="#" class="next">&rang;</a>
-      <a href="#" class="prev">&lang;</a>
+      <a href="#" class="next">
+        <i class="icon-chevron-right"></i>
+      </a>
+      <a href="#" class="prev">
+        <i class="icon-chevron-left"></i>
+      </a>
     </nav>
   </div>
 
@@ -48,20 +80,15 @@
   <script type="text/javascript">
     var _gauges = _gauges || [];
     (function() {
-      if (env.development) {
-        var id = "50b6c7b2f5a1f5545c0000c4"
-      }
       var t   = document.createElement('script');
       t.type  = 'text/javascript';
       t.async = true;
       t.id    = 'gauges-tracker';
-      t.setAttribute('data-site-id', id || '4f6957cb613f5d746f000004');
+      t.setAttribute('data-site-id', '4f6957cb613f5d746f000004');
       t.src = 'http://secure.gaug.es/track.js';
       var s = document.getElementsByTagName('script')[0];
       s.parentNode.insertBefore(t, s);
     })();
   </script>
-
-  <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="http://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
 </body>
 </html>
