@@ -1005,6 +1005,11 @@ pre {
   font-size: 12px;
 }
 
+img.keep-original {
+  max-width: 100% !important;
+  height: auto;
+}
+
 .loading-container {
   position: absolute;
   left: 50%;
@@ -1100,7 +1105,7 @@ pre {
   width: 40%;
   max-width: 500px;
   left: 90px;
-  top: 12%;
+  top: 13%;
   padding: 10px 20px;
 }
 
