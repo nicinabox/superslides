@@ -53,9 +53,10 @@ Superslides = (el, options = {}) ->
       margin: 0
 
     $(el).css
+      position: 'relative'
       overflowX: 'hidden'
       width: '100%'
-      height: '100%'
+      height: height
 
     $control.css
       position: 'relative'
@@ -81,7 +82,6 @@ Superslides = (el, options = {}) ->
   setupContainers = =>
     $control.css
       width: width * multiplier
-      height: height
       left: -width
 
     if @options.scrollable
