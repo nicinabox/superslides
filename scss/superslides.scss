@@ -21,7 +21,6 @@ body {
     img {
       -webkit-backface-visibility: hidden;
       -ms-interpolation-mode: bicubic;
-      max-width: none;
       min-width: 100%;
       min-height: 100%;
       position: absolute;
@@ -53,6 +52,7 @@ body {
     top: 0;
     left: 0;
     overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
     height: 100%;
     .container {
       @include clearfix;
