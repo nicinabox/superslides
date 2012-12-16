@@ -93,6 +93,10 @@ Superslides = (el, options = {}) ->
                .insertBefore($('.scrollable', this));
 
   setupChildren = =>
+    if $children.is('img')
+      $children.wrap('<div>')
+      $children = $container.children()
+
     $children.css
       display: 'none'
       position: 'absolute'
