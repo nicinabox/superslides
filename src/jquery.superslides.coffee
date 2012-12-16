@@ -17,7 +17,8 @@ Superslides = (el, options = {}) ->
 
   that        = this
   $window     = $(window)
-  $container  = $(".#{@options.classes.container}")
+  @el         = $(el)
+  $container  = $(".#{@options.classes.container}", el)
   $children   = $container.children()
   $pagination = $("<nav>", class: @options.classes.pagination)
   $control    = $('<div>', class: 'slides-control')
@@ -130,9 +131,9 @@ Superslides = (el, options = {}) ->
       last_index = $pagination.children().last().index()
       array      = $children
     else
-      $(el).append($pagination)
-      last_index = 0
-      array      = new Array(@size() - last_index)
+      last_index  = 0
+      array       = new Array(@size() - last_index)
+      $pagination = $pagination.appendTo(@el)
 
     $.each array, (i) ->
       addPaginationItem(i)
