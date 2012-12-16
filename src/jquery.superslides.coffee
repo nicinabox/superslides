@@ -52,11 +52,10 @@ Superslides = (el, options = {}) ->
     $('body').css
       margin: 0
 
-    $(el).css
+    @el.css
       position: 'relative'
       overflowX: 'hidden'
       width: '100%'
-      height: height
 
     $control.css
       position: 'relative'
@@ -80,6 +79,9 @@ Superslides = (el, options = {}) ->
       "z-index": '-1'
 
   setupContainers = =>
+    @el.css
+      height: height
+
     $control.css
       width: width * multiplier
       left: -width
