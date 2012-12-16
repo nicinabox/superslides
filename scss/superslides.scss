@@ -1,51 +1,7 @@
 @import "compass";
 
 // Required
-body {
-  margin: 0;
-}
 #slides {
-  overflow-x: hidden;
-  width: 100%;
-  height: 100%;
-  .slides-control {
-    position: relative;
-    @include transform3d(0);
-  }
-  .slides-container {
-    display: none;
-    margin: 0;
-    padding: 0;
-    list-style: none;
-    position: relative;
-    img {
-      -webkit-backface-visibility: hidden;
-      -ms-interpolation-mode: bicubic;
-      min-width: 100%;
-      min-height: 100%;
-      position: absolute;
-      left: 0;
-      top: 0;
-      z-index: -1;
-      &.keep-original {
-        min-width: 0;
-        min-height: 0;
-        position: static;
-      }
-    }
-    li {
-      margin: 0;
-      padding: 0;
-      position: relative;
-      background: none;
-      &.current {
-        display: block;
-      }
-      .container {
-        position: relative;
-      }
-    }
-  }
   .scrollable {
     @include pie-clearfix;
     position: relative;

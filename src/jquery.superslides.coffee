@@ -25,6 +25,8 @@ Superslides = (el, options = {}) ->
   init        = false
   width       = $window.width()
   height      = $window.height()
+  prefixes    = ['webkit', 'moz', 'ms', 'o']
+
 
   # Private
   initialize = =>
@@ -36,12 +38,43 @@ Superslides = (el, options = {}) ->
 
     $control = $container.wrap($control).parent('.slides-control')
 
+    setupCss()
     setupContainers()
     addPagination()
     toggleNav()
 
     @start()
     this
+
+  setupCss = ->
+    $('body').css
+      margin: 0
+
+    $(el).css
+      overflowX: 'hidden'
+      width: '100%'
+      height: '100%'
+
+    $control.css
+      position: 'relative'
+      transform: 'translate3d(0)'
+
+    $container.css
+      display: 'none'
+      margin: '0'
+      padding: '0'
+      listStyle: 'none'
+      position: 'relative'
+
+    $container.find('img').not('keep-original').css
+      "-webkit-backface-visibility": 'hidden'
+      "-ms-interpolation-mode": 'bicubic'
+      "min-width": '100%'
+      "min-height": '100%'
+      "position": 'absolute'
+      "left": '0'
+      "top": '0'
+      "z-index": '-1'
 
   setupContainers = =>
     $control.css
