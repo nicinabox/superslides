@@ -1,8 +1,6 @@
-# Superslides 0.4.3 - [changelog](https://github.com/nicinabox/superslides/blob/master/changelog.md)
+# Superslides - [changelog](https://github.com/nicinabox/superslides/blob/master/changelog.md)
 
 Superslides is a full screen slider for jQuery heavily influenced by Nathan Searles' [SlidesJS](https://github.com/nathansearles/slides/). It's designed to be as flexible as possible, while maintaining a reasonable code base and good browser compatibility.
-
-It's 4.3kb minified (9.4kb uncompressed).
 
 ## Usage
 [Check out the demo](http://nicinabox.github.com/superslides/) for a complete example. Basic usage is as follows. See options below for things you can change.
@@ -20,6 +18,7 @@ There are a few configurable options (these are the defaults):
     hashchange: false
     scrollable: true
     classes:
+      preserve: 'preserve'
       nav: 'slides-navigation'
       container: 'slides-container'
       pagination: 'slides-pagination'
