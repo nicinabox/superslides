@@ -1,3 +1,6 @@
+plugin = 'superslides'
+$      = jQuery
+
 Superslides = (el, options = {}) ->
   @options = $.extend
     play: false
@@ -329,7 +332,6 @@ Superslides = (el, options = {}) ->
   initialize()
 
 # Plugin
-plugin = 'superslides'
 $.fn[plugin] = (option, args) ->
   result = []
   @each ->
