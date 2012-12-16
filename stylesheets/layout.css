@@ -1102,7 +1102,8 @@ img.keep-original {
 }
 
 .container {
-  width: 40%;
+  position: relative;
+  width: 50%;
   max-width: 500px;
   left: 90px;
   top: 13%;
