@@ -10,6 +10,7 @@ Superslides = (el, options = {}) ->
     hashchange: false
     scrollable: true
     classes:
+      preserve: 'preserve'
       nav: 'slides-navigation'
       container: 'slides-container'
       pagination: 'slides-pagination'
@@ -41,13 +42,13 @@ Superslides = (el, options = {}) ->
 
     setupCss()
     setupContainers()
-    addPagination()
     toggleNav()
+    addPagination()
 
     @start()
     this
 
-  setupCss = ->
+  setupCss = =>
     $('body').css
       margin: 0
 
@@ -67,7 +68,7 @@ Superslides = (el, options = {}) ->
       listStyle: 'none'
       position: 'relative'
 
-    $container.find('img').not('keep-original').css
+    $container.find('img').not(".#{@options.classes.preserve}").css
       "-webkit-backface-visibility": 'hidden'
       "-ms-interpolation-mode": 'bicubic'
       "min-width": '100%'
@@ -183,7 +184,7 @@ Superslides = (el, options = {}) ->
       $(this).css
         left: width
 
-      adjustImagePosition $('img', this).not('.keep-original')
+      adjustImagePosition $('img', this).not(".#{that.options.classes.preserve}")
 
   findMultiplier = =>
     if @size() == 1 then 1 else 3
