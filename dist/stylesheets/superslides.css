@@ -63,10 +63,6 @@ body {
   display: table;
   clear: both;
 }
-#slides .scrollable .container {
-  overflow: hidden;
-  *zoom: 1;
-}
 
 .slides-navigation {
   margin: 0 auto;
