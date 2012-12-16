@@ -1,4 +1,4 @@
-/*! Superslides - v0.5.0 - 2012-12-14
+/*! Superslides - v0.5.0 - 2012-12-15
 * https://github.com/nicinabox/superslides
 * Copyright (c) 2012 Nic Aitch; Licensed MIT */
 
@@ -52,11 +52,20 @@ Superslides = function(el, options) {
     return _this;
   };
   setupContainers = function() {
-    return $control.css({
+    $control.css({
       width: width * multiplier,
       height: height,
       left: -width
     });
+    if (_this.options.scrollable) {
+      return $children.each(function() {
+        if ($('.scrollable', this).length) {
+          return;
+        }
+        $(this).wrapInner('<div class="scrollable" />');
+        return $(this).find('img:first-child').insertBefore($('.scrollable', this));
+      });
+    }
   };
   setupChildren = function() {
     $children.css({
