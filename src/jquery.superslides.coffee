@@ -40,11 +40,19 @@ Superslides = (el, options = {}) ->
     @start()
     this
 
-  setupContainers = ->
+  setupContainers = =>
     $control.css
       width: width * multiplier
       height: height
       left: -width
+
+    if @options.scrollable
+      $children.each ->
+        return if $('.scrollable', this).length
+
+        $(this).wrapInner('<div class="scrollable" />');
+        $(this).find('img:first-child')
+               .insertBefore($('.scrollable', this));
 
   setupChildren = =>
     $children.css
