@@ -18,7 +18,7 @@ module.exports = function(grunt) {
         src: ['src/**/*.coffee'],
         dest: 'dist',
         options: {
-          bare: true
+          bare: false
         }
       }
     },
