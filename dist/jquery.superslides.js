@@ -10,7 +10,7 @@
   $ = jQuery;
 
   Superslides = function(el, options) {
-    var $children, $container, $control, $pagination, $window, addPagination, addPaginationItem, adjustImagePosition, adjustSlidesSize, animator, findMultiplier, height, init, initialize, loadImage, multiplier, next, parseHash, positions, prev, setHorizontalPosition, setVerticalPosition, setupChildren, setupContainers, setupNextPrev, that, toggleNav, upcomingSlide, width,
+    var $children, $container, $control, $pagination, $window, addPagination, addPaginationItem, adjustImagePosition, adjustSlidesSize, animator, findMultiplier, height, init, initialize, loadImage, multiplier, next, parseHash, positions, prefixes, prev, setHorizontalPosition, setVerticalPosition, setupChildren, setupContainers, setupCss, setupNextPrev, that, toggleNav, upcomingSlide, width,
       _this = this;
     if (options == null) {
       options = {};
@@ -23,6 +23,7 @@
       hashchange: false,
       scrollable: true,
       classes: {
+        preserve: 'preserve',
         nav: 'slides-navigation',
         container: 'slides-container',
         pagination: 'slides-pagination'
@@ -30,7 +31,8 @@
     }, options);
     that = this;
     $window = $(window);
-    $container = $("." + this.options.classes.container);
+    this.el = $(el);
+    $container = $("." + this.options.classes.container, el);
     $children = $container.children();
     $pagination = $("<nav>", {
       "class": this.options.classes.pagination
@@ -42,6 +44,7 @@
     init = false;
     width = $window.width();
     height = $window.height();
+    prefixes = ['webkit', 'moz', 'ms', 'o'];
     initialize = function() {
       if (init) {
         return;
@@ -50,11 +53,43 @@
       positions();
       _this.mobile = /mobile/i.test(navigator.userAgent);
       $control = $container.wrap($control).parent('.slides-control');
+      setupCss();
       setupContainers();
-      addPagination();
       toggleNav();
+      addPagination();
       _this.start();
       return _this;
+    };
+    setupCss = function() {
+      $('body').css({
+        margin: 0
+      });
+      $(el).css({
+        overflowX: 'hidden',
+        width: '100%',
+        height: '100%'
+      });
+      $control.css({
+        position: 'relative',
+        transform: 'translate3d(0)'
+      });
+      $container.css({
+        display: 'none',
+        margin: '0',
+        padding: '0',
+        listStyle: 'none',
+        position: 'relative'
+      });
+      return $container.find('img').not("." + _this.options.classes.preserve).css({
+        "-webkit-backface-visibility": 'hidden',
+        "-ms-interpolation-mode": 'bicubic',
+        "min-width": '100%',
+        "min-height": '100%',
+        "position": 'absolute',
+        "left": '0',
+        "top": '0',
+        "z-index": '-1'
+      });
     };
     setupContainers = function() {
       $control.css({
@@ -117,9 +152,9 @@
         last_index = $pagination.children().last().index();
         array = $children;
       } else {
-        $(el).append($pagination);
         last_index = 0;
         array = new Array(_this.size() - last_index);
+        $pagination = $pagination.appendTo(_this.el);
       }
       return $.each(array, function(i) {
         return addPaginationItem(i);
@@ -178,7 +213,7 @@
         $(this).css({
           left: width
         });
-        return adjustImagePosition($('img', this).not('.keep-original'));
+        return adjustImagePosition($('img', this).not("." + that.options.classes.preserve));
       });
     };
     findMultiplier = function() {
