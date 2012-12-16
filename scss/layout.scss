@@ -94,3 +94,10 @@ $fontAwesomePath: "/font/fontawesome-webfont";
     }
   }
 }
+
+.contrast {
+  background: rgba(#000, 0.3);
+  padding: 1px 10px;
+  @include box-shadow(0 0 23px 5px rgba(#000, 0.4));
+  @include border-radius(3px);
+}

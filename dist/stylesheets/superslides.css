@@ -64,7 +64,6 @@ body {
   clear: both;
 }
 #slides .scrollable .container {
-  overflow: hidden;
   *zoom: 1;
 }
 

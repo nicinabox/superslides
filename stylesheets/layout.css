@@ -1155,3 +1155,16 @@ img.keep-original {
 .slides-pagination a.current {
   background: white;
 }
+
+.contrast {
+  background: rgba(0, 0, 0, 0.3);
+  padding: 1px 10px;
+  -webkit-box-shadow: 0 0 23px 5px rgba(0, 0, 0, 0.4);
+  -moz-box-shadow: 0 0 23px 5px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 0 23px 5px rgba(0, 0, 0, 0.4);
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -o-border-radius: 3px;
+  border-radius: 3px;
+}
