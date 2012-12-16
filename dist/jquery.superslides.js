@@ -65,9 +65,10 @@
         margin: 0
       });
       $(el).css({
+        position: 'relative',
         overflowX: 'hidden',
         width: '100%',
-        height: '100%'
+        height: height
       });
       $control.css({
         position: 'relative',
@@ -94,7 +95,6 @@
     setupContainers = function() {
       $control.css({
         width: width * multiplier,
-        height: height,
         left: -width
       });
       if (_this.options.scrollable) {
@@ -108,6 +108,10 @@
       }
     };
     setupChildren = function() {
+      if ($children.is('img')) {
+        $children.wrap('<div>');
+        $children = $container.children();
+      }
       $children.css({
         display: 'none',
         position: 'absolute',

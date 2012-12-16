@@ -1,3 +1,6 @@
+#slides .slides-container {
+  display: none;
+}
 #slides .scrollable {
   *zoom: 1;
   position: relative;
