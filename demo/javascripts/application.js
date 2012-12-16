@@ -3,6 +3,7 @@ $(document).ready(function() {
     slide_easing: 'easeInOutCubic',
     slide_speed: 800,
     pagination: true,
-    hashchange: true
+    hashchange: true,
+    scrollabe: true
   });
 });
