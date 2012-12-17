@@ -1,4 +1,4 @@
-/*! Superslides - v0.5.0 - 2012-12-16
+/*! Superslides - v0.5.0 - 2012-12-17
 * https://github.com/nicinabox/superslides
 * Copyright (c) 2012 Nic Aitch; Licensed MIT */
 
@@ -10,7 +10,7 @@
   $ = jQuery;
 
   Superslides = function(el, options) {
-    var $children, $container, $control, $pagination, $window, addPagination, addPaginationItem, adjustImagePosition, adjustSlidesSize, animator, findMultiplier, height, init, initialize, loadImage, multiplier, next, parseHash, positions, prefixes, prev, setHorizontalPosition, setVerticalPosition, setupChildren, setupContainers, setupCss, setupNextPrev, that, toggleNav, upcomingSlide, width,
+    var $children, $container, $control, $pagination, $window, addPagination, addPaginationItem, adjustImagePosition, adjustSlidesSize, animator, findMultiplier, height, init, initialize, loadImage, multiplier, next, parseHash, positions, prev, setHorizontalPosition, setVerticalPosition, setupChildren, setupContainers, setupCss, setupNextPrev, that, toggleNav, upcomingSlide, width,
       _this = this;
     if (options == null) {
       options = {};
@@ -44,7 +44,6 @@
     init = false;
     width = $window.width();
     height = $window.height();
-    prefixes = ['webkit', 'moz', 'ms', 'o'];
     initialize = function() {
       if (init) {
         return;
