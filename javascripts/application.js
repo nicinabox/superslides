@@ -34,7 +34,7 @@ $(document).ready(function() {
   });
 
   $(document).on('click', '#download', function(e) {
-    window.location.hash = "#download-" + version;
+    window.location.hash = "#download-" + version.replace(/\./g, '');
     _gauges.push(['track']);
   });
 });
