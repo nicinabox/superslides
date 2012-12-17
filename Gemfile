@@ -1,3 +1,4 @@
 source "https://rubygems.org"
 
-gem 'bourbon'
+gem 'compass'
+gem 'modular-scale'

@@ -1,20 +1,18 @@
-var env = {
-  development: (function () {
-    return window.location.hostname == 'localhost';
-  })(),
-  production: (function() {
-    return window.location.hostname == 'nicinabox.github.com';
-  })()
-};
-
 $(document).ready(function() {
+  $(document).on('init.slides', function() {
+    $('.loading-container').fadeOut(function() {
+      $(this).remove();
+    });
+  });
+
   $('#slides').superslides({
-    play: true,
     slide_easing: 'easeInOutCubic',
     slide_speed: 800,
     pagination: true,
-    hashchange: true
+    hashchange: true,
+    scrollable: true
   });
+
 
   // Update verion based on github tags
   var url = 'https://api.github.com/repos/nicinabox/superslides/git/refs/tags';
@@ -22,9 +20,14 @@ $(document).ready(function() {
     url: url,
     dataType: 'jsonp',
     success: function(json) {
-      data = json.data;
-      var version = data.pop().ref.split('/').pop();
+      var data          = json.data,
+          version       = data.pop().ref.split('/').pop(),
+          regex_version = /\d\.\d\.\d?/,
+          download_link = $('#download').attr('href');
+
       $('.version').html(version);
+      $('#download').attr('href', download_link.replace(regex_version, version));
+
     }
   });
 

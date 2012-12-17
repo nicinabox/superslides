@@ -2,121 +2,127 @@
 <html>
 <head>
   <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
   <title>Superslides - A fullscreen slider for jQuery</title>
-  <link href='http://fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'>
   <link rel="stylesheet" href="stylesheets/normalize.css">
-  <link rel="stylesheet" href="stylesheets/layout.css">
   <link rel="stylesheet" href="dist/stylesheets/superslides.css">
-</head>
-<body>
-  <a href="https://github.com/nicinabox/superslides"><img style="position: absolute; z-index: 21; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png" alt="Fork me on GitHub"></a>
-
-  <div id="slides">
-    <ul class="slides-container">
-      <li>
-        <img src="images/cinelli.jpeg" width="1024" height="682" alt="Cinelli">
-        <div class="container">
-          <h1>Superslides is a full screen slider for jQuery.</h1>
-          <div class="column">
-            <p>
-              It's designed to be flexible, with very little styling done in the plugin itself. There's some recommended markup and CSS, but you can customize to your heart's content.
-            </p>
-            <p>
-              <a href="https://github.com/nicinabox/superslides">Full documentation</a> is available at Github.
-            </p>
-          </div>
-          <div class="column">
-            <a id="download" class="button" href="https://github.com/nicinabox/superslides/archive/0.4.3.zip">Download</a>
-            <span class="info">
-              v<span class="version">0.0</span> - 4kb minified. <a href="https://github.com/nicinabox/superslides/blob/master/changelog.md">Changelog</a>
-            </span>
-            <p class="tweet">
-              <a href="https://twitter.com/share" class="twitter-share-button" data-url="http://nicinabox.github.com/superslides/" data-via="nicinabox" data-size="large" data-related="nicinabox">Tweet</a>
-            </p>
-          </div>
-        </div>
-      </li>
-      <li>
-        <img src="images/surly.jpeg" width="1024" height="682" alt="Surly">
-        <div class="container">
-          <h1>It's light on features, but easily configurable.</h1>
-          <p>
-            Currently, Superslides has a few configurable options: auto play with a delay, slide transition speed, and slide easing (<a href="http://jqueryui.com/">jQueryUI</a> or the <a href="http://gsgd.co.uk/sandbox/jquery/easing/">jQuery easing plugin</a> required).
-          </p>
-          <pre>
-delay: 5000
-play: false
-slide_speed: 'normal'
-slide_easing: 'linear'
-nav_class: 'slides-navigation'
-container_class: 'slides-container'
-pagination: true
-hashchange: true</pre>
-        </div>
-      </li>
-      <li>
-        <img src="images/cinelli-front.jpeg" width="1024" height="683" alt="Cinelli">
-        <div class="container">
-          <h1>Bind to events and do your own thing.</h1>
-          <p>
-            Superslides triggers a few events that you can bind to (listed in the order they are fired):
-            <pre>
-slides.initialized
-slides.animated</pre>
-          </p>
-          <p>
-            When the window is resized and on first load before <code>slides.initialized</code>:
-
-            <pre>
-slides.image_adjusted
-slides.sized</pre>
-          </p>
-        </div>
-      </li>
-      <li>
-        <img src="images/affinity.jpeg" width="1024" height="685" alt="Affinity">
-        <div class="container">
-          <h1>You might even be interested in contributing.</h1>
-          <p>
-            Fix a bug or add a feature by forking on <a href="https://github.com/nicinabox/superslides">Github</a>.
-          </p>
-          <p>
-            <small>Superslides is a project by <a href="http://twitter.com/nicinabox">@nicinabox</a></small>
-          </p>
-        </div>
-      </li>
-    </ul>
-    <nav class="slides-navigation">
-      <a href="#" class="next">Next</a>
-      <a href="#" class="prev">Previous</a>
-    </nav>
-  </div>
-
+  <link rel="stylesheet" href="stylesheets/layout.css">
 
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
   <script src="javascripts/jquery.easing.1.3.js"></script>
   <script src="javascripts/jquery.animate-enhanced.min.js"></script>
   <script src="dist/jquery.superslides.js" type="text/javascript" charset="utf-8"></script>
   <script src="javascripts/application.js"></script>
+</head>
+<body>
+  <a href="https://github.com/nicinabox/superslides"><img style="position: absolute; z-index: 21; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+
+  <ul id="connect">
+    <li>
+      <a href="https://github.com/nicinabox/superslides/archive/0.5.0.zip" class="button" id="download">
+        <i class="icon-heart"></i>
+        Download
+      </a>
+    </li>
+    <li>
+      <span class="version">0.5.0</span>
+      <span class="size">2.2kb gzipped</span>
+    </li>
+  </ul>
+
+  <div class="loading-container">
+    <div class="pulse"></div>
+  </div>
+
+  <div id="slides">
+    <ul class="slides-container">
+      <li>
+        <img src="/images/floor-kid.jpg" alt="">
+        <div class="container">
+          <h1>Superslides is a fullscreen slider for jQuery.</h1>
+          <p>
+          </p>
+        </div>
+      </li>
+      <li>
+        <img src="/images/building.jpg" alt="">
+        <div class="container">
+          <h1>It's responsive.</h1>
+          <div class="contrast">
+            <p>
+              Images are smartly centered in the viewport. Use your own media queries to control the layout of your content.
+            </p>
+          </div>
+        </div>
+      </li>
+      <li>
+        <img src="/images/girl.jpg" alt="">
+        <div class="container">
+          <h1>It's hardware accelerated.</h1>
+          <div class="contrast">
+            <p>For browsers that support CSS hardware acceleration, tasks, such as animation, are processed by the GPU giving massive performance gains.</p>
+          </div>
+        </div>
+      </li>
+      <li>
+        <img src="/images/dog.jpg" alt="">
+        <div class="container">
+          <h1>It's got a pretty sweet API.</h1>
+          <div class="contrast">
+            <p>The control API lets you start, stop, animate, and destroy instances of the slider. You can get the current, next, and previous slides programmatically. In fact, the slider uses the same API internally.</p>
+          </div>
+        </div>
+      </li>
+      <li>
+        <img src="/images/hill-climb.jpg" alt="">
+        <div class="container">
+          <h1>It's tested with QUnit.</h1>
+          <div class="contrast">
+            <p>
+              Version 0.5 is a ground up, TDD rebuild, fixing many quirky bugs and standardizing the event and control APIs.
+            </p>
+          </div>
+        </div>
+      </li>
+      <li>
+        <img src="/images/kids.jpg" alt="">
+        <div class="container">
+          <h1>It's got popular buzzwords.</h1>
+          <div class="contrast">
+            <p>
+              Thanks for viewing! Read the docs, create an issue, or fix a bug on <a href="#">Github</a>.
+            </p>
+            <p>
+              <a href="#">@nicinabox</a> made this. All these photos are by the amazing <a href="#">Ryan Green</a>.
+            </p>
+          </div>
+        </div>
+      </li>
+    </ul>
+    <nav class="slides-navigation">
+      <a href="#" class="next">
+        <i class="icon-chevron-right"></i>
+      </a>
+      <a href="#" class="prev">
+        <i class="icon-chevron-left"></i>
+      </a>
+    </nav>
+  </div>
 
   <!-- Page analytics with gaug.es. DO NOT include in your project -->
   <script type="text/javascript">
     var _gauges = _gauges || [];
     (function() {
-      if (env.development) {
-        var id = "50b6c7b2f5a1f5545c0000c4"
-      }
       var t   = document.createElement('script');
       t.type  = 'text/javascript';
       t.async = true;
       t.id    = 'gauges-tracker';
-      t.setAttribute('data-site-id', id || '4f6957cb613f5d746f000004');
+      t.setAttribute('data-site-id', '4f6957cb613f5d746f000004');
       t.src = 'http://secure.gaug.es/track.js';
       var s = document.getElementsByTagName('script')[0];
       s.parentNode.insertBefore(t, s);
     })();
   </script>
-
-  <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="http://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
 </body>
 </html>
