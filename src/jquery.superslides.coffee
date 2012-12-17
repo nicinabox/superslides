@@ -374,7 +374,15 @@ Superslides = (el, options = {}) ->
 $.fn[plugin] = (option, args) ->
   result = []
   @each ->
+    $this   = $(this)
+    data    = $this.data(plugin)
+    options = typeof option == 'object' && option
 
-    $this = $(this)
-    data = $this.data("superslides")
-    $this.data "superslides", (data = new Superslides(this, options)) unless data
+    result = $this.data plugin, (data = new Superslides(this, options)) unless data
+
+    if typeof option == "string"
+      result = data[option]
+      if typeof result == 'function'
+        result = result.call(this, args)
+
+  result
