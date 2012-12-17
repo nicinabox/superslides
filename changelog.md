@@ -1,12 +1,19 @@
 # Changelog
 
-### 0.5.0 - Unreleased
+### 0.5.0 - Dec 17, 2012
 
 * Ground up rebuild
-* New API
+* Test with QUnit
+* New control API
+* New events
 * Fix current/next/prev bug
+* Fix multiple instances
+* Fix jQuery noconflict
+* Fix hashchange bugs
+* Fix misc bugs, overall performance and stability
+* Majorly slimmed required css
 
-### 0.4.3 - Oct Dec 2, 2012
+### 0.4.3 - Dec 2, 2012
 
 * Refactors
 * Fix flicker in Safari
