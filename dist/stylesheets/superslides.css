@@ -1,3 +1,6 @@
+#slides {
+  position: relative;
+}
 #slides .slides-container {
   display: none;
 }
