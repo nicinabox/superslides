@@ -77,6 +77,10 @@ Superslides = (el, options = {}) ->
       "z-index": '-1'
 
   setupContainers = =>
+    $('body').css
+      margin: 0
+      overflow: 'hidden'
+
     @el.css
       height: height
 
@@ -245,6 +249,7 @@ Superslides = (el, options = {}) ->
 
     upcoming_position = position
 
+
     $children
       .removeClass('current')
       .eq(upcoming_slide)
@@ -275,11 +280,10 @@ Superslides = (el, options = {}) ->
           zIndex: 2
 
         # reset last slide
-        if outgoing_slide > 0
-          $children.eq(outgoing_slide).css
-            left: width
-            display: 'none'
-            zIndex: 0
+        $children.eq(outgoing_slide).css
+          left: width
+          display: 'none'
+          zIndex: 0
 
       if @options.hashchange
         window.location.hash = @current
@@ -292,6 +296,7 @@ Superslides = (el, options = {}) ->
         $container.trigger('animated.slides')
       else
         init = true
+        $('body').css('overflow', 'visible')
         $container.fadeIn('fast')
         $container.trigger('init.slides')
 
