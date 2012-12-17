@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Superslides Test Suite</title>
+  <!-- Load local jQuery. This can be overridden with a ?jquery=___ param. -->
+  <script src="../libs/jquery-loader.js"></script>
+  <!-- Load local QUnit (grunt requires v1.0.0 or newer). -->
+  <link rel="stylesheet" href="../libs/qunit/qunit.css" media="screen">
+  <script src="../libs/qunit/qunit.js"></script>
+  <!-- Load local lib and tests. -->
+  <script src="../dist/jquery.superslides.js"></script>
+  <script src="superslides_test.js"></script>
+</head>
+<body>
+  <h1 id="qunit-header">Superslides Test Suite</h1>
+  <h2 id="qunit-banner"></h2>
+  <div id="qunit-testrunner-toolbar"></div>
+  <h2 id="qunit-userAgent"></h2>
+  <ol id="qunit-tests"></ol>
+
+  <div id="qunit-fixture">
+    <div id="slides">
+      <ul class="slides-container">
+        <li>
+          <img src="http://placehold.it/1024x682" width="1024" height="682">
+        </li>
+      </ul>
+      <nav class="slides-navigation">
+        <a href="#" class="next">Next</a>
+        <a href="#" class="prev">Previous</a>
+      </nav>
+    </div>
+  </div>
+
+</body>
+</html>

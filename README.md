@@ -1,8 +1,6 @@
-# Superslides 0.4.3 - [changelog](https://github.com/nicinabox/superslides/blob/master/changelog.md)
+# Superslides - [changelog](https://github.com/nicinabox/superslides/blob/master/changelog.md)
 
 Superslides is a full screen slider for jQuery heavily influenced by Nathan Searles' [SlidesJS](https://github.com/nathansearles/slides/). It's designed to be as flexible as possible, while maintaining a reasonable code base and good browser compatibility.
-
-It's 4.3kb minified (9.4kb uncompressed).
 
 ## Usage
 [Check out the demo](http://nicinabox.github.com/superslides/) for a complete example. Basic usage is as follows. See options below for things you can change.
@@ -13,58 +11,37 @@ It's 4.3kb minified (9.4kb uncompressed).
 
 There are a few configurable options (these are the defaults):
 
-    delay: 5000
     play: false
     slide_speed: 'normal'
     slide_easing: 'linear'
-    nav_class: 'slides-navigation'
-    container_class: 'slides-container'
     pagination: true
-    hashchange: true
+    hashchange: false
+    scrollable: true
+    classes:
+      preserve: 'preserve'
+      nav: 'slides-navigation'
+      container: 'slides-container'
+      pagination: 'slides-pagination'
 
 ## Events
 
-Superslides triggers a few events that you can bind to (listed in the order they are fired):
+Superslides triggers a few events that you can bind to.
 
-    slides.initialized
-    slides.animated
+    started.slides
+    init.slides     // On first load, will fire instead of `animated`
+    animated.slides
+    updated.slides
 
-When the window is resized and on first load before `slides.initialized`:
-
-    slides.image_adjusted
-    slides.sized
-
-An additional event is fired when an item is appended to the slider.
-
-    slides.updated
-
-Binding to events:
-
-    $('body').on('slides.initialized', '#slides', function(){
-      console.log('Superslides initialized')
-    })
-
-You can also control the slider by triggering the respective events:
-
-    $('#slides').trigger('slides.start')
-    $('#slides').trigger('slides.stop')
-    $('#slides').trigger('slides.play')
-    $('#slides').trigger('slides.next')
-    $('#slides').trigger('slides.prev')
-
-Alternatively, use the API to control the slider
+## API
 
     $('#slides').superslides('start')
     $('#slides').superslides('stop')
-    $('#slides').superslides('play')
-    $('#slides').superslides('prev')
-    $('#slides').superslides('next')
-    $('#slides').superslides('animate', 3) // where 3 is a slide number
-    $('#slides').superslides('append', $jqueryObj)
+    $('#slides').superslides('animate' [, index|'next'|'prev'])
+    $('#slides').superslides('size')
+    $('#slides').superslides('destroy')
+    $('#slides').superslides('update')
 
-Notes on the differences between *play* and *start*:
-
-*Play* will slide only after the delay time. *Start* will slide first, then start playing (i.e., slide, then continue sliding after the delay time--5 seconds by default)
+If add slides after it's initialized (a la ajax), be sure to call `update`.
 
 ## Markup
 
@@ -112,18 +89,4 @@ Superslides is compatible with the [jQuery Animate Enhanced](http://playground.b
 
 ## Contributing
 
-If you'd like to contribute by fixing bugs, adding features, or otherwise, you should know that Superslides is written in [Coffeescript](http://coffeescript.org/). Please modify files in src/ (dist/ is generated). Use demo/ to test your changes.
-
-## Known Bugs & Caveats
-
-* IE 7 & 8 don't scale the image nicely due to min/max-width. You can remedy this with a polyfill.
-
-## MIT License
-
-Copyright (C) 2012 Nic Haynes (aka, Nic Aitch)
-
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+Check contributing.md.

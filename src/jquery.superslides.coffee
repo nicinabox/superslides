@@ -1,49 +1,103 @@
-###
-  Superslides 0.4.3
-  Fullscreen slideshow plugin for jQuery
-  by Nic Aitch @nicinabox
-  http://nicinabox.github.com/superslides/
-###
+plugin = 'superslides'
+$      = jQuery
 
-$window = $(window)
-width = $window.width()
-height = $window.height()
-is_mobile = navigator.userAgent.match(/mobile/i)
+Superslides = (el, options = {}) ->
+  @options = $.extend
+    play: false
+    slide_speed: 'normal'
+    slide_easing: 'linear'
+    pagination: true
+    hashchange: false
+    scrollable: true
+    classes:
+      preserve: 'preserve'
+      nav: 'slides-navigation'
+      container: 'slides-container'
+      pagination: 'slides-pagination'
+  , options
 
-# State control
-first_load = true
-play_interval = 0
-animating = false
-size = 0
-multiplier = 3
-$control = []
-$container = []
-$nav = []
-$children = []
+  that        = this
+  $window     = $(window)
+  @el         = $(el)
+  $container  = $(".#{@options.classes.container}", el)
+  $children   = $container.children()
+  $pagination = $("<nav>", class: @options.classes.pagination)
+  $control    = $('<div>', class: 'slides-control')
+  multiplier  = 1
+  init        = false
+  width       = $window.width()
+  height      = $window.height()
 
-# Private methods
-setup = ->
-  setupContainers()
-  setupChildren()
+  # Private
+  initialize = =>
+    return if init
 
-setupContainers = ->
-  $control.css
-    width: width * multiplier
-    height: height
-    left: -width if size > 1
+    multiplier = findMultiplier()
+    positions()
+    @mobile = (/mobile/i).test(navigator.userAgent)
 
-setupChildren = ->
-  if $.fn.superslides.options.scrollable
-    $children.each ->
-      $scrollable = $(this).find('.scrollable')
-      unless $scrollable
-        $(this).wrapInner('<div class="scrollable" />')
+    $control = $container.wrap($control).parent('.slides-control')
 
-      $scrollable.find('img').not('.keep-original')
-                  .insertBefore($scrollable)
+    setupCss()
+    setupContainers()
+    toggleNav()
+    addPagination()
 
-  if size > 1
-    $children.not('.current').css
+    @start()
+    this
+
+  setupCss = =>
+    $('body').css
+      margin: 0
+
+    @el.css
+      position: 'relative'
+      overflowX: 'hidden'
+      width: '100%'
+
+    $control.css
+      position: 'relative'
+      transform: 'translate3d(0)'
+
+    $container.css
+      display: 'none'
+      margin: '0'
+      padding: '0'
+      listStyle: 'none'
+      position: 'relative'
+
+    $container.find('img').not(".#{@options.classes.preserve}").css
+      "-webkit-backface-visibility": 'hidden'
+      "-ms-interpolation-mode": 'bicubic'
+      "min-width": '100%'
+      "min-height": '100%'
+      "position": 'absolute'
+      "left": '0'
+      "top": '0'
+      "z-index": '-1'
+
+  setupContainers = =>
+    @el.css
+      height: height
+
+    $control.css
+      width: width * multiplier
+      left: -width
+
+    if @options.scrollable
+      $children.each ->
+        return if $('.scrollable', this).length
+
+        $(this).wrapInner('<div class="scrollable" />');
+        $(this).find('img:first-child')
+               .insertBefore($('.scrollable', this));
+
+  setupChildren = =>
+    if $children.is('img')
+      $children.wrap('<div>')
+      $children = $container.children()
+
+    $children.css
       display: 'none'
       position: 'absolute'
       overflow: 'hidden'
@@ -51,282 +105,276 @@ setupChildren = ->
       left: width
       zIndex: 0
 
-  adjustSlidesSize $children
+    adjustSlidesSize $children
 
-loadImage = ($img, callback) ->
-  $("<img>",
-      src: $img.attr('src')
-    ).load ->
-      if callback instanceof Function
-        callback(this)
+  toggleNav = =>
+    if @size() > 1
+      $(".#{@options.classes.nav}").show()
+    else
+      $(".#{@options.classes.nav}").hide()
 
-setVerticalPosition = ($img) ->
-  scale_height = width / $img.data('aspect-ratio')
+  setupNextPrev = =>
+    $(".#{@options.classes.nav} a").each ->
+      if $(this).hasClass('next')
+        this.hash = that.next
+      else
+        this.hash = that.prev
 
-  if scale_height >= height
-    $img.css
-      top: -(scale_height - height) / 2
-  else
-    $img.css
-      top: 0
+  addPaginationItem = (i) =>
+    unless i >= 0
+      i = @size() - 1 # size is not zero indexed
 
-setHorizontalPosition = ($img) ->
-  scale_width = height * $img.data('aspect-ratio')
+    $pagination.append $("<a>",
+      href: "##{i}"
+      class: "current" if @current == $pagination.children().length
+    )
 
-  if scale_width >= width
-    $img.css
-      left: -(scale_width - width) / 2
-  else
-    $img.css
-      left: 0
+  addPagination = =>
+    return if !@options.pagination or @size() == 1
 
-adjustImagePosition = ($img) ->
-  unless $img.data('aspect-ratio')
-    loadImage $img, (image) ->
-      $img.removeAttr('width').removeAttr('height')
-      $img.data('aspect-ratio', image.width / image.height)
-      adjustImagePosition $img
-    return
+    if $(el).find(".#{@options.classes.pagination}").length
+      last_index = $pagination.children().last().index()
+      array      = $children
+    else
+      last_index  = 0
+      array       = new Array(@size() - last_index)
+      $pagination = $pagination.appendTo(@el)
 
-  setHorizontalPosition($img)
-  setVerticalPosition($img)
+    $.each array, (i) ->
+      addPaginationItem(i)
 
-  $container.trigger('slides.image_adjusted')
+  loadImage = ($img, callback) =>
+    $("<img>",
+        src: $img.attr('src')
+      ).load ->
+        if callback instanceof Function
+          callback(this)
 
-adjustSlidesSize = ($el) ->
-  $el.each (i) ->
-    $(this).width(width).height(height)
+  setVerticalPosition = ($img) ->
+    scale_height = width / $img.data('aspect-ratio')
 
-    if size > 1
+    if scale_height >= height
+      $img.css
+        top: -(scale_height - height) / 2
+    else
+      $img.css
+        top: 0
+
+  setHorizontalPosition = ($img) ->
+    scale_width = height * $img.data('aspect-ratio')
+
+    if scale_width >= width
+      $img.css
+        left: -(scale_width - width) / 2
+    else
+      $img.css
+        left: 0
+
+  adjustImagePosition = ($img) =>
+    unless $img.data('aspect-ratio')
+      loadImage $img, (image) ->
+        $img.removeAttr('width').removeAttr('height')
+        $img.data('aspect-ratio', image.width / image.height)
+        adjustImagePosition $img
+      return
+
+    setHorizontalPosition($img)
+    setVerticalPosition($img)
+
+  adjustSlidesSize = ($el) =>
+    $el.each (i) ->
+      $(this).width(width).height(height)
+
       $(this).css
         left: width
 
-    adjustImagePosition $('img', this).not('.keep-original')
+      adjustImagePosition $('img', this).not(".#{that.options.classes.preserve}")
 
-  $container.trigger('slides.sized')
+  findMultiplier = =>
+    if @size() == 1 then 1 else 3
 
-addPaginationItem = (i) ->
-  $pagination = $(".slides-pagination")
-  unless i >= 0
-    i = size - 1 # size is not zero indexed
+  next = =>
+    index = @current + 1
+    index = 0 if (index == @size())
+    index
 
-  $pagination.append $("<a>",
-    href: "#{window.location.href}##{i}"
-  )
+  prev = =>
+    index = @current - 1
+    index = @size() - 1 if index < 0
+    index
 
-start = ->
-  if size > 1
-    if location.hash
-      index = location.hash.replace(/^#/, '')
-    else
-      index = (if first_load then 0 else "next")
+  upcomingSlide = (direction) =>
+    switch true
+      when /next/.test(direction)
+        next()
 
-    animate index
-    play()
-  else
-    $container.fadeIn('fast')
-    $(".#{$.fn.superslides.options.nav_class}").hide()
+      when /prev/.test(direction)
+        prev()
 
-stop = ->
-  clearInterval play_interval
+      when /\d/.test(direction)
+        direction
 
-play = ->
-  if $.fn.superslides.options.play
-    stop() if play_interval
-    play_interval = setInterval ->
-      animate (if first_load then 0 else "next")
-    , $.fn.superslides.options.delay
+      else #bogus
+        false
 
-update = ->
-  $children = $container.children()
-  $.fn.superslides.api.size = size = $children.length
+  parseHash = (hash = window.location.hash) =>
+    hash = hash.replace(/^#/, '')
+    +hash if hash
 
-  setupChildren()
-  addPaginationItem()
+  positions = (current = -1) =>
+    if init && @current >= 0
+      current = @current if current < 0
 
-  $container.trigger('slides.updated')
+    @current = current
+    @next    = next()
+    @prev    = prev()
+    false
 
-append = ($el) ->
-  $container.append($el)
-  update()
+  animator = (direction, callback) =>
+    upcoming_slide = upcomingSlide(direction)
+    return if upcoming_slide > @size() - 1
 
-animate = (direction) ->
-  return if animating || # Mid slide
-            direction >= size || # Out of range
-            direction == this.current # The current slide
+    position       = width * 2
+    offset         = -position
+    outgoing_slide = @current
 
-  animating = true
-  prev = this.current ||
-         direction - 1 ||
-         0
+    if direction == 'prev' or
+       direction < outgoing_slide
+      position = 0
+      offset   = 0
 
-  switch direction
-    when 'next'
-      position = width * 2
-      direction = -position
-      next = this.current + 1
-      next = 0 if size == next
-    when 'prev'
-      position = direction = 0
-      next = this.current - 1
-      next = size - 1 if next == -1
-    else
-      next = +direction
-      if isNaN(next)
-        console.log 'isnan'
-        animating = false
-        return false;
-        break;
+    upcoming_position = position
 
-      if next > prev
-        position = width * 2
-        direction = -position
+    $children
+      .removeClass('current')
+      .eq(upcoming_slide)
+        .addClass('current')
+        .css
+          left: upcoming_position
+          display: 'block'
+
+    $pagination.children()
+      .removeClass('current')
+      .eq(upcoming_slide)
+        .addClass('current')
+
+    $control.animate
+      useTranslate3d: @mobile
+      left: offset
+    , @options.slide_speed
+    , @options.slide_easing
+    , =>
+      positions(upcoming_slide)
+
+      if @size() > 1
+        $control.css
+          left: -width
+
+        $children.eq(upcoming_slide).css
+          left: width
+          zIndex: 2
+
+        # reset last slide
+        if outgoing_slide > 0
+          $children.eq(outgoing_slide).css
+            left: width
+            display: 'none'
+            zIndex: 0
+
+      if @options.hashchange
+        window.location.hash = @current
+
+      callback() if typeof callback == 'function'
+      setupNextPrev()
+      @animating = false
+
+      if init
+        $container.trigger('animated.slides')
       else
-        position = direction = 0
+        init = true
+        $container.fadeIn('fast')
+        $container.trigger('init.slides')
 
-  this.current = next
-  $children.removeClass('current')
-           .eq(this.current).css
-              left: position
-              display: 'block'
+  # Public
+  @$el = $(el)
 
-  $control.animate(
-    useTranslate3d: (if is_mobile then true else false)
-    left: direction
-  , $.fn.superslides.options.slide_speed
-  , $.fn.superslides.options.slide_easing
-  , =>
-    # reset control position
-    $control.css
-      left: -width
+  @animate = (direction = 'next', callback) =>
+    return if @animating
+    @animating = true
 
-    # reset and show next
-    $children.eq(next).css
-      left: width
-      zIndex: 2
+    animator(direction, callback)
 
-    # reset previous slide
-    $children.eq(prev).css
-      left: width
-      display: 'none'
-      zIndex: 0
+  @update = =>
+    positions(@current)
+    addPagination()
+    toggleNav()
 
-    $children.eq(this.current).addClass('current')
+    $container.trigger('updated.slides')
 
-    if first_load
-      $container.fadeIn('fast')
-      $container.trigger('slides.initialized')
-      first_load = false
+  @destroy = =>
+    $(el).removeData()
 
-    animating = false
-    $container.trigger('slides.animated', [this.current, next, prev])
-  )
-  this.current
+  @size = =>
+    $container.children().length
 
+  @stop = =>
+    clearInterval @play_id
+    delete @play_id
+    $container.trigger('stopped.slides')
+
+  @start = =>
+    setupChildren()
+    $window.trigger 'hashchange' if @options.hashchange
+
+    @animate 'next'
+
+    if @options.play
+      @stop() if @play_id
+
+      @play_id = setInterval =>
+        @animate 'next'
+      , @options.play
+
+    $container.trigger('started.slides')
+
+  # Events
+  $window
+  .on 'hashchange', (e) =>
+    index = parseHash()
+    if index >= 0 && index != @current
+      @animate index
+
+  .on 'resize', (e) ->
+    width = $window.width()
+    height = $window.height()
+
+    setupContainers()
+    adjustSlidesSize $children
+
+
+  $(document)
+  .on 'click', ".#{@options.classes.nav} a", (e) ->
+    e.preventDefault() unless that.options.hashchange
+
+    that.stop()
+    if $(this).hasClass('next')
+      that.animate 'next'
+    else
+      that.animate 'prev'
+
+  .on 'click', ".#{@options.classes.pagination} a", (e) ->
+    unless that.options.hashchange
+      e.preventDefault()
+      index = parseHash(this.hash)
+      that.animate index
+
+  initialize()
 
 # Plugin
-$.fn.superslides = (options) ->
-  if typeof options == "string"
-    api = $.fn.superslides.api
-    method = options
+$.fn[plugin] = (option, args) ->
+  result = []
+  @each ->
 
-    # Convert arguments to real array
-    args = Array.prototype.slice.call(arguments)
-    args.splice(0, 1)
-
-    api[method].apply(this, args)
-  else
-    # Defaults
-    options = $.fn.superslides.options = $.extend $.fn.superslides.options, options
-
-    # Setup
-    $(".#{options.container_class}", this).wrap('<div class="slides-control" />')
-
-    # Cache elements
-    $control = $('.slides-control', this)
-    $container = $(".#{options.container_class}")
-    $nav = $(".#{options.nav_class}")
-    $children = $container.children()
-
-    $.fn.superslides.api.size = size = $children.length
-    multiplier = (if size == 1 then 1 else 3)
-
-    this.each ->
-      setup()
-
-      # Event bindings
-      $(window).resize (e) ->
-        width = $window.width()
-        height = $window.height()
-
-        adjustSlidesSize $children
-
-        $control.width(width * multiplier)
-                .height(height)
-
-        if size > 1
-          $control.css
-            left: -width
-
-      $(document).on 'click', ".#{options.nav_class} a", (e) ->
-        e.preventDefault()
-        stop()
-        if $(this).hasClass('next')
-          animate 'next'
-        else
-          animate 'prev'
-
-      if options.pagination
-        $window.on "slides.initialized", (e) =>
-          $(this).append($("<nav>", { class: 'slides-pagination'}))
-
-          $children.each (i) ->
-            addPaginationItem(i)
-
-        .on "slides.animated", (e, current, next, prev) ->
-          $pagination = $(".slides-pagination")
-          $(".active", $pagination).removeClass "active"
-          $("a", $pagination).eq(current).addClass "active"
-
-        .on "click", ".slides-pagination a", (e) ->
-          e.preventDefault() unless options.hashchange
-          index = this.hash.replace(/^#/, '')
-          animate index
-
-        .on 'hashchange', (e) ->
-          index = location.hash.replace(/^#/, '')
-          stop()
-          animate index
-
-      # Kick it off
-      start()
-
-# Options
-$.fn.superslides.options =
-  delay: 5000
-  play: false
-  slide_speed: 'normal'
-  slide_easing: 'linear'
-  nav_class: 'slides-navigation'
-  container_class: 'slides-container'
-  pagination: false
-  hashchange: false
-  scrollable: true
-
-# Public API methods
-$.fn.superslides.api =
-  start: ->
-    start()
-  stop: ->
-    stop()
-  play: ->
-    play()
-  append: ($el) ->
-    append($el)
-  animate: (direction) ->
-    stop()
-    animate(direction)
-  next: ->
-    animate('next')
-  prev: ->
-    animate('prev')
+    $this = $(this)
+    data = $this.data("superslides")
+    $this.data "superslides", (data = new Superslides(this, options)) unless data
