@@ -1,9 +1,10 @@
 # Superslides - [changelog](https://github.com/nicinabox/superslides/blob/master/changelog.md)
 
-Superslides is a full screen slider for jQuery heavily influenced by Nathan Searles' [SlidesJS](https://github.com/nathansearles/slides/). It's designed to be as flexible as possible, while maintaining a reasonable code base and good browser compatibility.
+Superslides is a full screen slider for jQuery heavily influenced by Nathan Searles' [SlidesJS](https://github.com/nathansearles/slides/). It's designed to be flexible, while maintaining a reasonable code base and good browser compatibility.
 
 ## Usage
-[Check out the demo](http://nicinabox.github.com/superslides/) for a complete example. Basic usage is as follows. See options below for things you can change.
+
+[Check out the demo](http://nicinabox.github.com/superslides/) for an interactive example. Use like your standard jQuery plugin:
 
     $('#slides').superslides(options_hash)
 
@@ -39,9 +40,15 @@ Superslides triggers a few events that you can bind to.
     $('#slides').superslides('animate' [, index|'next'|'prev'])
     $('#slides').superslides('size')
     $('#slides').superslides('destroy')
-    $('#slides').superslides('update')
+    $('#slides').superslides('current')
+    $('#slides').superslides('next')
+    $('#slides').superslides('prev')
 
 If add slides after it's initialized (a la ajax), be sure to call `update`.
+
+## Styling
+
+All styling required for functionality is handled in the JavaScript. Additional and optional styling is provided in `dist/stylesheets/superslides.css`
 
 ## Markup
 
