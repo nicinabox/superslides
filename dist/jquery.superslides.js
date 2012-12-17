@@ -64,11 +64,10 @@
       $('body').css({
         margin: 0
       });
-      $(el).css({
+      _this.el.css({
         position: 'relative',
         overflowX: 'hidden',
-        width: '100%',
-        height: height
+        width: '100%'
       });
       $control.css({
         position: 'relative',
@@ -93,6 +92,9 @@
       });
     };
     setupContainers = function() {
+      _this.el.css({
+        height: height
+      });
       $control.css({
         width: width * multiplier,
         left: -width
