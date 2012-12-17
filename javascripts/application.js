@@ -15,15 +15,17 @@ $(document).ready(function() {
 
 
   // Update verion based on github tags
-  var url = 'https://api.github.com/repos/nicinabox/superslides/git/refs/tags';
+  var url = 'https://api.github.com/repos/nicinabox/superslides/git/refs/tags',
+      version;
   $.ajax({
     url: url,
     dataType: 'jsonp',
     success: function(json) {
       var data          = json.data,
-          version       = data.pop().ref.split('/').pop(),
           regex_version = /\d\.\d\.\d?/,
           download_link = $('#download').attr('href');
+
+      version = data.pop().ref.split('/').pop();
 
       $('.version').html(version);
       $('#download').attr('href', download_link.replace(regex_version, version));
@@ -32,7 +34,7 @@ $(document).ready(function() {
   });
 
   $(document).on('click', '#download', function(e) {
-    window.location.hash = "#download";
+    window.location.hash = "#download-" + version;
     _gauges.push(['track']);
   });
 });
