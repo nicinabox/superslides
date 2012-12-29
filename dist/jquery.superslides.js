@@ -1,4 +1,4 @@
-/*! Superslides - v0.5.0 - 2012-12-17
+/*! Superslides - v0.5.1 - 2012-12-29
 * https://github.com/nicinabox/superslides
 * Copyright (c) 2012 Nic Aitch; Licensed MIT */
 
@@ -91,6 +91,10 @@
       });
     };
     setupContainers = function() {
+      $('body').css({
+        margin: 0,
+        overflow: 'hidden'
+      });
       _this.el.css({
         height: height
       });
@@ -311,13 +315,11 @@
             left: width,
             zIndex: 2
           });
-          if (outgoing_slide > 0) {
-            $children.eq(outgoing_slide).css({
-              left: width,
-              display: 'none',
-              zIndex: 0
-            });
-          }
+          $children.eq(outgoing_slide).css({
+            left: width,
+            display: 'none',
+            zIndex: 0
+          });
         }
         if (_this.options.hashchange) {
           window.location.hash = _this.current;
@@ -331,6 +333,7 @@
           return $container.trigger('animated.slides');
         } else {
           init = true;
+          $('body').css('overflow', 'visible');
           $container.fadeIn('fast');
           return $container.trigger('init.slides');
         }
