@@ -1,4 +1,4 @@
-/*! Superslides - v0.5.0 - 2012-12-17
+/*! Superslides - v0.5.1 - 2012-12-29
 * https://github.com/nicinabox/superslides
 * Copyright (c) 2012 Nic Aitch; Licensed MIT */
 
