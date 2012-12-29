@@ -23,12 +23,12 @@ h1 {
 }
 
 a {
-  color: #03A0FA;
+  color: #98d9fe;
   text-decoration: none;
   @include transition(color 0.15s ease);
   text-shadow: none;
   &:hover {
-    color: darken(#03A0FA, 10%);
+    color: darken(#98d9fe, 10%);
   }
 }
 p {

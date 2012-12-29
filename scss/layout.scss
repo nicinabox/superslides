@@ -41,10 +41,12 @@ $base-size: 18px 36px;
   @include transition(background 0.15s ease);
   position: relative;
   border-bottom: 1px solid transparent;
+  color: #03A0FA;
   &:active {
     top: 1px;
   }
   &:hover {
+    color: darken(#03A0FA, 10%);
     background: #f1f1f1;
     border-color: white;
   }

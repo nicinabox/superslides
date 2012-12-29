@@ -23,8 +23,8 @@
     */
 @font-face {
   font-family: "FontAwesome";
-  src: url('../font/fontawesome-webfont.eot');
-  src: url('../font/fontawesome-webfont.eot?#iefix') format('eot'), url('../font/fontawesome-webfont.woff') format('woff'), url('../font/fontawesome-webfont.ttf') format('truetype'), url('../font/fontawesome-webfont.svg#FontAwesomeRegular') format('svg');
+  src: url('fonts/../font/fontawesome-webfont.eot');
+  src: url('fonts/../font/fontawesome-webfont.eot?#iefix') format('eot'), url('fonts/../font/fontawesome-webfont.woff') format('woff'), url('fonts/../font/fontawesome-webfont.ttf') format('truetype'), url('fonts/../font/fontawesome-webfont.svg#FontAwesomeRegular') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -974,7 +974,7 @@ h1 {
 }
 
 a {
-  color: #03A0FA;
+  color: #98d9fe;
   text-decoration: none;
   -webkit-transition: color 0.15s ease;
   -moz-transition: color 0.15s ease;
@@ -983,7 +983,7 @@ a {
   text-shadow: none;
 }
 a:hover {
-  color: #0280c8;
+  color: #65c6fe;
 }
 
 p {
@@ -1092,11 +1092,13 @@ img.keep-original {
   transition: background 0.15s ease;
   position: relative;
   border-bottom: 1px solid transparent;
+  color: #03A0FA;
 }
 .button:active {
   top: 1px;
 }
 .button:hover {
+  color: #0280c8;
   background: #f1f1f1;
   border-color: white;
 }
