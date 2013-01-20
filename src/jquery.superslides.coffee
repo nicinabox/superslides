@@ -97,7 +97,7 @@ Superslides = (el, options = {}) ->
         return if $('.scrollable', this).length
 
         $(this).wrapInner('<div class="scrollable" />');
-        $(this).find('img:first-child')
+        $(this).find('img').not(".#{_this.options.classes.preserve}")
                .insertBefore($('.scrollable', this));
 
   setupChildren = =>
