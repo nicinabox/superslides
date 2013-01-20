@@ -1,6 +1,6 @@
 # Changelog
 
-### 0.5.2 - Unreleased
+### 0.5.2 - Jan 20, 2013
 
 * Fix image scale bug when using images larger than viewport
 * Fix img:first-child using preserve class
