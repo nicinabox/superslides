@@ -106,7 +106,7 @@
             return;
           }
           $(this).wrapInner('<div class="scrollable" />');
-          return $(this).find('img:first-child').insertBefore($('.scrollable', this));
+          return $(this).find('img').not("." + _this.options.classes.preserve).insertBefore($('.scrollable', this));
         });
       }
     };
@@ -324,11 +324,13 @@
             left: width,
             zIndex: 2
           });
-          $children.eq(outgoing_slide).css({
-            left: width,
-            display: 'none',
-            zIndex: 0
-          });
+          if (outgoing_slide >= 0) {
+            $children.eq(outgoing_slide).css({
+              left: width,
+              display: 'none',
+              zIndex: 0
+            });
+          }
         }
         if (_this.options.hashchange) {
           window.location.hash = _this.current;
