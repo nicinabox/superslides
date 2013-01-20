@@ -4,6 +4,6 @@ $(document).ready(function() {
     slide_speed: 800,
     pagination: true,
     hashchange: true,
-    scrollabe: true
+    scrollable: true
   });
 });
