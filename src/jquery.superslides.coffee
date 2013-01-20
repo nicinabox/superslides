@@ -1,3 +1,9 @@
+###
+  Superslides
+  https://github.com/nicinabox/superslides
+  Copyright (c) 2013 Nic Aitch; Licensed MIT
+###
+
 plugin = 'superslides'
 $      = jQuery
 

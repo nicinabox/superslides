@@ -12,14 +12,14 @@ Superslides is a full screen slider for jQuery heavily influenced by Nathan Sear
 
 There are a few configurable options (these are the defaults):
 
-    play: false
+    play: false // Milliseconds for delay
     slide_speed: 'normal'
     slide_easing: 'linear'
     pagination: true
     hashchange: false
-    scrollable: true
+    scrollable: true // Allow scrollable content inside slide
     classes:
-      preserve: 'preserve'
+      preserve: 'preserve' // Prevent an image from being resized
       nav: 'slides-navigation'
       container: 'slides-container'
       pagination: 'slides-pagination'
