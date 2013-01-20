@@ -262,7 +262,6 @@ Superslides = (el, options = {}) ->
 
     upcoming_position = position
 
-
     $children
       .removeClass('current')
       .eq(upcoming_slide)
@@ -293,10 +292,11 @@ Superslides = (el, options = {}) ->
           zIndex: 2
 
         # reset last slide
-        $children.eq(outgoing_slide).css
-          left: width
-          display: 'none'
-          zIndex: 0
+        if outgoing_slide >= 0
+          $children.eq(outgoing_slide).css
+            left: width
+            display: 'none'
+            zIndex: 0
 
       if @options.hashchange
         window.location.hash = @current
