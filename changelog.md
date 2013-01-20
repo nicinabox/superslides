@@ -3,6 +3,8 @@
 ### 0.5.2 - Unreleased
 
 * Fix image scale bug when using images larger than viewport
+* Fix img:first-child using preserve class
+* Fix loading last slide directly
 
 ### 0.5.0 - Dec 17, 2012
 
