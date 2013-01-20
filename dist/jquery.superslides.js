@@ -1,6 +1,6 @@
-/*! Superslides - v0.5.1 - 2012-12-29
+/*! Superslides - v0.5.2 - 2013-01-20
 * https://github.com/nicinabox/superslides
-* Copyright (c) 2012 Nic Aitch; Licensed MIT */
+* Copyright (c) 2013 Nic Aitch; Licensed MIT */
 
 (function() {
   var $, Superslides, plugin;
@@ -82,8 +82,6 @@
       return $container.find('img').not("." + _this.options.classes.preserve).css({
         "-webkit-backface-visibility": 'hidden',
         "-ms-interpolation-mode": 'bicubic',
-        "min-width": '100%',
-        "min-height": '100%',
         "position": 'absolute',
         "left": '0',
         "top": '0',
@@ -108,7 +106,7 @@
             return;
           }
           $(this).wrapInner('<div class="scrollable" />');
-          return $(this).find('img:first-child').insertBefore($('.scrollable', this));
+          return $(this).find('img').not("." + _this.options.classes.preserve).insertBefore($('.scrollable', this));
         });
       }
     };
@@ -213,6 +211,17 @@
         });
         return;
       }
+      if ((width / height) >= $img.data('aspect-ratio')) {
+        $img.css({
+          height: "auto",
+          width: "100%"
+        });
+      } else {
+        $img.css({
+          height: "100%",
+          width: "auto"
+        });
+      }
       setHorizontalPosition($img);
       return setVerticalPosition($img);
     };
@@ -315,11 +324,13 @@
             left: width,
             zIndex: 2
           });
-          $children.eq(outgoing_slide).css({
-            left: width,
-            display: 'none',
-            zIndex: 0
-          });
+          if (outgoing_slide >= 0) {
+            $children.eq(outgoing_slide).css({
+              left: width,
+              display: 'none',
+              zIndex: 0
+            });
+          }
         }
         if (_this.options.hashchange) {
           window.location.hash = _this.current;
