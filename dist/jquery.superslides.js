@@ -82,8 +82,6 @@
       return $container.find('img').not("." + _this.options.classes.preserve).css({
         "-webkit-backface-visibility": 'hidden',
         "-ms-interpolation-mode": 'bicubic',
-        "min-width": '100%',
-        "min-height": '100%',
         "position": 'absolute',
         "left": '0',
         "top": '0',
@@ -212,6 +210,17 @@
           return adjustImagePosition($img);
         });
         return;
+      }
+      if ((width / height) >= $img.data('aspect-ratio')) {
+        $img.css({
+          height: "auto",
+          width: "100%"
+        });
+      } else {
+        $img.css({
+          height: "100%",
+          width: "auto"
+        });
       }
       setHorizontalPosition($img);
       return setVerticalPosition($img);
