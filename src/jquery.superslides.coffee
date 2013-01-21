@@ -368,6 +368,8 @@ Superslides = (el, options = {}) ->
 
     setupContainers()
     adjustSlidesSize $children
+    $('body').css
+      overflow: 'visible'
 
 
   $(document)

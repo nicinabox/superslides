@@ -404,7 +404,10 @@
       width = $window.width();
       height = $window.height();
       setupContainers();
-      return adjustSlidesSize($children);
+      adjustSlidesSize($children);
+      return $('body').css({
+        overflow: 'visible'
+      });
     });
     $(document).on('click', "." + this.options.classes.nav + " a", function(e) {
       if (!that.options.hashchange) {
