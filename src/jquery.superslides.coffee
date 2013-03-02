@@ -153,10 +153,9 @@ Superslides = (el, options = {}) ->
 
   loadImage = ($img, callback) =>
     $("<img>",
-        src: $img.attr('src')
+        src: "#{$img.attr('src')}?#{new Date().getTime()}"
       ).load ->
-        if callback instanceof Function
-          callback(this)
+        callback(this) if typeof callback == 'function'
 
   setVerticalPosition = ($img) ->
     scale_height = width / $img.data('aspect-ratio')

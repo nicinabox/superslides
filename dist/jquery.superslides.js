@@ -169,9 +169,9 @@
     };
     loadImage = function($img, callback) {
       return $("<img>", {
-        src: $img.attr('src')
+        src: "" + ($img.attr('src')) + "?" + (new Date().getTime())
       }).load(function() {
-        if (callback instanceof Function) {
+        if (typeof callback === 'function') {
           return callback(this);
         }
       });
