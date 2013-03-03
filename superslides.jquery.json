@@ -1,5 +1,5 @@
 {
-  "name": "jquery.superslides",
+  "name": "superslides",
   "title": "Superslides",
   "description": "A fullscreen, hardware accelerated slider for jQuery.",
   "version": "0.5.3",
@@ -13,9 +13,7 @@
     "type": "git",
     "url": "git://github.com/nicinabox/superslides.git"
   },
-  "bugs": {
-    "url": "https://github.com/nicinabox/superslides/issues"
-  },
+  "bugs": "https://github.com/nicinabox/superslides/issues",
   "licenses": [
     {
       "type": "MIT",
