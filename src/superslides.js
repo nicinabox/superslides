@@ -38,13 +38,12 @@
 
     this.$el        = $(el);
     this.$container = this.$el.find("." + this.options.classes.container);
-    this.$children  = this.$container.children();
 
     var initialize = function() {
       if (init) { return; }
 
       multiplier = findMultiplier();
-      findPositions();
+      that.findPositions();
 
       $control = that.$container.wrap($control).parent('.slides-control');
 
@@ -60,36 +59,6 @@
 
     var findMultiplier = function() {
       // return this.size() === 1 ? 1 : 3;
-    };
-
-    var findPositions = function(current) {
-      if (!current) {
-        current = 0;
-      }
-
-      that.current = current;
-      that.next    = findNext();
-      that.prev    = findPrev();
-    };
-
-    var findNext = function() {
-      var index = that.current + 1;
-
-      if (index === that.size()) {
-        index = 0;
-      }
-
-      return index;
-    };
-
-    var findPrev = function() {
-      var index = that.current - 1;
-
-      if (index < 0) {
-        index = that.size() - 1;
-      }
-
-      return index;
     };
 
     var setupCss = function() {
@@ -166,27 +135,59 @@
   Superslides.prototype = {
     mobile: (/mobile/i).test(navigator.userAgent),
 
+    findPositions: function(current) {
+      if (!current) {
+        current = 0;
+      }
+
+      this.current = current;
+      this.next    = this.findNext();
+      this.prev    = this.findPrev();
+    },
+
+    findNext: function() {
+      var index = this.current + 1;
+
+      if (index === this.size()) {
+        index = 0;
+      }
+
+      return index;
+    },
+
+    findPrev: function() {
+      var index = this.current - 1;
+
+      if (index < 0) {
+        index = this.size() - 1;
+      }
+
+      return index;
+    },
+
     size: function() {
-      return this.$children.length;
+      return this.$container.children().length;
     },
 
     destroy: function() {
       return this.$el.removeData();
     },
 
-  //   update: function() {
-  //     positions(_this.current);
-  //     addPagination();
-  //     toggleNav();
+    update: function() {
+      this.findPositions(this.current);
 
-  //     $container.trigger('updated.slides');
-  //   },
+      // addPagination();
+      // toggleNav();
 
-  //   stop: function() {
-  //     clearInterval(this.play_id);
-  //     delete this.play_id;
-  //     $container.trigger('stopped.slides');
-  //   },
+      this.$el.trigger('updated.slides');
+    },
+
+    stop: function() {
+      clearInterval(this.play_id);
+      delete this.play_id;
+
+      this.$el.trigger('stopped.slides');
+    },
 
     start: function() {
       // setupChildren();
@@ -198,16 +199,16 @@
       // this.animate('next');
 
       if (this.options.play) {
-        // if (this.play_id) {
-        //   this.stop();
-        // }
+        if (this.play_id) {
+          this.stop();
+        }
 
         this.play_id = setInterval(function() {
           // this.animate('next');
         }, this.options.play);
       }
 
-      // $container.trigger('started.slides');
+      this.$el.trigger('started.slides');
     }
   };
 
@@ -220,6 +221,7 @@
     return this.each(function() {
       if (!$.data(this, plugin)) {
         $.data(this, plugin, new Superslides(this, options));
+        $(this).trigger('init.slides');
       }
     });
   };

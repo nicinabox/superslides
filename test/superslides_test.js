@@ -38,9 +38,6 @@
       $slides = $('#slides');
     },
     testDone: function() {
-      // if ($('#slides').data('superslides')) {
-      //   $('#slides').superslides('destroy');
-      // }
     },
     init: function() {
       QUnit.testStart = testSetup.testStart;
@@ -50,7 +47,51 @@
 
   $(document).ready(testSetup.init);
 
-  module('API');
+  module('API Events');
+
+  asyncTest('slides.init', 1, function() {
+    $slides.on('init.slides', function() {
+      ok($slides.data('superslides'));
+      start();
+    });
+
+    $slides.superslides();
+  });
+
+  asyncTest('started.slides', 1, function() {
+    $slides.on('started.slides', function() {
+      ok(true);
+      start();
+    });
+
+    $slides.superslides();
+  });
+
+  asyncTest('stopped.slides', 1, function() {
+    $slides.on('stopped.slides', function() {
+      ok(true);
+      start();
+    });
+
+    $slides.on('init.slides', function() {
+      $slides.data('superslides').stop();
+    });
+
+    $slides.superslides();
+  });
+
+  asyncTest('updated.slides', 1, function() {
+    $slides.on('updated.slides', function() {
+      ok(true);
+      start();
+    });
+
+    $slides.superslides();
+    addSlide(2);
+    $slides.data('superslides').update();
+  });
+
+  module('API methods');
 
   test('.size() should be 1', function() {
     $slides.superslides();
@@ -64,13 +105,13 @@
     equal($slides.data('superslides').size(), 3);
   });
 
-  test('.destroy()', function() {
+  test('.destroy() removes plugin from data', function() {
     $slides.superslides();
     $slides.data('superslides').destroy();
     ok($.isEmptyObject($.data($slides[0])), 'should not have any superslides data');
   });
 
-  test('.mobile', function() {
+  test('.mobile detects mobile useragent', function() {
     $slides.superslides();
     equal($slides.data('superslides').mobile, (/mobile/i).test(navigator.userAgent));
   });
@@ -104,7 +145,7 @@
     equal($slides.data('superslides').prev, 2);
   });
 
-  asyncTest('.start() - with options.play', function() {
+  asyncTest('.start() should assign play_id', function() {
     $slides.superslides({
       play: true
     });
@@ -113,6 +154,32 @@
       ok($slides.data('superslides').play_id);
       start();
     }, 100);
+  });
+
+  test('.stop() should remove play_id', function() {
+    $slides.superslides({
+      play: true
+    });
+    $slides.data('superslides').stop();
+
+    ok(!$slides.data('superslides').play_id);
+  });
+
+  test('.update() updates positions', function() {
+    $slides.on('updated.slides', function() {
+      var s = $slides.data('superslides');
+
+      equal(s.current, 0, 'current should be 0');
+      equal(s.next, 1, 'next should be 1');
+      equal(s.prev, 2, 'prev should be 2');
+    });
+
+    $slides.on('init.slides', function() {
+      addSlide(2);
+      $slides.data('superslides').update();
+    });
+
+    $slides.superslides();
   });
 
 }(jQuery));
