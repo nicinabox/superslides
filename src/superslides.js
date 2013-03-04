@@ -28,20 +28,14 @@
     }, options);
 
     var that        = this,
-        $window     = $(window),
         $control    = $('<div>', { "class": 'slides-control' }),
         // $pagination = $("<nav>", { "class": this.options.classes.pagination }),
-        multiplier  = 1,
-        init        = false,
-        width       = $window.width(),
-        height      = $window.height();
+        multiplier  = 1;
 
     this.$el        = $(el);
     this.$container = this.$el.find("." + this.options.classes.container);
 
     var initialize = function() {
-      if (init) { return; }
-
       multiplier = findMultiplier();
       that.findPositions();
 
@@ -97,17 +91,17 @@
 
     var setupContainers = function() {
       $('body').css({
-        margin: 0,
-        overflow: 'hidden'
+        margin: 0
+        // overflow: 'hidden'
       });
 
       that.$el.css({
-        height: height
+        height: that.height
       });
 
       $control.css({
-        width: width * multiplier,
-        left: -width
+        width: that.width * multiplier,
+        left: -that.width
       });
 
       // if (that.options.scrollable) {
@@ -134,6 +128,23 @@
 
   Superslides.prototype = {
     mobile: (/mobile/i).test(navigator.userAgent),
+    width: $(window).width(),
+    height: $(window).height(),
+
+    upcomingSlide: function(direction) {
+      if ((/next/).test(direction)) {
+        return this.findNext();
+
+      } else if ((/prev/).test(direction)) {
+        return this.findPrev();
+
+      } else if ((/\d/).test(direction)) {
+        return direction;
+
+      } else {
+        return false;
+      }
+    },
 
     findPositions: function(current) {
       if (!current) {
@@ -190,13 +201,15 @@
     },
 
     start: function() {
+      var that = this;
+
       // setupChildren();
 
       // if (this.options.hashchange) {
       //   $window.trigger('hashchange');
       // }
 
-      // this.animate('next');
+      this.animate();
 
       if (this.options.play) {
         if (this.play_id) {
@@ -204,16 +217,53 @@
         }
 
         this.play_id = setInterval(function() {
-          // this.animate('next');
+          that.animate();
         }, this.options.play);
       }
 
       this.$el.trigger('started.slides');
+    },
+
+    animate: function(direction, userCallback) {
+      var that = this,
+          orientation = {};
+
+      if (this.animating) { return; }
+      this.animating = true;
+
+      if (!direction) {
+        direction = 'next';
+      }
+
+      orientation.upcoming_slide = this.upcomingSlide(direction);
+      if (orientation.upcoming_slide >= this.size()) { return; }
+
+      orientation.outgoing_slide    = this.current;
+      orientation.upcoming_position = this.width * 2;
+      orientation.offset            = -orientation.upcoming_position;
+
+      if (direction === 'prev' || direction < orientation.outgoing_slide) {
+        orientation.upcoming_position = 0;
+        orientation.offset            = 0;
+      }
+
+      this.fx[this.options.animation](orientation, function() {
+        that.findPositions(orientation.upcoming_slide);
+
+        if (typeof userCallback === 'function') {
+          userCallback();
+        }
+
+        that.animating = false;
+        that.$el.trigger('animated.slides');
+      });
     }
   };
 
   Superslides.prototype.fx = {
-
+    slide: function(orientation, callback) {
+      callback();
+    }
   };
 
   // jQuery plugin definition
