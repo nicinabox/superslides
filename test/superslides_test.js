@@ -129,33 +129,51 @@
     equal($slides.data('superslides').mobile, (/mobile/i).test(navigator.userAgent));
   });
 
-  test('.current should be 0', function() {
+  asyncTest('.current should be 0', function() {
+    $slides.on('init.slides', function() {
+      equal($slides.data('superslides').current, 0);
+      start();
+    });
+
     $slides.superslides();
-    equal($slides.data('superslides').current, 0);
   });
 
-  test('.next should be 0', function() {
+  asyncTest('.next should be 0', function() {
+    $slides.on('init.slides', function() {
+      equal($slides.data('superslides').next, 0);
+      start();
+    });
     $slides.superslides();
-    equal($slides.data('superslides').next, 0);
   });
 
-  test('.next should be 1', function() {
+  asyncTest('.next should be 1', function() {
     addSlide(2);
 
+    $slides.on('init.slides', function() {
+      equal($slides.data('superslides').next, 1);
+      start();
+    });
+
     $slides.superslides();
-    equal($slides.data('superslides').next, 1);
   });
 
-  test('.prev should be 0', function() {
+  asyncTest('.prev should be 0', function() {
+    $slides.on('init.slides', function() {
+      equal($slides.data('superslides').prev, 0);
+      start();
+    });
     $slides.superslides();
-    equal($slides.data('superslides').prev, 0);
   });
 
-  test('.prev should be 1', function() {
+  asyncTest('.prev should be 2', function() {
     addSlide(2);
 
+    $slides.on('init.slides', function() {
+      equal($slides.data('superslides').prev, 2);
+      start();
+    });
+
     $slides.superslides();
-    equal($slides.data('superslides').prev, 2);
   });
 
   asyncTest('.start() should assign play_id', function() {

@@ -48,6 +48,7 @@
 
       that.start();
 
+      that.init = true;
       return that;
     };
 
@@ -127,6 +128,7 @@
   };
 
   Superslides.prototype = {
+    init: false,
     mobile: (/mobile/i).test(navigator.userAgent),
     width: $(window).width(),
     height: $(window).height(),
@@ -146,14 +148,16 @@
       }
     },
 
-    findPositions: function(current) {
-      if (!current) {
-        current = 0;
+    findPositions: function(current, thisRef) {
+      thisRef = thisRef || this;
+
+      if (current === undefined) {
+        current = -1;
       }
 
-      this.current = current;
-      this.next    = this.findNext();
-      this.prev    = this.findPrev();
+      thisRef.current = current;
+      thisRef.next    = thisRef.findNext();
+      thisRef.prev    = thisRef.findPrev();
     },
 
     findNext: function() {
@@ -248,14 +252,16 @@
       }
 
       this.fx[this.options.animation](orientation, function() {
-        that.findPositions(orientation.upcoming_slide);
+        that.findPositions(orientation.upcoming_slide, that);
 
         if (typeof userCallback === 'function') {
           userCallback();
         }
 
         that.animating = false;
-        that.$el.trigger('animated.slides');
+        if (that.init) {
+          that.$el.trigger('animated.slides');
+        }
       });
     }
   };
