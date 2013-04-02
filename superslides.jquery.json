@@ -2,7 +2,7 @@
   "name": "jquery.superslides",
   "title": "Superslides",
   "description": "A fullscreen, hardware accelerated slider for jQuery.",
-  "version": "0.5.3",
+  "version": "0.5.4-wip",
   "homepage": "https://github.com/nicinabox/superslides",
   "author": {
     "name": "Nic Aitch",
