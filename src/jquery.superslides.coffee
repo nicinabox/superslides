@@ -105,7 +105,7 @@ Superslides = (el, options = {}) ->
       $children.wrap('<div>')
       $children = $container.children()
 
-    $children.css
+    $container.children().css
       display: 'none'
       position: 'absolute'
       overflow: 'hidden'
@@ -141,15 +141,16 @@ Superslides = (el, options = {}) ->
     return if !@options.pagination or @size() == 1
 
     if $(el).find(".#{@options.classes.pagination}").length
-      last_index = $pagination.children().last().index()
-      array      = $children
+      next_index = $pagination.children().last().index() + 1
+      array      = $container.children()
+      array      = array.slice(next_index)
     else
-      last_index  = 0
-      array       = new Array(@size() - last_index)
+      next_index  = 0
+      array       = new Array(@size() - next_index)
       $pagination = $pagination.appendTo(@el)
 
     $.each array, (i) ->
-      addPaginationItem(i)
+      addPaginationItem(i + next_index)
 
   loadImage = ($img, callback) =>
     $("<img>",
@@ -322,6 +323,13 @@ Superslides = (el, options = {}) ->
     animator(direction, callback)
 
   @update = =>
+    $children = $container.children()
+    adjustSlidesSize($children)
+    setupChildren()
+    $children.eq(@current).css(
+      display: 'block'
+    )
+
     positions(@current)
     addPagination()
     toggleNav()
