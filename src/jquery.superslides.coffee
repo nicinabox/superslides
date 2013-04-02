@@ -325,6 +325,7 @@ Superslides = (el, options = {}) ->
   @update = =>
     $children = $container.children()
     adjustSlidesSize($children)
+    setupCss()
     setupChildren()
     $children.eq(@current).css(
       display: 'block'

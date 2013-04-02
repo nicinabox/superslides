@@ -365,6 +365,7 @@
     this.update = function() {
       $children = $container.children();
       adjustSlidesSize($children);
+      setupCss();
       setupChildren();
       $children.eq(_this.current).css({
         display: 'block'
