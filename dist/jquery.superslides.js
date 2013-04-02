@@ -1,4 +1,4 @@
-/*! Superslides - v0.5.3b - 2013-03-02
+/*! Superslides - v0.5.4-beta - 2013-04-02
 * https://github.com/nicinabox/superslides
 * Copyright (c) 2013 Nic Aitch; Licensed MIT */
 
@@ -115,7 +115,7 @@
         $children.wrap('<div>');
         $children = $container.children();
       }
-      $children.css({
+      $container.children().css({
         display: 'none',
         position: 'absolute',
         overflow: 'hidden',
@@ -151,20 +151,21 @@
       }));
     };
     addPagination = function() {
-      var array, last_index;
+      var array, next_index;
       if (!_this.options.pagination || _this.size() === 1) {
         return;
       }
       if ($(el).find("." + _this.options.classes.pagination).length) {
-        last_index = $pagination.children().last().index();
-        array = $children;
+        next_index = $pagination.children().last().index() + 1;
+        array = $container.children();
+        array = array.slice(next_index);
       } else {
-        last_index = 0;
-        array = new Array(_this.size() - last_index);
+        next_index = 0;
+        array = new Array(_this.size() - next_index);
         $pagination = $pagination.appendTo(_this.el);
       }
       return $.each(array, function(i) {
-        return addPaginationItem(i);
+        return addPaginationItem(i + next_index);
       });
     };
     loadImage = function($img, callback) {
@@ -362,6 +363,12 @@
       return animator(direction, callback);
     };
     this.update = function() {
+      $children = $container.children();
+      adjustSlidesSize($children);
+      setupChildren();
+      $children.eq(_this.current).css({
+        display: 'block'
+      });
       positions(_this.current);
       addPagination();
       toggleNav();
