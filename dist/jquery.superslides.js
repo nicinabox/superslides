@@ -10,7 +10,7 @@
   $ = jQuery;
 
   Superslides = function(el, options) {
-    var $children, $container, $control, $pagination, $window, addPagination, addPaginationItem, adjustImagePosition, adjustSlidesSize, animator, findMultiplier, height, init, initialize, loadImage, multiplier, next, parseHash, positions, prev, setHorizontalPosition, setVerticalPosition, setupChildren, setupContainers, setupCss, setupNextPrev, that, toggleNav, upcomingSlide, width,
+    var $children, $container, $control, $pagination, $window, addPagination, addPaginationItem, adjustImagePosition, adjustSlidesSize, animator, findMultiplier, height, init, initialize, loadImage, multiplier, next, parseHash, positions, prev, setHorizontalPosition, setVerticalPosition, setupChildren, setupContainers, setupCss, setupImageCSS, setupNextPrev, that, toggleNav, upcomingSlide, width,
       _this = this;
     if (options == null) {
       options = {};
@@ -79,6 +79,9 @@
         listStyle: 'none',
         position: 'relative'
       });
+      return setupImageCSS();
+    };
+    setupImageCSS = function() {
       return $container.find('img').not("." + _this.options.classes.preserve).css({
         "-webkit-backface-visibility": 'hidden',
         "-ms-interpolation-mode": 'bicubic',
@@ -365,8 +368,8 @@
     this.update = function() {
       $children = $container.children();
       adjustSlidesSize($children);
-      setupCss();
       setupChildren();
+      setupImageCSS();
       $children.eq(_this.current).css({
         display: 'block'
       });

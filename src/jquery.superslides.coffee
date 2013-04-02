@@ -72,6 +72,9 @@ Superslides = (el, options = {}) ->
       listStyle: 'none'
       position: 'relative'
 
+    setupImageCSS()
+
+  setupImageCSS = =>
     $container.find('img').not(".#{@options.classes.preserve}").css
       "-webkit-backface-visibility": 'hidden'
       "-ms-interpolation-mode": 'bicubic'
@@ -325,8 +328,8 @@ Superslides = (el, options = {}) ->
   @update = =>
     $children = $container.children()
     adjustSlidesSize($children)
-    setupCss()
     setupChildren()
+    setupImageCSS()
     $children.eq(@current).css(
       display: 'block'
     )
