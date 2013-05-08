@@ -4,114 +4,61 @@
   <meta charset="utf-8">
   <title>Superslides - A fullscreen slider for jQuery</title>
   <link rel="stylesheet" href="../dist/stylesheets/superslides.css">
+  <style>
+  h1 {
+  	font-family: Arial;
+  	font-size: 200px;
+  	margin-left: 100px;
+  	margin-top: 50px;
+  	color: white;
+  }
+  .slides-navigation a {
+  	color: white;
+  	text-decoration: none;
+  	font-size: 50px;
+  	margin: 20px;
+  }
+  .slides-navigation a.prev {
+  	-webkit-transform: rotate(180deg);
+	-moz-transform: rotate(180deg);
+	-ms-transform: rotate(180deg);
+	-o-transform: rotate(180deg);
+	filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=2);
+  }
+  </style>
 </head>
 <body>
   <div id="slides">
     <ul class="slides-container">
-      <li>
-        <img src="images/people.jpeg" alt="Cinelli">
+      <li data-href="text-hash">
+        <img src="images/01.jpg" alt="Divine">
         <div class="container">
-          <h1>Slide 1</h1>
-          <p>
-            <a href="#test-hash">Test hash</a>
-          </p>
-          <h1>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</h1>
-
-          <p><strong>Pellentesque habitant morbi tristique</strong> senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. <em>Aenean ultricies mi vitae est.</em> Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed, <code>commodo vitae</code>, ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui. <a href="#">Donec non enim</a> in turpis pulvinar facilisis. Ut felis.</p>
-
-          <h2>Header Level 2</h2>
-
-          <ol>
-            <li>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</li>
-            <li>Aliquam tincidunt mauris eu risus.</li>
-          </ol>
-
-          <blockquote><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus magna. Cras in mi at felis aliquet congue. Ut a est eget ligula molestie gravida. Curabitur massa. Donec eleifend, libero at sagittis mollis, tellus est malesuada tellus, at luctus turpis elit sit amet quam. Vivamus pretium ornare est.</p></blockquote>
-
-          <h3>Header Level 3</h3>
-
-          <ul>
-            <li>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</li>
-            <li>Aliquam tincidunt mauris eu risus.</li>
-          </ul>
-
-          <pre><code>
-          #header h1 a {
-            display: block;
-            width: 300px;
-            height: 80px;
-          }
-          </code></pre>
+          <h1>Text Hash</h1>
         </div>
       </li>
-      <li>
-        <img src="images/surly.jpeg" width="1024" height="682" alt="Surly">
+      <li data-href="savior">
+        <img src="images/02.jpg" alt="Beings">
         <div class="container">
-          <h1>Slide 2</h1>
+          <h1>Savior</h1>
         </div>
       </li>
-      <li>
-        <img src="images/cinelli-front.jpeg" width="1024" height="683" alt="Cinelli">
+      <li data-href="syntax">
+        <img src="images/03.jpg" alt="Rise">
         <div class="container">
-          <h1>Slide 3</h1>
+          <h1>Syntax</h1>
         </div>
       </li>
-      <li>
-        <img src="images/affinity.jpeg" width="1024" height="685" alt="Affinity">
+      <li data-href="filed">
+        <img src="images/04.jpg" alt="Against">
         <div class="container">
-          <h1>Slide 4</h1>
+          <h1>Filed</h1>
         </div>
       </li>
     </ul>
     <nav class="slides-navigation">
-      <a href="#" class="next">Next</a>
-      <a href="#" class="prev">Previous</a>
+      <a href="#" class="next">&#9658;</a>
+      <a href="#" class="prev">&#9658;</a>
     </nav>
-  </div>
-
-  <script type="text/x-template" id="additional-slides">
-    <li>
-      <img src="images/cinelli-front.jpeg" width="1024" height="683" alt="Cinelli">
-      <div class="container">
-        <h1>Slide 3</h1>
-      </div>
-    </li>
-    <li>
-      <img src="images/affinity.jpeg" width="1024" height="685" alt="Affinity">
-      <div class="container">
-        <h1>Slide 4</h1>
-      </div>
-    </li>
-  </script>
-
-  <div id="main">
-    <h1>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</h1>
-
-    <p><strong>Pellentesque habitant morbi tristique</strong> senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. <em>Aenean ultricies mi vitae est.</em> Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed, <code>commodo vitae</code>, ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui. <a href="#">Donec non enim</a> in turpis pulvinar facilisis. Ut felis.</p>
-
-    <h2>Header Level 2</h2>
-
-    <ol>
-      <li>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</li>
-      <li>Aliquam tincidunt mauris eu risus.</li>
-    </ol>
-
-    <blockquote><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus magna. Cras in mi at felis aliquet congue. Ut a est eget ligula molestie gravida. Curabitur massa. Donec eleifend, libero at sagittis mollis, tellus est malesuada tellus, at luctus turpis elit sit amet quam. Vivamus pretium ornare est.</p></blockquote>
-
-    <h3>Header Level 3</h3>
-
-    <ul>
-      <li>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</li>
-      <li>Aliquam tincidunt mauris eu risus.</li>
-    </ul>
-
-    <pre><code>
-    #header h1 a {
-      display: block;
-      width: 300px;
-      height: 80px;
-    }
-    </code></pre>
   </div>
 
 

@@ -14,6 +14,7 @@ Superslides = (el, options = {}) ->
     slide_easing: 'linear'
     pagination: true
     hashchange: false
+    texthash: false
     scrollable: true
     classes:
       preserve: 'preserve'
@@ -124,16 +125,22 @@ Superslides = (el, options = {}) ->
     else
       $(".#{@options.classes.nav}").hide()
 
+  getTextHash = (i) =>
+  	return $children.eq(i).data('href')
+
   setupNextPrev = =>
     $(".#{@options.classes.nav} a").each ->
       if $(this).hasClass('next')
-        this.hash = that.next
+        this.hash = if that.options.texthash then getTextHash(that.next) else that.next
       else
-        this.hash = that.prev
+        this.hash = if that.options.texthash then getTextHash(that.prev) else that.prev
 
   addPaginationItem = (i) =>
     unless i >= 0
       i = @size() - 1 # size is not zero indexed
+
+    if @options.texthash
+      i = getTextHash(i)
 
     $pagination.append $("<a>",
       href: "##{i}"
@@ -237,9 +244,18 @@ Superslides = (el, options = {}) ->
       else #bogus
         false
 
+  getPosByHash = (hash) =>
+    position = null
+    $children.each (i) ->
+      if $(@).data('href') == hash
+        position = i
+        return
+    return position
+
   parseHash = (hash = window.location.hash) =>
     hash = hash.replace(/^#/, '')
-    +hash if hash
+    if hash
+      return if that.options.texthash then +getPosByHash(hash) else +hash
 
   positions = (current = -1) =>
     if init && @current >= 0
@@ -302,7 +318,7 @@ Superslides = (el, options = {}) ->
             zIndex: 0
 
       if @options.hashchange
-        window.location.hash = @current
+        window.location.hash = if @options.texthash then getTextHash(@current) else @current
 
       callback() if typeof callback == 'function'
       setupNextPrev()

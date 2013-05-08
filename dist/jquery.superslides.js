@@ -1,4 +1,4 @@
-/*! Superslides - v0.5.4-beta - 2013-04-02
+/*! Superslides - v0.5.4-wip - 2013-05-07
 * https://github.com/nicinabox/superslides
 * Copyright (c) 2013 Nic Aitch; Licensed MIT */
 
@@ -10,7 +10,7 @@
   $ = jQuery;
 
   Superslides = function(el, options) {
-    var $children, $container, $control, $pagination, $window, addPagination, addPaginationItem, adjustImagePosition, adjustSlidesSize, animator, findMultiplier, height, init, initialize, loadImage, multiplier, next, parseHash, positions, prev, setHorizontalPosition, setVerticalPosition, setupChildren, setupContainers, setupCss, setupImageCSS, setupNextPrev, that, toggleNav, upcomingSlide, width,
+    var $children, $container, $control, $pagination, $window, addPagination, addPaginationItem, adjustImagePosition, adjustSlidesSize, animator, findMultiplier, getPosByHash, getTextHash, height, init, initialize, loadImage, multiplier, next, parseHash, positions, prev, setHorizontalPosition, setVerticalPosition, setupChildren, setupContainers, setupCss, setupImageCSS, setupNextPrev, that, toggleNav, upcomingSlide, width,
       _this = this;
     if (options == null) {
       options = {};
@@ -21,6 +21,7 @@
       slide_easing: 'linear',
       pagination: true,
       hashchange: false,
+      texthash: false,
       scrollable: true,
       classes: {
         preserve: 'preserve',
@@ -135,18 +136,24 @@
         return $("." + _this.options.classes.nav).hide();
       }
     };
+    getTextHash = function(i) {
+      return $children.eq(i).data('href');
+    };
     setupNextPrev = function() {
       return $("." + _this.options.classes.nav + " a").each(function() {
         if ($(this).hasClass('next')) {
-          return this.hash = that.next;
+          return this.hash = that.options.texthash ? getTextHash(that.next) : that.next;
         } else {
-          return this.hash = that.prev;
+          return this.hash = that.options.texthash ? getTextHash(that.prev) : that.prev;
         }
       });
     };
     addPaginationItem = function(i) {
       if (!(i >= 0)) {
         i = _this.size() - 1;
+      }
+      if (_this.options.texthash) {
+        i = getTextHash(i);
       }
       return $pagination.append($("<a>", {
         href: "#" + i,
@@ -273,13 +280,27 @@
           return false;
       }
     };
+    getPosByHash = function(hash) {
+      var position;
+      position = null;
+      $children.each(function(i) {
+        if ($(this).data('href') === hash) {
+          position = i;
+        }
+      });
+      return position;
+    };
     parseHash = function(hash) {
       if (hash == null) {
         hash = window.location.hash;
       }
       hash = hash.replace(/^#/, '');
       if (hash) {
-        return +hash;
+        if (that.options.texthash) {
+          return +getPosByHash(hash);
+        } else {
+          return +hash;
+        }
       }
     };
     positions = function(current) {
@@ -337,7 +358,7 @@
           }
         }
         if (_this.options.hashchange) {
-          window.location.hash = _this.current;
+          window.location.hash = _this.options.texthash ? getTextHash(_this.current) : _this.current;
         }
         if (typeof callback === 'function') {
           callback();
