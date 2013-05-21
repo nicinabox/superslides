@@ -1,9 +1,12 @@
 {
-  "name": "jquery-plugin",
+  "name": "superslides",
   "version": "0.0.0-ignored",
   "npm_test": "grunt qunit",
   "node_version": ">= 0.8.0",
+  "peerDependencies": {
+  },
   "devDependencies": {
+    "grunt": "~0.4",
     "grunt-contrib-jshint": "~0.1.1",
     "grunt-contrib-qunit": "~0.1.1",
     "grunt-contrib-concat": "~0.1.2",
