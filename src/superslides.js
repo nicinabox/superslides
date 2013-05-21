@@ -13,9 +13,11 @@
   Superslides = function(el, options) {
     this.options = $.extend({
       play: false,
-      slide_speed: 'normal',
-      slide_easing: 'linear',
+      animation_speed: 'normal',
+      animation_easing: 'linear',
       animation: 'slide',
+      inherit_width_from: window,
+      inherit_height_from: window,
       pagination: true,
       hashchange: false,
       scrollable: true,
@@ -27,33 +29,28 @@
       }
     }, options);
 
-    var that        = this,
-        $control    = $('<div>', { "class": 'slides-control' }),
-        // $pagination = $("<nav>", { "class": this.options.classes.pagination }),
-        multiplier  = 1;
+    var that       = this,
+        multiplier = 1;
 
     this.$el        = $(el);
+    this.$control   = $('<div>', { "class": 'slides-control' });
     this.$container = this.$el.find("." + this.options.classes.container);
+    this.animation  = this.fx[this.options.animation].bind(this);
 
+    // Private Methods
     var initialize = function() {
-      multiplier = findMultiplier();
+      multiplier = that.findMultiplier();
       that.findPositions();
 
-      $control = that.$container.wrap($control).parent('.slides-control');
+      that.$control = that.$container.wrap(that.$control).parent('.slides-control');
 
       setupCss();
       setupContainers();
-      toggleNav();
-      // addPagination();
 
       that.start();
 
       that.init = true;
       return that;
-    };
-
-    var findMultiplier = function() {
-      // return this.size() === 1 ? 1 : 3;
     };
 
     var setupCss = function() {
@@ -67,7 +64,7 @@
         width: '100%'
       });
 
-      $control.css({
+      that.$control.css({
         position: 'relative',
         transform: 'translate3d(0)'
       });
@@ -93,52 +90,36 @@
     var setupContainers = function() {
       $('body').css({
         margin: 0
-        // overflow: 'hidden'
       });
 
       that.$el.css({
         height: that.height
       });
 
-      $control.css({
+      that.$control.css({
         width: that.width * multiplier,
         left: -that.width
       });
-
-      // if (that.options.scrollable) {
-      //   that.$children.each(function() {
-      //     if ($('.scrollable', that).length) { return; }
-
-      //     $(that).wrapInner('<div class="scrollable" />');
-      //     return $(that).find('img').not("." + that.options.classes.preserve)
-      //       .insertBefore($('.scrollable', that));
-      //   });
-      // }
     };
 
-    var toggleNav = function() {
-      // if (this.size() > 1) {
-      //   $("." + this.options.classes.nav).show();
-      // } else {
-      //   $("." + this.options.classes.nav).hide();
-      // }
-    };
-
-    initialize();
+    return initialize();
   };
 
   Superslides.prototype = {
-    init: false,
     mobile: (/mobile/i).test(navigator.userAgent),
     width: $(window).width(),
     height: $(window).height(),
 
+    findMultiplier: function() {
+      return this.size() === 1 ? 1 : 3;
+    },
+
     upcomingSlide: function(direction) {
       if ((/next/).test(direction)) {
-        return this.findNext();
+        return this.nextInDom();
 
       } else if ((/prev/).test(direction)) {
-        return this.findPrev();
+        return this.prevInDom();
 
       } else if ((/\d/).test(direction)) {
         return direction;
@@ -156,11 +137,11 @@
       }
 
       thisRef.current = current;
-      thisRef.next    = thisRef.findNext();
-      thisRef.prev    = thisRef.findPrev();
+      thisRef.next    = thisRef.nextInDom();
+      thisRef.prev    = thisRef.prevInDom();
     },
 
-    findNext: function() {
+    nextInDom: function() {
       var index = this.current + 1;
 
       if (index === this.size()) {
@@ -170,7 +151,7 @@
       return index;
     },
 
-    findPrev: function() {
+    prevInDom: function() {
       var index = this.current - 1;
 
       if (index < 0) {
@@ -190,10 +171,6 @@
 
     update: function() {
       this.findPositions(this.current);
-
-      // addPagination();
-      // toggleNav();
-
       this.$el.trigger('updated.slides');
     },
 
@@ -206,12 +183,6 @@
 
     start: function() {
       var that = this;
-
-      // setupChildren();
-
-      // if (this.options.hashchange) {
-      //   $window.trigger('hashchange');
-      // }
 
       this.animate();
 
@@ -232,7 +203,10 @@
       var that = this,
           orientation = {};
 
-      if (this.animating) { return; }
+      if (this.animating) {
+        return;
+      }
+
       this.animating = true;
 
       if (!direction) {
@@ -240,7 +214,10 @@
       }
 
       orientation.upcoming_slide = this.upcomingSlide(direction);
-      if (orientation.upcoming_slide >= this.size()) { return; }
+
+      if (orientation.upcoming_slide >= this.size()) {
+        return;
+      }
 
       orientation.outgoing_slide    = this.current;
       orientation.upcoming_position = this.width * 2;
@@ -251,7 +228,7 @@
         orientation.offset            = 0;
       }
 
-      this.fx[this.options.animation](orientation, function() {
+      this.animation(orientation, function() {
         that.findPositions(orientation.upcoming_slide, that);
 
         if (typeof userCallback === 'function') {
@@ -268,7 +245,14 @@
 
   Superslides.prototype.fx = {
     slide: function(orientation, callback) {
-      callback();
+      console.log(this);
+      this.$control.animate({
+        left: orientation.offset
+      },
+      this.options.animation_speed,
+      this.options.animation_easing,
+      callback);
+      // callback();
     }
   };
 
@@ -281,5 +265,18 @@
       }
     });
   };
+
+  // Prototype's .bind method
+  if (!Function.prototype.bind) { // check if native implementation available
+    Function.prototype.bind = function(){
+      var fn = this, args = Array.prototype.slice.call(arguments),
+          object = args.shift();
+      return function(){
+        return fn.apply(object,
+          args.concat(Array.prototype.slice.call(arguments)));
+      };
+    };
+  }
+
 
 })(this, jQuery);
