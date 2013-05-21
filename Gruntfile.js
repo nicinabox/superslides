@@ -57,14 +57,19 @@ module.exports = function(grunt) {
         src: ['test/**/*.js']
       },
     },
+    compass: {
+      sassDir: 'scss',
+      cssDir: 'dist/stylesheets',
+      noLineComments: true
+    },
     watch: {
       gruntfile: {
         files: '<%= jshint.gruntfile.src %>',
         tasks: ['jshint:gruntfile']
       },
       src: {
-        files: '<%= jshint.src.src %>',
-        tasks: ['jshint:src', 'qunit']
+        files: ['<%= jshint.src.src %>', 'scss/*'],
+        tasks: ['compass', 'jshint:src', 'qunit']
       },
       test: {
         files: '<%= jshint.test.src %>',
@@ -80,6 +85,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-qunit');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-contrib-compass');
 
   // Default task.
   grunt.registerTask('default', ['jshint', 'qunit', 'clean', 'concat', 'uglify']);
