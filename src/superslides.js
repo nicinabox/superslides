@@ -70,18 +70,20 @@
       });
 
       $(window).on('resize', function() {
-        var $children = that.$container.children();
+        setTimeout(function() {
+          var $children = that.$container.children();
 
-        that.width  = that.findWidth();
-        that.height = that.findHeight();
+          that.width  = that.findWidth();
+          that.height = that.findHeight();
 
-        $children.css({
-          width: that.width,
-          left: that.width
-        });
+          $children.css({
+            width: that.width,
+            left: that.width
+          });
 
-        setupContainers();
-        setupImages();
+          setupContainers();
+          setupImages();
+        }, 200);
       });
 
       that.start();
