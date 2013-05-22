@@ -356,11 +356,12 @@
     },
     scale: function(image) {
       var aspect_ratio = image.width / image.height,
+          container_aspect_ratio = this.width / this.height,
           $img = $(image);
 
-      $(image).data('aspect-ratio', aspect_ratio);
+      $img.data('aspect-ratio', aspect_ratio);
 
-      if ((this.width / this.height) >= aspect_ratio) {
+      if (container_aspect_ratio >= aspect_ratio) {
         $img.css({
           height: 'auto',
           width: '100%'
