@@ -13,8 +13,8 @@
   Superslides = function(el, options) {
     this.options = $.extend({
       play: false,
-      animation_speed: 'normal',
-      animation_easing: 'linear',
+      animation_speed: 600,
+      animation_easing: 'swing',
       animation: 'slide',
       inherit_width_from: window,
       inherit_height_from: window,
@@ -70,19 +70,14 @@
       });
 
       $(window).on('resize', function() {
-        var $children = that.$container.children(),
-            $visible_children = $children.filter(':visible');
+        var $children = that.$container.children();
 
         that.width  = that.findWidth();
         that.height = that.findHeight();
 
         $children.css({
           width: that.width,
-          left: that.width * 2
-        });
-
-        $visible_children.css({
-          left: that.width * 2
+          left: that.width
         });
 
         setupContainers();
