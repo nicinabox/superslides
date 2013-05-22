@@ -503,8 +503,10 @@
         .addClass('current');
     },
     addItem: function(i) {
+      var index = i + 1;
       var $item = $("<a>", {
-        'href': "#" + (i + 1)
+        'href': "#" + index,
+        'text': index
       });
 
       $item.appendTo(this.$pagination);
