@@ -426,7 +426,6 @@
         display: 'block'
       });
 
-      console.log(orientation)
       if (orientation.outgoing_slide >= 0) {
         $outgoing.animate({
           opacity: 0
