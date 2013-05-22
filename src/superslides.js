@@ -37,11 +37,11 @@
     this.$container = this.$el.find(this.options.elements.container);
 
     // Bind this reference
-    this.animation   = this.fx[this.options.animation].bind(this);
-    this.image.scale = this.image.scale.bind(this);
-    this.image.center = this.image.center.bind(this);
-    this.image.centerVertical   = this.image.centerVertical.bind(this);
-    this.image.centerHorizontal = this.image.centerHorizontal.bind(this);
+    this.animation     = this.fx[this.options.animation].bind(this);
+    this.image.scale   = this.image.scale.bind(this);
+    this.image.center  = this.image.center.bind(this);
+    this.image.centerX = this.image.centerX.bind(this);
+    this.image.centerY = this.image.centerY.bind(this);
 
     // Private Methods
     var initialize = function() {
@@ -168,7 +168,7 @@
 
       that.$control.css({
         width: that.width * multiplier,
-        left: -that.width * 2
+        left: -that.width
       });
     };
 
@@ -298,6 +298,7 @@
       orientation.offset            = -orientation.upcoming_position;
 
       if (direction === 'prev' || direction < orientation.outgoing_slide) {
+        orientation.upcoming_position = 0;
         orientation.offset            = 0;
       }
 
@@ -323,7 +324,7 @@
   };
 
   Superslides.prototype.image = {
-    centerVertical: function(image) {
+    centerX: function(image) {
       var $img = $(image),
           scale_height = this.width / $img.data('aspect-ratio');
 
@@ -338,7 +339,7 @@
       }
 
     },
-    centerHorizontal: function(image) {
+    centerY: function(image) {
       var $img = $(image),
           scale_width = this.height * $img.data('aspect-ratio');
 
@@ -353,8 +354,8 @@
       }
     },
     center: function(image) {
-      this.image.centerVertical(image);
-      this.image.centerHorizontal(image);
+      this.image.centerX(image);
+      this.image.centerY(image);
     },
     scale: function(image) {
       var aspect_ratio = image.width / image.height,
@@ -388,7 +389,7 @@
       });
 
       that.$control.animate({
-
+        left: orientation.offset
       },
       that.options.animation_speed,
       that.options.animation_easing,
@@ -396,12 +397,12 @@
         var $children = that.$container.children();
 
         if (that.size() > 1) {
-          // that.$control.css({
-          //   left: -width
-          // });
+          that.$control.css({
+            left: -that.width
+          });
 
           $children.eq(orientation.upcoming_slide).css({
-            // left: that.width,
+            left: that.width,
             zIndex: 2
           });
 
