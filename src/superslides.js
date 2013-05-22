@@ -298,7 +298,6 @@
       orientation.offset            = -orientation.upcoming_position;
 
       if (direction === 'prev' || direction < orientation.outgoing_slide) {
-        orientation.upcoming_position = 0;
         orientation.offset            = 0;
       }
 
@@ -394,24 +393,25 @@
       that.options.animation_speed,
       that.options.animation_easing,
       function() {
+        var $children = that.$container.children();
+
         if (that.size() > 1) {
           // that.$control.css({
           //   left: -width
           // });
 
-          that.$container.children()
-            .eq(orientation.upcoming_slide).css({
-              // left: that.width,
-              zIndex: 2
-            });
+          $children.eq(orientation.upcoming_slide).css({
+            // left: that.width,
+            zIndex: 2
+          });
 
-          // if (outgoing_slide >= 0) {
-          //   $children.eq(outgoing_slide).css({
-          //     left: width,
-          //     display: 'none',
-          //     zIndex: 0
-          //   });
-          // }
+          if (orientation.outgoing_slide >= 0) {
+            $children.eq(orientation.outgoing_slide).css({
+              left: that.width,
+              display: 'none',
+              zIndex: 0
+            });
+          }
         }
 
         complete();
