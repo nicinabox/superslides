@@ -38,10 +38,16 @@
 
     // Bind this reference
     this.animation     = this.fx[this.options.animation].bind(this);
+
     this.image.scale   = this.image.scale.bind(this);
     this.image.center  = this.image.center.bind(this);
     this.image.centerX = this.image.centerX.bind(this);
     this.image.centerY = this.image.centerY.bind(this);
+
+    this.pagination.setup      = this.pagination.setup.bind(this);
+    this.pagination.addItem    = this.pagination.addItem.bind(this);
+    this.pagination.setCurrent = this.pagination.setCurrent.bind(this);
+    this.pagination.events     = this.pagination.events.bind(this);
 
     // Private Methods
     var initialize = function() {
@@ -57,6 +63,7 @@
       setupChildren();
       setupContainers();
       setupImages();
+      that.pagination.setup();
 
       $(document).on('click', that.options.elements.nav + " a", function(e) {
         e.preventDefault();
@@ -85,6 +92,17 @@
           setupImages();
         }, 200);
       });
+
+      $(window).on('hashchange', function() {
+        var hash = that.parseHash(),
+            index = that.upcomingSlide(hash - 1);
+
+        if (index >= 0 && index !== that.current) {
+          that.animate(index);
+        }
+      });
+
+      that.pagination.events();
 
       that.start();
       return that;
@@ -193,10 +211,10 @@
         return this.prevInDom();
 
       } else if ((/\d/).test(direction)) {
-        return direction;
+        return +direction;
 
       } else {
-        return false;
+        return 0;
       }
     },
 
@@ -232,6 +250,14 @@
       return index;
     },
 
+    parseHash: function(hash) {
+      hash = hash || window.location.hash;
+      hash = hash.replace(/^#/, '');
+      if (hash) {
+        return hash;
+      }
+    },
+
     size: function() {
       return this.$container.children().length;
     },
@@ -255,7 +281,11 @@
     start: function() {
       var that = this;
 
-      this.animate();
+      if (that.options.hashchange) {
+        $(window).trigger('hashchange');
+      } else {
+        this.animate();
+      }
 
       if (this.options.play) {
         if (this.play_id) {
@@ -280,7 +310,7 @@
 
       this.animating = true;
 
-      if (!direction) {
+      if (direction === undefined) {
         direction = 'next';
       }
 
@@ -297,6 +327,12 @@
       if (direction === 'prev' || direction < orientation.outgoing_slide) {
         orientation.upcoming_position = 0;
         orientation.offset            = 0;
+      }
+
+      that.pagination.setCurrent(orientation.upcoming_slide);
+
+      if (that.options.hashchange) {
+        window.location.hash = orientation.upcoming_slide + 1;
       }
 
       this.animation(orientation, function() {
@@ -454,6 +490,46 @@
           zIndex: 2
         });
         complete();
+      }
+    }
+  };
+
+  Superslides.prototype.pagination = {
+    setCurrent: function(i) {
+      var $pagination_children = this.$pagination.children();
+
+      $pagination_children.removeClass('current');
+      $pagination_children.eq(i)
+        .addClass('current');
+    },
+    addItem: function(i) {
+      var $item = $("<a>", {
+        'href': "#" + (i + 1)
+      });
+
+      $item.appendTo(this.$pagination);
+    },
+    setup: function() {
+      if (!this.options.pagination || this.size() === 1) { return; }
+
+      var $pagination = $("<nav>", {
+        'class': this.options.elements.pagination.replace(/^\./, '')
+      });
+
+      this.$pagination = $pagination.appendTo(this.$el);
+
+      for (var i = 0; i < this.size(); i++) {
+        this.pagination.addItem(i);
+      }
+    },
+    events: function() {
+      var that = this;
+      if (!this.options.hashchange) {
+        $(document).on('click', that.options.elements.pagination + ' a', function() {
+          var hash  = that.parseHash(this.hash),
+              index = that.upcomingSlide(hash - 1);
+          that.animate(index);
+        });
       }
     }
   };
