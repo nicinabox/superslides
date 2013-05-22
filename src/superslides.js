@@ -374,9 +374,9 @@
 
   Superslides.prototype.fx = {
     slide: function(orientation, complete) {
-      var that = this,
-          $target = that.$container.children()
-                      .eq(orientation.upcoming_slide);
+      var that      = this,
+          $children = that.$container.children(),
+          $target   = $children.eq(orientation.upcoming_slide);
 
       $target.css({
         left: orientation.upcoming_position,
@@ -389,8 +389,6 @@
       that.options.animation_speed,
       that.options.animation_easing,
       function() {
-        var $children = that.$container.children();
-
         if (that.size() > 1) {
           that.$control.css({
             left: -that.width
@@ -412,6 +410,49 @@
 
         complete();
       });
+    },
+    fade: function(orientation, complete) {
+      var that = this,
+          $children = that.$container.children(),
+          $outgoing = $children.eq(orientation.outgoing_slide),
+          $target = $children.eq(orientation.upcoming_slide);
+
+      $target.css({
+        left: this.width,
+        opacity: 1,
+        display: 'block'
+      });
+
+      console.log(orientation)
+      if (orientation.outgoing_slide >= 0) {
+        $outgoing.animate({
+          opacity: 0
+        },
+        that.options.animation_speed,
+        that.options.animation_easing,
+        function() {
+          if (that.size() > 1) {
+            $children.eq(orientation.upcoming_slide).css({
+              zIndex: 2
+            });
+
+            if (orientation.outgoing_slide >= 0) {
+              $children.eq(orientation.outgoing_slide).css({
+                opacity: 1,
+                display: 'none',
+                zIndex: 0
+              });
+            }
+          }
+
+          complete();
+        });
+      } else {
+        $target.css({
+          zIndex: 2
+        });
+        complete();
+      }
     }
   };
 
