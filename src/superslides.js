@@ -21,35 +21,75 @@
       pagination: true,
       hashchange: false,
       scrollable: true,
-      classes: {
-        preserve: 'preserve',
-        nav: 'slides-navigation',
-        container: 'slides-container',
-        pagination: 'slides-pagination'
+      elements: {
+        preserve: '.preserve',
+        nav: '.slides-navigation',
+        container: '.slides-container',
+        pagination: '.slides-pagination'
       }
     }, options);
 
     var that       = this,
+        $control   = $('<div>', { "class": 'slides-control' }),
         multiplier = 1;
 
     this.$el        = $(el);
-    this.$control   = $('<div>', { "class": 'slides-control' });
-    this.$container = this.$el.find("." + this.options.classes.container);
-    this.animation  = this.fx[this.options.animation].bind(this);
+    this.$container = this.$el.find(this.options.elements.container);
+
+    // Bind this reference
+    this.animation   = this.fx[this.options.animation].bind(this);
+    this.image.scale = this.image.scale.bind(this);
+    this.image.center = this.image.center.bind(this);
+    this.image.centerVertical   = this.image.centerVertical.bind(this);
+    this.image.centerHorizontal = this.image.centerHorizontal.bind(this);
 
     // Private Methods
     var initialize = function() {
       multiplier = that.findMultiplier();
       that.findPositions();
 
-      that.$control = that.$container.wrap(that.$control).parent('.slides-control');
+      that.$control = that.$container.wrap($control).parent('.slides-control');
+
+      that.width  = that.findWidth();
+      that.height = that.findHeight();
 
       setupCss();
+      setupChildren();
       setupContainers();
+      setupImages();
+
+      $(document).on('click', that.options.elements.nav + " a", function(e) {
+        e.preventDefault();
+
+        that.stop();
+        if ($(this).hasClass('next')) {
+          that.animate('next');
+        } else {
+          that.animate('prev');
+        }
+      });
+
+      $(window).on('resize', function() {
+        var $children = that.$container.children(),
+            $visible_children = $children.filter(':visible');
+
+        that.width  = that.findWidth();
+        that.height = that.findHeight();
+
+        $children.css({
+          width: that.width,
+          left: that.width * 2
+        });
+
+        $visible_children.css({
+          left: that.width * 2
+        });
+
+        setupContainers();
+        setupImages();
+      });
 
       that.start();
-
-      that.init = true;
       return that;
     };
 
@@ -66,7 +106,8 @@
 
       that.$control.css({
         position: 'relative',
-        transform: 'translate3d(0)'
+        transform: 'translate3d(0)',
+        height: '100%'
       });
 
       that.$container.css({
@@ -74,16 +115,45 @@
         margin: '0',
         padding: '0',
         listStyle: 'none',
-        position: 'relative'
+        position: 'relative',
+        height: '100%'
       });
 
-      that.$container.find('img').not("." + that.options.classes.preserve).css({
+      that.$container.find('img').not(that.options.elements.preserve).css({
         "-webkit-backface-visibility": 'hidden',
         "-ms-interpolation-mode": 'bicubic',
         "position": 'absolute',
         "left": '0',
         "top": '0',
         "z-index": '-1'
+      }).removeAttr('width').removeAttr('height');
+    };
+
+    var setupChildren = function() {
+      var $children = that.$container.children();
+
+      if ($children.is('img')) {
+        $children.wrap('<div>');
+        $children = that.$container.children();
+      }
+
+      $children.css({
+        position: 'absolute',
+        overflow: 'hidden',
+        display: 'none',
+        height: '100%',
+        width: that.width,
+        left: that.width * 2,
+        top: 0,
+        zIndex: 0
+      });
+    };
+
+    var setupImages = function() {
+      var $images = that.$container.find('img').not(that.options.elements.preserve);
+      $images.each(function() {
+        that.image.scale(this);
+        that.image.center(this);
       });
     };
 
@@ -98,7 +168,7 @@
 
       that.$control.css({
         width: that.width * multiplier,
-        left: -that.width
+        left: -that.width * 2
       });
     };
 
@@ -107,8 +177,12 @@
 
   Superslides.prototype = {
     mobile: (/mobile/i).test(navigator.userAgent),
-    width: $(window).width(),
-    height: $(window).height(),
+    findWidth: function() {
+      return $(this.options.inherit_width_from).width();
+    },
+    findHeight: function() {
+      return $(this.options.inherit_width_from).height();
+    },
 
     findMultiplier: function() {
       return this.size() === 1 ? 1 : 3;
@@ -236,23 +310,112 @@
         }
 
         that.animating = false;
+
         if (that.init) {
           that.$el.trigger('animated.slides');
+        } else {
+          that.init = true;
+          that.$container.css({
+            display: 'block'
+          });
         }
       });
     }
   };
 
+  Superslides.prototype.image = {
+    centerVertical: function(image) {
+      var $img = $(image),
+          scale_height = this.width / $img.data('aspect-ratio');
+
+      if (scale_height >= this.height) {
+        $img.css({
+          top: -(scale_height - this.height) / 2
+        });
+      } else {
+        $img.css({
+          top: 0
+        });
+      }
+
+    },
+    centerHorizontal: function(image) {
+      var $img = $(image),
+          scale_width = this.height * $img.data('aspect-ratio');
+
+      if (scale_width >= this.width) {
+        $img.css({
+          left: -(scale_width - this.width) / 2
+        });
+      } else {
+        $img.css({
+          left: 0
+        });
+      }
+    },
+    center: function(image) {
+      this.image.centerVertical(image);
+      this.image.centerHorizontal(image);
+    },
+    scale: function(image) {
+      var aspect_ratio = image.width / image.height,
+          $img = $(image);
+
+      $(image).data('aspect-ratio', aspect_ratio);
+
+      if ((this.width / this.height) >= aspect_ratio) {
+        $img.css({
+          height: 'auto',
+          width: '100%'
+        });
+      } else {
+        $img.css({
+          height: '100%',
+          width: 'auto'
+        });
+      }
+    }
+  };
+
   Superslides.prototype.fx = {
-    slide: function(orientation, callback) {
-      console.log(this);
-      this.$control.animate({
-        left: orientation.offset
+    slide: function(orientation, complete) {
+      var that = this,
+          $target = that.$container.children()
+                      .eq(orientation.upcoming_slide);
+
+      $target.css({
+        left: orientation.upcoming_position,
+        display: 'block'
+      });
+
+      that.$control.animate({
+
       },
-      this.options.animation_speed,
-      this.options.animation_easing,
-      callback);
-      // callback();
+      that.options.animation_speed,
+      that.options.animation_easing,
+      function() {
+        if (that.size() > 1) {
+          // that.$control.css({
+          //   left: -width
+          // });
+
+          that.$container.children()
+            .eq(orientation.upcoming_slide).css({
+              // left: that.width,
+              zIndex: 2
+            });
+
+          // if (outgoing_slide >= 0) {
+          //   $children.eq(outgoing_slide).css({
+          //     left: width,
+          //     display: 'none',
+          //     zIndex: 0
+          //   });
+          // }
+        }
+
+        complete();
+      });
     }
   };
 
