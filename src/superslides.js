@@ -525,7 +525,8 @@
     events: function() {
       var that = this;
       if (!this.options.hashchange) {
-        $(document).on('click', that.options.elements.pagination + ' a', function() {
+        $(document).on('click', that.options.elements.pagination + ' a', function(e) {
+          e.preventDefault();
           var hash  = that.parseHash(this.hash),
               index = that.upcomingSlide(hash - 1);
           that.animate(index);
