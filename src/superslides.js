@@ -319,7 +319,7 @@
   };
 
   Superslides.prototype.image = {
-    centerX: function(image) {
+    centerY: function(image) {
       var $img = $(image),
           scale_height = this.width / $img.data('aspect-ratio');
 
@@ -334,7 +334,7 @@
       }
 
     },
-    centerY: function(image) {
+    centerX: function(image) {
       var $img = $(image),
           scale_width = this.height * $img.data('aspect-ratio');
 
