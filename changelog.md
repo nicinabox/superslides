@@ -9,6 +9,7 @@
 * Add more examples
 * Add fade effect
 * Add extensible fx engine
+* Add support for arrow keys
 * Fix double image load
 
 ### 0.5.2 - Jan 20, 2013
