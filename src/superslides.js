@@ -160,6 +160,10 @@
         "z-index": '-1',
         "max-width": 'none'
       }).removeAttr('width').removeAttr('height');
+
+      if (that.size() === 1) {
+        that.$el.find(that.options.elements.nav).hide();
+      }
     };
 
     var setupChildren = function() {
@@ -370,7 +374,9 @@
         orientation.offset            = 0;
       }
 
-      that.pagination.setCurrent(orientation.upcoming_slide);
+      if (that.size() > 1) {
+        that.pagination.setCurrent(orientation.upcoming_slide);
+      }
 
       if (that.options.hashchange) {
         var hash = orientation.upcoming_slide + 1,
