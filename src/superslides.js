@@ -526,7 +526,9 @@
           e.preventDefault();
           var hash  = that.parseHash(this.hash),
               index = that.upcomingSlide(hash - 1);
-          that.animate(index);
+          if (index !== that.current) {
+            that.animate(index);
+          }
         });
       }
     }
