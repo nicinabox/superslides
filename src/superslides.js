@@ -115,7 +115,7 @@
 
       that.$el.css({
         position: 'relative',
-        overflowX: 'hidden',
+        overflow: 'hidden',
         width: '100%'
       });
 
@@ -358,54 +358,40 @@
 
   Superslides.prototype.image = {
     centerY: function(image) {
-      var $img = $(image),
-          scale_height = this.width / $img.data('aspect-ratio');
+      var $img = $(image);
 
-      if (scale_height >= this.height) {
-        $img.css({
-          top: -(scale_height - this.height) / 2
-        });
-      } else {
-        $img.css({
-          top: 0
-        });
-      }
-
+      $img.css({
+        top: (this.height - $img.height()) / 2
+      });
     },
     centerX: function(image) {
-      var $img = $(image),
-          scale_width = this.height * $img.data('aspect-ratio');
+      var $img = $(image);
 
-      if (scale_width >= this.width) {
-        $img.css({
-          left: -(scale_width - this.width) / 2
-        });
-      } else {
-        $img.css({
-          left: 0
-        });
-      }
+      $img.css({
+        left: (this.width - $img.width()) / 2
+      });
     },
     center: function(image) {
       this.image.centerX(image);
       this.image.centerY(image);
     },
     scale: function(image) {
-      var aspect_ratio = image.width / image.height,
-          container_aspect_ratio = this.width / this.height,
+      var image_aspect_ratio = image.height / image.width,
+          container_aspect_ratio = this.height / this.width,
           $img = $(image);
 
-      $img.data('aspect-ratio', aspect_ratio);
+      $img.data('aspect-ratio', image_aspect_ratio);
 
-      if (container_aspect_ratio >= aspect_ratio) {
+      if (container_aspect_ratio > image_aspect_ratio) {
         $img.css({
-          height: 'auto',
-          width: '100%'
+          height: this.height,
+          width: this.height / image_aspect_ratio
         });
+
       } else {
         $img.css({
-          height: '100%',
-          width: 'auto'
+          height: this.width * image_aspect_ratio,
+          width: this.width
         });
       }
     }
