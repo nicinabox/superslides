@@ -103,8 +103,16 @@
       });
 
       $(window).on('hashchange', function() {
-        var hash = that.parseHash(),
-            index = that.upcomingSlide(hash - 1);
+        var hash = that.parseHash(), index;
+
+        if (hash && !isNaN(hash)) {
+          // Minus 1 here because we don't want the url
+          // to be zero-indexed
+          index = that.upcomingSlide(hash - 1);
+
+        } else {
+          index = that.upcomingSlide(hash);
+        }
 
         if (index >= 0 && index !== that.current) {
           that.animate(index);
@@ -159,6 +167,14 @@
 
       if ($children.is('img')) {
         $children.wrap('<div>');
+
+        // move id attribute
+        $children.each(function() {
+          var id = $(this).attr('id');
+          $(this).removeAttr('id');
+          $(this).parent().attr('id', id);
+        });
+
         $children = that.$container.children();
       }
 
@@ -223,9 +239,21 @@
       } else if ((/\d/).test(direction)) {
         return +direction;
 
+      } else if (direction && (/\w/).test(direction)) {
+        var index = this.findSlideById(direction);
+        if (index >= 0) {
+          return index;
+        } else {
+          return 0;
+        }
+
       } else {
         return 0;
       }
+    },
+
+    findSlideById: function(id) {
+      return this.$container.find('#' + id).index();
     },
 
     findPositions: function(current, thisRef) {
@@ -263,9 +291,12 @@
     parseHash: function(hash) {
       hash = hash || window.location.hash;
       hash = hash.replace(/^#/, '');
-      if (hash) {
-        return hash;
+
+      if (hash && !isNaN(+hash)) {
+        hash = +hash;
       }
+
+      return hash;
     },
 
     size: function() {
@@ -342,7 +373,14 @@
       that.pagination.setCurrent(orientation.upcoming_slide);
 
       if (that.options.hashchange) {
-        window.location.hash = orientation.upcoming_slide + 1;
+        var hash = orientation.upcoming_slide + 1,
+            id = that.$container.children(':eq(' + orientation.upcoming_slide + ')').attr('id');
+
+        if (id) {
+          window.location.hash = id;
+        } else {
+          window.location.hash = hash;
+        }
       }
 
       this.animation(orientation, function() {
@@ -507,10 +545,18 @@
         .addClass('current');
     },
     addItem: function(i) {
-      var index = i + 1;
+      var slide_number = i + 1,
+          href = slide_number,
+          $slide = this.$container.children().eq(i),
+          slide_id = $slide.attr('id');
+
+      if (slide_id) {
+        href = slide_id;
+      }
+
       var $item = $("<a>", {
-        'href': "#" + index,
-        'text': index
+        'href': "#" + href,
+        'text': href
       });
 
       $item.appendTo(this.$pagination);
