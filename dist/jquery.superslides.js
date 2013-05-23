@@ -1,4 +1,4 @@
-/*! Superslides - v0.6.0 - 2013-05-22
+/*! Superslides - v0.6.0 - 2013-05-23
 * https://github.com/nicinabox/superslides
 * Copyright (c) 2013 Nic Aitch; Licensed MIT */
 (function(window, $) {
@@ -71,6 +71,15 @@
         }
       });
 
+      $(document).on('keyup', function(e) {
+        if (e.keyCode === 37) {
+          that.animate('prev');
+        }
+        if (e.keyCode === 39) {
+          that.animate('next');
+        }
+      });
+
       $(window).on('resize', function() {
         setTimeout(function() {
           var $children = that.$container.children();
@@ -89,8 +98,16 @@
       });
 
       $(window).on('hashchange', function() {
-        var hash = that.parseHash(),
-            index = that.upcomingSlide(hash - 1);
+        var hash = that.parseHash(), index;
+
+        if (hash && !isNaN(hash)) {
+          // Minus 1 here because we don't want the url
+          // to be zero-indexed
+          index = that.upcomingSlide(hash - 1);
+
+        } else {
+          index = that.upcomingSlide(hash);
+        }
 
         if (index >= 0 && index !== that.current) {
           that.animate(index);
@@ -110,7 +127,7 @@
 
       that.$el.css({
         position: 'relative',
-        overflowX: 'hidden',
+        overflow: 'hidden',
         width: '100%'
       });
 
@@ -135,8 +152,13 @@
         "position": 'absolute',
         "left": '0',
         "top": '0',
-        "z-index": '-1'
+        "z-index": '-1',
+        "max-width": 'none'
       }).removeAttr('width').removeAttr('height');
+
+      if (that.size() === 1) {
+        that.$el.find(that.options.elements.nav).hide();
+      }
     };
 
     var setupChildren = function() {
@@ -144,6 +166,14 @@
 
       if ($children.is('img')) {
         $children.wrap('<div>');
+
+        // move id attribute
+        $children.each(function() {
+          var id = $(this).attr('id');
+          $(this).removeAttr('id');
+          $(this).parent().attr('id', id);
+        });
+
         $children = that.$container.children();
       }
 
@@ -208,9 +238,21 @@
       } else if ((/\d/).test(direction)) {
         return +direction;
 
+      } else if (direction && (/\w/).test(direction)) {
+        var index = this.findSlideById(direction);
+        if (index >= 0) {
+          return index;
+        } else {
+          return 0;
+        }
+
       } else {
         return 0;
       }
+    },
+
+    findSlideById: function(id) {
+      return this.$container.find('#' + id).index();
     },
 
     findPositions: function(current, thisRef) {
@@ -248,9 +290,12 @@
     parseHash: function(hash) {
       hash = hash || window.location.hash;
       hash = hash.replace(/^#/, '');
-      if (hash) {
-        return hash;
+
+      if (hash && !isNaN(+hash)) {
+        hash = +hash;
       }
+
+      return hash;
     },
 
     size: function() {
@@ -324,10 +369,19 @@
         orientation.offset            = 0;
       }
 
-      that.pagination.setCurrent(orientation.upcoming_slide);
+      if (that.size() > 1) {
+        that.pagination.setCurrent(orientation.upcoming_slide);
+      }
 
       if (that.options.hashchange) {
-        window.location.hash = orientation.upcoming_slide + 1;
+        var hash = orientation.upcoming_slide + 1,
+            id = that.$container.children(':eq(' + orientation.upcoming_slide + ')').attr('id');
+
+        if (id) {
+          window.location.hash = id;
+        } else {
+          window.location.hash = hash;
+        }
       }
 
       this.animation(orientation, function() {
@@ -353,54 +407,48 @@
 
   Superslides.prototype.image = {
     centerY: function(image) {
-      var $img = $(image),
-          scale_height = this.width / $img.data('aspect-ratio');
+      var $img = $(image);
 
-      if (scale_height >= this.height) {
-        $img.css({
-          top: -(scale_height - this.height) / 2
-        });
-      } else {
-        $img.css({
-          top: 0
-        });
-      }
-
+      $img.css({
+        top: (this.height - $img.height()) / 2
+      });
     },
     centerX: function(image) {
-      var $img = $(image),
-          scale_width = this.height * $img.data('aspect-ratio');
+      var $img = $(image);
 
-      if (scale_width >= this.width) {
-        $img.css({
-          left: -(scale_width - this.width) / 2
-        });
-      } else {
-        $img.css({
-          left: 0
-        });
-      }
+      $img.css({
+        left: (this.width - $img.width()) / 2
+      });
     },
     center: function(image) {
       this.image.centerX(image);
       this.image.centerY(image);
     },
+    aspectRatio: function(image) {
+      if (!image.naturalHeight && !image.naturalWidth) {
+        var img = new Image();
+        img.src = image.src;
+        image.naturalHeight = img.height;
+        image.naturalWidth = img.width;
+      }
+
+      return image.naturalHeight / image.naturalWidth;
+    },
     scale: function(image) {
-      var aspect_ratio = image.width / image.height,
-          container_aspect_ratio = this.width / this.height,
+      var image_aspect_ratio = this.image.aspectRatio(image),
+          container_aspect_ratio = this.height / this.width,
           $img = $(image);
 
-      $img.data('aspect-ratio', aspect_ratio);
-
-      if (container_aspect_ratio >= aspect_ratio) {
+      if (container_aspect_ratio > image_aspect_ratio) {
         $img.css({
-          height: 'auto',
-          width: '100%'
+          height: this.height,
+          width: this.height / image_aspect_ratio
         });
+
       } else {
         $img.css({
-          height: '100%',
-          width: 'auto'
+          height: this.width * image_aspect_ratio,
+          width: this.width
         });
       }
     }
@@ -498,10 +546,18 @@
         .addClass('current');
     },
     addItem: function(i) {
-      var index = i + 1;
+      var slide_number = i + 1,
+          href = slide_number,
+          $slide = this.$container.children().eq(i),
+          slide_id = $slide.attr('id');
+
+      if (slide_id) {
+        href = slide_id;
+      }
+
       var $item = $("<a>", {
-        'href': "#" + index,
-        'text': index
+        'href': "#" + href,
+        'text': href
       });
 
       $item.appendTo(this.$pagination);
@@ -526,7 +582,9 @@
           e.preventDefault();
           var hash  = that.parseHash(this.hash),
               index = that.upcomingSlide(hash - 1);
-          that.animate(index);
+          if (index !== that.current) {
+            that.animate(index);
+          }
         });
       }
     }
