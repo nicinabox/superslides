@@ -376,12 +376,20 @@
       this.image.centerX(image);
       this.image.centerY(image);
     },
+    aspectRatio: function(image) {
+      if (!image.naturalHeight && image.naturalWidth) {
+        var img = new Image();
+        img.src = image.src;
+        image.naturalHeight = img.height;
+        image.naturalWidth = img.width;
+      }
+
+      return image.naturalHeight / image.naturalWidth;
+    },
     scale: function(image) {
-      var image_aspect_ratio = image.height / image.width,
+      var image_aspect_ratio = this.image.aspectRatio(image),
           container_aspect_ratio = this.height / this.width,
           $img = $(image);
-
-      $img.data('aspect-ratio', image_aspect_ratio);
 
       if (container_aspect_ratio > image_aspect_ratio) {
         $img.css({
