@@ -377,7 +377,7 @@
       this.image.centerY(image);
     },
     aspectRatio: function(image) {
-      if (!image.naturalHeight && image.naturalWidth) {
+      if (!image.naturalHeight && !image.naturalWidth) {
         var img = new Image();
         img.src = image.src;
         image.naturalHeight = img.height;
