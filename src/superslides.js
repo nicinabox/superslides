@@ -140,7 +140,8 @@
         "position": 'absolute',
         "left": '0',
         "top": '0',
-        "z-index": '-1'
+        "z-index": '-1',
+        "max-width": 'none'
       }).removeAttr('width').removeAttr('height');
     };
 
