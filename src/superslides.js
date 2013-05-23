@@ -76,6 +76,15 @@
         }
       });
 
+      $(document).on('keyup', function(e) {
+        if (e.keyCode === 37) {
+          that.animate('prev');
+        }
+        if (e.keyCode === 39) {
+          that.animate('next');
+        }
+      });
+
       $(window).on('resize', function() {
         setTimeout(function() {
           var $children = that.$container.children();
