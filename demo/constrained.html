@@ -7,7 +7,7 @@
   <style>
     .wide-container {
       max-width: 1000px;
-      height: 600px;
+      height: 500px;
       margin: 0 auto;
     }
   </style>
@@ -15,12 +15,23 @@
 <body>
   <div class="wide-container">
     <div id="slides">
-      <div class="slides-container">
-        <img src="images/people.jpeg" alt="Cinelli">
-        <img src="images/surly.jpeg" width="1024" height="682" alt="Surly">
-        <img src="images/cinelli-front.jpeg" width="1024" height="683" alt="Cinelli">
-        <img src="images/affinity.jpeg" width="1024" height="685" alt="Affinity">
-      </div>
+      <ul class="slides-container">
+        <li>
+          <img src="images/home-banner-01.jpg" alt="">
+        </li>
+        <li>
+          <img src="images/people.jpeg" alt="Cinelli">
+        </li>
+        <li>
+          <img src="images/surly.jpeg" width="1024" height="682" alt="Surly">
+        </li>
+        <li>
+          <img src="images/cinelli-front.jpeg" width="1024" height="683" alt="Cinelli">
+        </li>
+        <li>
+          <img src="images/affinity.jpeg" width="1024" height="685" alt="Affinity">
+        </li>
+      </ul>
 
       <nav class="slides-navigation">
         <a href="#" class="next">Next</a>
@@ -34,9 +45,11 @@
   <script src="javascripts/jquery.animate-enhanced.min.js"></script>
   <script src="../dist/jquery.superslides.js" type="text/javascript" charset="utf-8"></script>
   <script>
-    $('#slides').superslides({
-      inherit_width_from: '.wide-container',
-      inherit_height_from: '.wide-container'
+    $(window).load(function() {
+      $('#slides').superslides({
+        inherit_width_from: '.wide-container',
+        inherit_height_from: '.wide-container'
+      });
     });
   </script>
 </body>
