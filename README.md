@@ -29,8 +29,9 @@ There are a few configurable options (these are the defaults):
 Superslides triggers a few events that you can bind to.
 
     started.slides
-    init.slides     // On first load, will fire instead of `animated`
-    animated.slides
+    init.slides      // On first load, will fire instead of `animated`
+    animating.slides // Before slide animation begins
+    animated.slides  // After slide animation ends
     updated.slides
 
 ## API
