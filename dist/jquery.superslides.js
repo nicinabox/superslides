@@ -348,7 +348,6 @@
         return;
       }
 
-      that.$el.trigger('animating.slides');
       this.animating = true;
 
       if (direction === undefined) {
@@ -384,6 +383,8 @@
           window.location.hash = hash;
         }
       }
+
+      that.$el.trigger('animating.slides', [orientation]);
 
       this.animation(orientation, function() {
         that.findPositions(orientation.upcoming_slide, that);
