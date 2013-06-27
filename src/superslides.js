@@ -353,6 +353,7 @@
         return;
       }
 
+      that.$el.trigger('animating.slides');
       this.animating = true;
 
       if (direction === undefined) {
