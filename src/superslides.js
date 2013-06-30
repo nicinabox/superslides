@@ -544,7 +544,7 @@
 
   Superslides.prototype.pagination = {
     _setCurrent: function(i) {
-      if (!this.$pagination) return;
+      if (!this.$pagination) { return; }
 
       var $pagination_children = this.$pagination.children();
 
