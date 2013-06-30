@@ -399,10 +399,9 @@
         }
 
         that.animating = false;
+        that.$el.trigger('animated.slides');
 
-        if (that.init) {
-          that.$el.trigger('animated.slides');
-        } else {
+        if (!that.init) {
           that.init = true;
           that.$container.css({
             display: 'block'

@@ -1,4 +1,4 @@
-/*! Superslides - v0.6.0-beta - 2013-06-27
+/*! Superslides - v0.6.0-beta - 2013-06-30
 * https://github.com/nicinabox/superslides
 * Copyright (c) 2013 Nic Aitch; Licensed MIT */
 (function(window, $) {
@@ -394,10 +394,9 @@
         }
 
         that.animating = false;
+        that.$el.trigger('animated.slides');
 
-        if (that.init) {
-          that.$el.trigger('animated.slides');
-        } else {
+        if (!that.init) {
           that.init = true;
           that.$container.css({
             display: 'block'
