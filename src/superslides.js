@@ -39,31 +39,31 @@
     // Bind this reference
     this.animation     = this.fx[this.options.animation].bind(this);
 
-    this.image.scale   = this.image.scale.bind(this);
-    this.image.center  = this.image.center.bind(this);
-    this.image.centerX = this.image.centerX.bind(this);
-    this.image.centerY = this.image.centerY.bind(this);
+    this.image._scale   = this.image._scale.bind(this);
+    this.image._center  = this.image._center.bind(this);
+    this.image._centerX = this.image._centerX.bind(this);
+    this.image._centerY = this.image._centerY.bind(this);
 
-    this.pagination.setup      = this.pagination.setup.bind(this);
-    this.pagination.addItem    = this.pagination.addItem.bind(this);
-    this.pagination.setCurrent = this.pagination.setCurrent.bind(this);
-    this.pagination.events     = this.pagination.events.bind(this);
+    this.pagination._setup      = this.pagination._setup.bind(this);
+    this.pagination._addItem    = this.pagination._addItem.bind(this);
+    this.pagination._setCurrent = this.pagination._setCurrent.bind(this);
+    this.pagination._events     = this.pagination._events.bind(this);
 
     // Private Methods
     var initialize = function() {
-      multiplier = that.findMultiplier();
-      that.findPositions();
+      multiplier = that._findMultiplier();
+      that._findPositions();
 
       that.$control = that.$container.wrap($control).parent('.slides-control');
 
-      that.width  = that.findWidth();
-      that.height = that.findHeight();
+      that.width  = that._findWidth();
+      that.height = that._findHeight();
 
       setupCss();
       setupChildren();
       setupContainers();
       setupImages();
-      that.pagination.setup();
+      that.pagination._setup();
 
       $(document).on('click', that.options.elements.nav + " a", function(e) {
         e.preventDefault();
@@ -89,8 +89,8 @@
         setTimeout(function() {
           var $children = that.$container.children();
 
-          that.width  = that.findWidth();
-          that.height = that.findHeight();
+          that.width  = that._findWidth();
+          that.height = that._findHeight();
 
           $children.css({
             width: that.width,
@@ -103,15 +103,15 @@
       });
 
       $(window).on('hashchange', function() {
-        var hash = that.parseHash(), index;
+        var hash = that._parseHash(), index;
 
         if (hash && !isNaN(hash)) {
           // Minus 1 here because we don't want the url
           // to be zero-indexed
-          index = that.upcomingSlide(hash - 1);
+          index = that._upcomingSlide(hash - 1);
 
         } else {
-          index = that.upcomingSlide(hash);
+          index = that._upcomingSlide(hash);
         }
 
         if (index >= 0 && index !== that.current) {
@@ -119,7 +119,7 @@
         }
       });
 
-      that.pagination.events();
+      that.pagination._events();
 
       that.start();
       return that;
@@ -197,8 +197,8 @@
     var setupImages = function() {
       var $images = that.$container.find('img').not(that.options.elements.preserve);
       $images.each(function() {
-        that.image.scale(this);
-        that.image.center(this);
+        that.image._scale(this);
+        that.image._center(this);
       });
     };
 
@@ -221,30 +221,29 @@
   };
 
   Superslides.prototype = {
-    mobile: (/mobile/i).test(navigator.userAgent),
-    findWidth: function() {
+    _findWidth: function() {
       return $(this.options.inherit_width_from).width();
     },
-    findHeight: function() {
+    _findHeight: function() {
       return $(this.options.inherit_width_from).height();
     },
 
-    findMultiplier: function() {
+    _findMultiplier: function() {
       return this.size() === 1 ? 1 : 3;
     },
 
-    upcomingSlide: function(direction) {
+    _upcomingSlide: function(direction) {
       if ((/next/).test(direction)) {
-        return this.nextInDom();
+        return this._nextInDom();
 
       } else if ((/prev/).test(direction)) {
-        return this.prevInDom();
+        return this._prevInDom();
 
       } else if ((/\d/).test(direction)) {
         return +direction;
 
       } else if (direction && (/\w/).test(direction)) {
-        var index = this.findSlideById(direction);
+        var index = this._findSlideById(direction);
         if (index >= 0) {
           return index;
         } else {
@@ -256,11 +255,11 @@
       }
     },
 
-    findSlideById: function(id) {
+    _findSlideById: function(id) {
       return this.$container.find('#' + id).index();
     },
 
-    findPositions: function(current, thisRef) {
+    _findPositions: function(current, thisRef) {
       thisRef = thisRef || this;
 
       if (current === undefined) {
@@ -268,11 +267,11 @@
       }
 
       thisRef.current = current;
-      thisRef.next    = thisRef.nextInDom();
-      thisRef.prev    = thisRef.prevInDom();
+      thisRef.next    = thisRef._nextInDom();
+      thisRef.prev    = thisRef._prevInDom();
     },
 
-    nextInDom: function() {
+    _nextInDom: function() {
       var index = this.current + 1;
 
       if (index === this.size()) {
@@ -282,7 +281,7 @@
       return index;
     },
 
-    prevInDom: function() {
+    _prevInDom: function() {
       var index = this.current - 1;
 
       if (index < 0) {
@@ -292,7 +291,7 @@
       return index;
     },
 
-    parseHash: function(hash) {
+    _parseHash: function(hash) {
       hash = hash || window.location.hash;
       hash = hash.replace(/^#/, '');
 
@@ -312,7 +311,7 @@
     },
 
     update: function() {
-      this.findPositions(this.current);
+      this._findPositions(this.current);
       this.$el.trigger('updated.slides');
     },
 
@@ -359,7 +358,7 @@
         direction = 'next';
       }
 
-      orientation.upcoming_slide = this.upcomingSlide(direction);
+      orientation.upcoming_slide = this._upcomingSlide(direction);
 
       if (orientation.upcoming_slide >= this.size()) {
         return;
@@ -375,7 +374,7 @@
       }
 
       if (that.size() > 1) {
-        that.pagination.setCurrent(orientation.upcoming_slide);
+        that.pagination._setCurrent(orientation.upcoming_slide);
       }
 
       if (that.options.hashchange) {
@@ -392,7 +391,7 @@
       that.$el.trigger('animating.slides', [orientation]);
 
       this.animation(orientation, function() {
-        that.findPositions(orientation.upcoming_slide, that);
+        that._findPositions(orientation.upcoming_slide, that);
 
         if (typeof userCallback === 'function') {
           userCallback();
@@ -412,25 +411,25 @@
   };
 
   Superslides.prototype.image = {
-    centerY: function(image) {
+    _centerY: function(image) {
       var $img = $(image);
 
       $img.css({
         top: (this.height - $img.height()) / 2
       });
     },
-    centerX: function(image) {
+    _centerX: function(image) {
       var $img = $(image);
 
       $img.css({
         left: (this.width - $img.width()) / 2
       });
     },
-    center: function(image) {
-      this.image.centerX(image);
-      this.image.centerY(image);
+    _center: function(image) {
+      this.image._centerX(image);
+      this.image._centerY(image);
     },
-    aspectRatio: function(image) {
+    _aspectRatio: function(image) {
       if (!image.naturalHeight && !image.naturalWidth) {
         var img = new Image();
         img.src = image.src;
@@ -440,8 +439,8 @@
 
       return image.naturalHeight / image.naturalWidth;
     },
-    scale: function(image) {
-      var image_aspect_ratio = this.image.aspectRatio(image),
+    _scale: function(image) {
+      var image_aspect_ratio = this.image._aspectRatio(image),
           container_aspect_ratio = this.height / this.width,
           $img = $(image);
 
@@ -544,14 +543,14 @@
   };
 
   Superslides.prototype.pagination = {
-    setCurrent: function(i) {
+    _setCurrent: function(i) {
       var $pagination_children = this.$pagination.children();
 
       $pagination_children.removeClass('current');
       $pagination_children.eq(i)
         .addClass('current');
     },
-    addItem: function(i) {
+    _addItem: function(i) {
       var slide_number = i + 1,
           href = slide_number,
           $slide = this.$container.children().eq(i),
@@ -568,7 +567,7 @@
 
       $item.appendTo(this.$pagination);
     },
-    setup: function() {
+    _setup: function() {
       if (!this.options.pagination || this.size() === 1) { return; }
 
       var $pagination = $("<nav>", {
@@ -578,16 +577,16 @@
       this.$pagination = $pagination.appendTo(this.$el);
 
       for (var i = 0; i < this.size(); i++) {
-        this.pagination.addItem(i);
+        this.pagination._addItem(i);
       }
     },
-    events: function() {
+    _events: function() {
       var that = this;
       if (!this.options.hashchange) {
         $(document).on('click', that.options.elements.pagination + ' a', function(e) {
           e.preventDefault();
-          var hash  = that.parseHash(this.hash),
-              index = that.upcomingSlide(hash - 1);
+          var hash  = that._parseHash(this.hash),
+              index = that._upcomingSlide(hash - 1);
           if (index !== that.current) {
             that.animate(index);
           }
