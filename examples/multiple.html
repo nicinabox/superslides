@@ -6,7 +6,7 @@
   <link rel="stylesheet" href="../dist/stylesheets/superslides.css">
 </head>
 <body>
-  <div id="backslides">
+  <div id="slides-1">
     <div class="slides-container">
       <img src="images/cinelli.jpeg" alt="Cinelli">
       <img src="images/surly.jpeg" alt="Surly">
@@ -15,34 +15,21 @@
     </div>
   </div>
 
-  <div id="popup">
-    <div id="gallery">
-      <div class="slides-container">
-        <img src="http://lorempixel.com/1000/800" alt="">
-        <img src="http://lorempixel.com/1000/800" alt="">
-        <img src="http://lorempixel.com/1000/800" alt="">
-        <img src="http://lorempixel.com/1000/800" alt="">
-      </div>
-      <nav>
-        <a href="#" class="next">Next</a>
-        <a href="#" class="prev">Prev</a>
-      </nav>
+  <div id="slides-2">
+    <div class="slides-container">
+      <img src="http://lorempixel.com/1000/800" alt="">
+      <img src="http://lorempixel.com/1000/800" alt="">
+      <img src="http://lorempixel.com/1000/800" alt="">
+      <img src="http://lorempixel.com/1000/800" alt="">
     </div>
+    <nav>
+      <a href="#" class="next">Next</a>
+      <a href="#" class="prev">Prev</a>
+    </nav>
   </div>
 
-  <a href="#" id="toggle-gallery">Toggle gallery</a>
-
   <style type="text/css">
-    #toggle-gallery {
-      float: right;
-    }
-    #popup {
-      display: none;
-      position: absolute;
-      width: 100%;
-      top: 0;
-      left: 0;
-    }
+
   </style>
 
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
@@ -50,21 +37,8 @@
   <script src="javascripts/jquery.animate-enhanced.min.js"></script>
   <script src="../dist/jquery.superslides.js" type="text/javascript" charset="utf-8"></script>
   <script>
-    $(document).ready(function() {
-      $('#toggle-gallery').click(function() {
-        if ($('#gallery').is(':visible')) {
-          $('#popup').hide();
-          $('#gallery').superslides('destroy');
-          $('#backslides').superslides('start');
-        } else {
-          $('#popup').show();
-          $('#gallery').superslides();
-          $('#backslides').superslides('stop');
-        }
-
-      });
-
-      $('#backslides').superslides({
+    $(window).load(function() {
+      $('#slides-1, #slides-2').superslides({
         play: 5000,
         pagination: false,
         navigation: false
