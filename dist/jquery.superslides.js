@@ -383,8 +383,6 @@ var pagination = {
     }
   },
   _events: function() {
-    console.log(that.$el, that.options.elements.pagination)
-
     that.$el.on('click', that.options.elements.pagination + ' a', function(e) {
       e.preventDefault();
 
