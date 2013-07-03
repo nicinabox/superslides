@@ -23,6 +23,5 @@ Superslides = function(el, options) {
       $control   = $('<div>', { "class": 'slides-control' }),
       multiplier = 1;
 
-
   this.$el        = $(el);
   this.$container = this.$el.find(this.options.elements.container);

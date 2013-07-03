@@ -150,14 +150,13 @@ var setupImages = function() {
   $images.each(function() {
     var thisImg = this;
     var img = new Image();
-    img.src = this.src;
-
     img.onload = function() {
       var image_aspect_ratio = that.image._aspectRatio(this);
 
       that.image._scale(thisImg, image_aspect_ratio);
       that.image._center(thisImg, image_aspect_ratio);
     };
+    img.src = this.src;
   });
 };
 
