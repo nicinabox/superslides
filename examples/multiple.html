@@ -8,29 +8,29 @@
 <body>
   <div id="slides-1">
     <div class="slides-container">
-      <img src="images/cinelli.jpeg" alt="Cinelli">
-      <img src="images/surly.jpeg" alt="Surly">
-      <img src="images/cinelli-front.jpeg" alt="Cinelli">
-      <img src="images/affinity.jpeg" alt="Affinity">
-    </div>
-  </div>
-
-  <div id="slides-2">
-    <div class="slides-container">
       <img src="http://lorempixel.com/1000/800" alt="">
       <img src="http://lorempixel.com/1000/800" alt="">
       <img src="http://lorempixel.com/1000/800" alt="">
       <img src="http://lorempixel.com/1000/800" alt="">
     </div>
-    <nav>
+    <nav class="slides-navigation">
       <a href="#" class="next">Next</a>
       <a href="#" class="prev">Prev</a>
     </nav>
   </div>
 
-  <style type="text/css">
-
-  </style>
+  <div id="slides-2">
+    <div class="slides-container">
+      <img src="images/cinelli.jpeg" alt="Cinelli">
+      <img src="images/surly.jpeg" alt="Surly">
+      <img src="images/cinelli-front.jpeg" alt="Cinelli">
+      <img src="images/affinity.jpeg" alt="Affinity">
+    </div>
+    <nav class="slides-navigation">
+      <a href="#" class="next">Next</a>
+      <a href="#" class="prev">Prev</a>
+    </nav>
+  </div>
 
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
   <script src="javascripts/jquery.easing.1.3.js"></script>
@@ -38,11 +38,7 @@
   <script src="../dist/jquery.superslides.js" type="text/javascript" charset="utf-8"></script>
   <script>
     $(function() {
-      $('#slides-1, #slides-2').superslides({
-        play: 5000,
-        pagination: false,
-        navigation: false
-      });
+      $('#slides-1, #slides-2').superslides();
     });
   </script>
 </body>
