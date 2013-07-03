@@ -168,7 +168,7 @@ Superslides.prototype = {
 
     that.$el.trigger('animating.slides', [orientation]);
 
-    this.animation(orientation, function() {
+    that.animation(orientation, function() {
       that._findPositions(orientation.upcoming_slide, that);
 
       if (typeof userCallback === 'function') {

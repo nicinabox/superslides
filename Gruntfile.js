@@ -24,10 +24,12 @@ module.exports = function(grunt) {
         src: [
               'src/intro.js',
               'src/core.js',
-              'src/core_prototype.js',
+              'src/setup.js',
               'src/fx.js',
               'src/image.js',
               'src/pagination.js',
+              'src/core_outro.js',
+              'src/core_prototype.js',
               'src/plugin.js',
               'src/polyfills.js',
               'src/outro.js'

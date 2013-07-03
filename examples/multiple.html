@@ -38,7 +38,9 @@
   <script src="../dist/jquery.superslides.js" type="text/javascript" charset="utf-8"></script>
   <script>
     $(function() {
-      $('#slides-1, #slides-2').superslides();
+      $('#slides-1, #slides-2').superslides({
+        hashchange: false
+      });
     });
   </script>
 </body>

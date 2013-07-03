@@ -1,8 +1,8 @@
-Superslides.prototype.pagination = {
+var pagination = {
   _setCurrent: function(i) {
-    if (!this.$pagination) { return; }
+    if (!that.$pagination) { return; }
 
-    var $pagination_children = this.$pagination.children();
+    var $pagination_children = that.$pagination.children();
 
     $pagination_children.removeClass('current');
     $pagination_children.eq(i)
@@ -11,7 +11,7 @@ Superslides.prototype.pagination = {
   _addItem: function(i) {
     var slide_number = i + 1,
         href = slide_number,
-        $slide = this.$container.children().eq(i),
+        $slide = that.$container.children().eq(i),
         slide_id = $slide.attr('id');
 
     if (slide_id) {
@@ -23,32 +23,31 @@ Superslides.prototype.pagination = {
       'text': href
     });
 
-    $item.appendTo(this.$pagination);
+    $item.appendTo(that.$pagination);
   },
   _setup: function() {
-    if (!this.options.pagination || this.size() === 1) { return; }
+    if (!that.options.pagination || that.size() === 1) { return; }
 
     var $pagination = $("<nav>", {
-      'class': this.options.elements.pagination.replace(/^\./, '')
+      'class': that.options.elements.pagination.replace(/^\./, '')
     });
 
-    this.$pagination = $pagination.appendTo(this.$el);
+    that.$pagination = $pagination.appendTo(that.$el);
 
-    for (var i = 0; i < this.size(); i++) {
-      this.pagination._addItem(i);
+    for (var i = 0; i < that.size(); i++) {
+      that.pagination._addItem(i);
     }
   },
   _events: function() {
-    var that = this;
-    if (!this.options.hashchange) {
-      this.$el.on('click', that.options.elements.pagination + ' a', function(e) {
-        e.preventDefault();
-        var hash  = that._parseHash(this.hash),
-            index = that._upcomingSlide(hash - 1);
-        if (index !== that.current) {
-          that.animate(index);
-        }
-      });
-    }
+    that.$el.on('click', that.options.elements.pagination + ' a', function(e) {
+      e.preventDefault();
+
+      var hash  = that._parseHash(this.hash),
+          index = that._upcomingSlide(hash - 1);
+
+      if (index !== that.current) {
+        that.animate(index);
+      }
+    });
   }
 };

@@ -1,21 +1,21 @@
-Superslides.prototype.image = {
+var image = {
   _centerY: function(image) {
     var $img = $(image);
 
     $img.css({
-      top: (this.height - $img.height()) / 2
+      top: (that.height - $img.height()) / 2
     });
   },
   _centerX: function(image) {
     var $img = $(image);
 
     $img.css({
-      left: (this.width - $img.width()) / 2
+      left: (that.width - $img.width()) / 2
     });
   },
   _center: function(image) {
-    this.image._centerX(image);
-    this.image._centerY(image);
+    that.image._centerX(image);
+    that.image._centerY(image);
   },
   _aspectRatio: function(image) {
     if (!image.naturalHeight && !image.naturalWidth) {
@@ -28,21 +28,21 @@ Superslides.prototype.image = {
     return image.naturalHeight / image.naturalWidth;
   },
   _scale: function(image, image_aspect_ratio) {
-    image_aspect_ratio = image_aspect_ratio || this.image._aspectRatio(image);
+    image_aspect_ratio = image_aspect_ratio || that.image._aspectRatio(image);
 
-    var container_aspect_ratio = this.height / this.width,
+    var container_aspect_ratio = that.height / that.width,
         $img = $(image);
 
     if (container_aspect_ratio > image_aspect_ratio) {
       $img.css({
-        height: this.height,
-        width: this.height / image_aspect_ratio
+        height: that.height,
+        width: that.height / image_aspect_ratio
       });
 
     } else {
       $img.css({
-        height: this.width * image_aspect_ratio,
-        width: this.width
+        height: that.width * image_aspect_ratio,
+        width: that.width
       });
     }
   }

@@ -1,7 +1,6 @@
-Superslides.prototype.fx = {
+var fx = {
   slide: function(orientation, complete) {
-    var that      = this,
-        $children = that.$container.children(),
+    var $children = that.$container.children(),
         $target   = $children.eq(orientation.upcoming_slide);
 
     $target.css({
