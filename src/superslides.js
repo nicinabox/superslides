@@ -195,10 +195,20 @@
     };
 
     var setupImages = function() {
-      var $images = that.$container.find('img').not(that.options.elements.preserve);
+      var $images = that.$container.find('img')
+                      .not(that.options.elements.preserve);
+
       $images.each(function() {
-        that.image._scale(this);
-        that.image._center(this);
+        var thisImg = this;
+        var img = new Image();
+        img.src = this.src;
+
+        img.onload = function() {
+          var image_aspect_ratio = that.image._aspectRatio(this);
+
+          that.image._scale(thisImg, image_aspect_ratio);
+          that.image._center(thisImg, image_aspect_ratio);
+        };
       });
     };
 
@@ -402,9 +412,10 @@
 
         if (!that.init) {
           that.init = true;
-          that.$container.css({
-            display: 'block'
-          });
+          // that.$container.css({
+          //   display: 'block'
+          // });
+          that.$container.fadeIn('fast');
         }
       });
     }
@@ -439,9 +450,10 @@
 
       return image.naturalHeight / image.naturalWidth;
     },
-    _scale: function(image) {
-      var image_aspect_ratio = this.image._aspectRatio(image),
-          container_aspect_ratio = this.height / this.width,
+    _scale: function(image, image_aspect_ratio) {
+      image_aspect_ratio = image_aspect_ratio || this.image._aspectRatio(image);
+
+      var container_aspect_ratio = this.height / this.width,
           $img = $(image);
 
       if (container_aspect_ratio > image_aspect_ratio) {
