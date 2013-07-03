@@ -26,9 +26,8 @@
   <script src="javascripts/hammer.min.js"></script>
   <script src="../dist/jquery.superslides.js" type="text/javascript" charset="utf-8"></script>
   <script>
-    var $slides;
     $(function() {
-      $slides = $('#slides');
+      var $slides = $('#slides');
 
       Hammer($slides[0]).on("swipeleft", function(e) {
         $slides.data('superslides').animate('next');
@@ -37,13 +36,12 @@
       Hammer($slides[0]).on("swiperight", function(e) {
         $slides.data('superslides').animate('prev');
       });
-    });
 
-    $(window).load(function() {
       $slides.superslides({
         hashchange: true
       });
     });
+
   </script>
 </body>
 </html>
