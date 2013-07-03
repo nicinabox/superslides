@@ -3,14 +3,16 @@
 ### 0.6.0 - Unreleased
 
 * Drop Coffeescript, port to vanilla Javascript
+* Change src organization
 * Change image positioning to match `background-size: cover`
 * Add custom pagination
 * Add ability for slider to be constrained by an element
 * Add more examples
 * Add fade effect
-* Add extensible fx engine
+* Add fx engine
 * Add support for arrow keys
 * Fix double image load
+* Fix pagination, navigation when using multiple instances
 
 ### 0.5.2 - Jan 20, 2013
 
