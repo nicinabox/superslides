@@ -58,9 +58,13 @@ module.exports = function(grunt) {
       },
     },
     compass: {
-      sassDir: 'scss',
-      cssDir: 'dist/stylesheets',
-      noLineComments: true
+      dist: {
+        options: {
+          sassDir: 'scss',
+          cssDir: 'dist/stylesheets',
+          noLineComments: true
+        }
+      }
     },
     watch: {
       gruntfile: {
