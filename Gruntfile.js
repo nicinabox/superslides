@@ -21,7 +21,17 @@ module.exports = function(grunt) {
         stripBanners: true
       },
       dist: {
-        src: ['src/<%= pkg.name %>.js'],
+        src: [
+              'src/intro.js',
+              'src/core.js',
+              'src/core_prototype.js',
+              'src/fx.js',
+              'src/image.js',
+              'src/pagination.js',
+              'src/plugin.js',
+              'src/polyfills.js',
+              'src/outro.js'
+             ],
         dest: 'dist/jquery.<%= pkg.name %>.js'
       },
     },
