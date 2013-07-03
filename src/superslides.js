@@ -28,10 +28,10 @@
         pagination: '.slides-pagination'
       }
     }, options);
-
     var that       = this,
         $control   = $('<div>', { "class": 'slides-control' }),
         multiplier = 1;
+
 
     this.$el        = $(el);
     this.$container = this.$el.find(this.options.elements.container);
@@ -65,7 +65,7 @@
       setupImages();
       that.pagination._setup();
 
-      $(document).on('click', that.options.elements.nav + " a", function(e) {
+      that.$el.on('click', that.options.elements.nav + " a", function(e) {
         e.preventDefault();
 
         that.stop();
@@ -412,9 +412,6 @@
 
         if (!that.init) {
           that.init = true;
-          // that.$container.css({
-          //   display: 'block'
-          // });
           that.$container.fadeIn('fast');
         }
       });
@@ -597,7 +594,7 @@
     _events: function() {
       var that = this;
       if (!this.options.hashchange) {
-        $(document).on('click', that.options.elements.pagination + ' a', function(e) {
+        this.$el.on('click', that.options.elements.pagination + ' a', function(e) {
           e.preventDefault();
           var hash  = that._parseHash(this.hash),
               index = that._upcomingSlide(hash - 1);
