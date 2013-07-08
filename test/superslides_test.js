@@ -36,6 +36,15 @@
   var testSetup = {
     testStart: function() {
       $slides = $('#slides');
+      // $slides.on('init.slides', function() {
+      //   console.log('init');
+      // });
+      // $slides.on('animating.slides', function() {
+      //   console.log('animating');
+      // });
+      // $slides.on('animated.slides', function() {
+      //   console.log('animated');
+      // });
     },
     testDone: function() {
     },
@@ -49,7 +58,7 @@
 
   module('API Events');
 
-  asyncTest('slides.init', 1, function() {
+  asyncTest('init.slides', 1, function() {
     $slides.on('init.slides', function() {
       ok($slides.data('superslides'));
       start();
@@ -93,15 +102,13 @@
 
   asyncTest('animated.slides', function() {
     addSlide(2);
-    $slides.superslides();
-    $slides.data('superslides').animating = false;
 
     $slides.on('animated.slides', function() {
       ok(true);
       start();
     });
 
-    $slides.data('superslides').animate();
+    $slides.superslides();
   });
 
   module('API methods');
@@ -124,13 +131,8 @@
     ok($.isEmptyObject($.data($slides[0])), 'should not have any superslides data');
   });
 
-  test('.mobile detects mobile useragent', function() {
-    $slides.superslides();
-    equal($slides.data('superslides').mobile, (/mobile/i).test(navigator.userAgent));
-  });
-
   asyncTest('.current should be 0', function() {
-    $slides.on('init.slides', function() {
+    $slides.on('animated.slides', function() {
       equal($slides.data('superslides').current, 0);
       start();
     });
@@ -139,7 +141,7 @@
   });
 
   asyncTest('.next should be 0', function() {
-    $slides.on('init.slides', function() {
+    $slides.on('animated.slides', function() {
       equal($slides.data('superslides').next, 0);
       start();
     });
@@ -148,10 +150,19 @@
 
   asyncTest('.next should be 1', function() {
     addSlide(2);
+    var animated = 1;
+
+    $slides.on('animated.slides', function() {
+      animated += 1;
+
+      if (animated === 2) {
+        equal($slides.data('superslides').next, 1);
+        start();
+      }
+    });
 
     $slides.on('init.slides', function() {
-      equal($slides.data('superslides').next, 1);
-      start();
+      $slides.superslides('animate');
     });
 
     $slides.superslides();
@@ -196,18 +207,27 @@
     ok(!$slides.data('superslides').play_id);
   });
 
-  test('.update() updates positions', function() {
+  asyncTest('.update() updates positions', 6, function() {
+
     $slides.on('updated.slides', function() {
       var s = $slides.data('superslides');
 
-      equal(s.current, 0, 'current should be 0');
-      equal(s.next, 1, 'next should be 1');
-      equal(s.prev, 2, 'prev should be 2');
+      equal(s.current, 0, 'current should be 0 after update');
+      equal(s.next, 1, 'next should be 1 after update');
+      equal(s.prev, 2, 'prev should be 2 after update');
     });
 
     $slides.on('init.slides', function() {
+      var s = $slides.data('superslides');
+
+      equal(s.current, 0, 'current should be 0');
+      equal(s.next, 0, 'next should be 0');
+      equal(s.prev, 0, 'prev should be 0');
+
+      start();
+
       addSlide(2);
-      $slides.data('superslides').update();
+      $slides.superslides('update');
     });
 
     $slides.superslides();
@@ -215,19 +235,21 @@
 
   asyncTest('.animate() sets slide positions', function() {
     addSlide(2);
+    var animated = 0;
 
     $slides.on('animated.slides', function() {
       var s = $slides.data('superslides');
+      animated += 1;
 
-      equal(s.current, 1, 'current should be 1');
-      equal(s.next, 2, 'next should be 2');
-      equal(s.prev, 0, 'prev should be 0');
+      if (animated === 2) {
+        equal(s.current, 1, 'current should be 1');
+        equal(s.next, 2, 'next should be 2');
+        equal(s.prev, 0, 'prev should be 0');
 
-      start();
-    });
-
-    $slides.on('init.slides', function() {
-      $slides.data('superslides').animate();
+        start();
+      } else {
+        $slides.superslides('animate');
+      }
     });
 
     $slides.superslides();

@@ -1,10 +1,26 @@
 // jQuery plugin definition
 
-$.fn[plugin] = function (options) {
-  return this.each(function() {
-    if (!$.data(this, plugin)) {
-      $.data(this, plugin, new Superslides(this, options));
-      $(this).trigger('init.slides');
+$.fn[plugin] = function(option, args) {
+  var result = [];
+
+  this.each(function() {
+    var $this, data, options;
+
+    $this = $(this);
+    data = $this.data(plugin);
+    options = typeof option === 'object' && option;
+
+    if (!data) {
+      result = $this.data(plugin, (data = new Superslides(this, options)));
+    }
+
+    if (typeof option === "string") {
+      result = data[option];
+      if (typeof result === 'function') {
+        return result = result.call(data, args);
+      }
     }
   });
+
+  return result;
 };

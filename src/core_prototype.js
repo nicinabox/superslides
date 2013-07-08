@@ -179,6 +179,7 @@ Superslides.prototype = {
       that.$el.trigger('animated.slides');
 
       if (!that.init) {
+        that.$el.trigger('init.slides');
         that.init = true;
         that.$container.fadeIn('fast');
       }

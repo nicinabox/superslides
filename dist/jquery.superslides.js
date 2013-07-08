@@ -1,4 +1,4 @@
-/*! Superslides - v0.6.0-beta1 - 2013-07-03
+/*! Superslides - v0.6.0-beta1 - 2013-07-08
 * https://github.com/nicinabox/superslides
 * Copyright (c) 2013 Nic Aitch; Licensed MIT */
 (function(window, $) {
@@ -583,6 +583,7 @@ Superslides.prototype = {
       that.$el.trigger('animated.slides');
 
       if (!that.init) {
+        that.$el.trigger('init.slides');
         that.init = true;
         that.$container.fadeIn('fast');
       }
@@ -592,13 +593,29 @@ Superslides.prototype = {
 
 // jQuery plugin definition
 
-$.fn[plugin] = function (options) {
-  return this.each(function() {
-    if (!$.data(this, plugin)) {
-      $.data(this, plugin, new Superslides(this, options));
-      $(this).trigger('init.slides');
+$.fn[plugin] = function(option, args) {
+  var result = [];
+
+  this.each(function() {
+    var $this, data, options;
+
+    $this = $(this);
+    data = $this.data(plugin);
+    options = typeof option === 'object' && option;
+
+    if (!data) {
+      result = $this.data(plugin, (data = new Superslides(this, options)));
+    }
+
+    if (typeof option === "string") {
+      result = data[option];
+      if (typeof result === 'function') {
+        return result = result.call(data, args);
+      }
     }
   });
+
+  return result;
 };
 
 // Prototype's .bind method
