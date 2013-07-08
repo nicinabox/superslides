@@ -11,35 +11,85 @@ $('#slides').superslides()
 ```
 ## Options
 
-`play`: `0` [number] Milliseconds before progressing to next slide automatically. Use a falsey value to disable.
-
-`animation`: `'slide'` [string] slide or fade. This matches animations defined by fx engine.
-
-`animation_speed`: `'normal'` [string] Animation speed.
-
-`animation_easing`: `'linear'` [string] Animation easing.
-
-`inherit_width_from`: `window` [object] or [string] Accepts window or element selector. Use to constrain slider to an element's width.
-
-`inherit_height_from`: `window` [object] or [string] Accepts window or element selector. Use to constrain slider to an element's height.
-
-`pagination`: `true` [boolean] Generate pagination. Add an id to your slide to use custom pagination that slide.
-
-`hashchange`: `false` [boolean] Enable hashchange support in url.
-
-`elements` [object] A hash of element classes used in generated html.
+<table>
+  <tr>
+    <th>Option</th>
+    <th>Default</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>`play`</td>
+    <td>`0`</td>
+    <td>[number] Milliseconds before progressing to next slide automatically. Use a falsey value to disable.</td>
+  </tr>
+  <tr>
+    <td>`animation`</td>
+    <td>`'slide'`</td>
+    <td>[string] slide or fade. This matches animations defined by fx engine.</td>
+  </tr>
+  <tr>
+    <td>`animation_speed`</td>
+    <td>`'normal'`</td>
+    <td>[string] Animation speed.</td>
+  </tr>
+  <tr>
+    <td>`animation_easing`</td>
+    <td>`'linear'`</td>
+    <td>[string] Animation easing.</td>
+  </tr>
+  <tr>
+    <td>`inherit_width_from`</td>
+    <td>`window`</td>
+    <td>[object] or [string] Accepts window or element selector. Use to constrain slider to an element's width.</td>
+  </tr>
+  <tr>
+    <td>`inherit_height_from`</td>
+    <td>`window`</td>
+    <td>[object] or [string] Accepts window or element selector. Use to constrain slider to an element's height.</td>
+  </tr>
+  <tr>
+    <td>`pagination`</td>
+    <td>`true`</td>
+    <td>[boolean] Generate pagination. Add an id to your slide to use custom pagination that slide.</td>
+  </tr>
+  <tr>
+    <td>`hashchange`</td>
+    <td>`false`</td>
+    <td>[boolean] Enable hashchange support in url.</td>
+  </tr>
+  <tr>
+    <td>`elements`</td>
+    <td>(see Elements below)</td>
+    <td>[object] A hash of element classes used in generated html.</td>
+  </tr>
+</table>
 
 ### Elements
 
 The following are element classes accessible under the `elements` object.
 
-`preserve`: `'.preserve'` [string] Add this class to images in your content that you don't want to be resized like the background images.
-
-`nav`: `'.slides-navigation'` [string] Class surrounding next/previous buttons.
-
-`container`: `'.slides-container'` [string] Container class that must be present with original markup.
-
-`pagination`: `'.slides-pagination'` [string] Pagination class added to pagination container.
+<table>
+  <tr>
+    <td>`preserve`</td>
+    <td>`'.preserve'`</td>
+    <td>[string] Add this class to images in your content that you don't want to be resized like the background images.</td>
+  </tr>
+  <tr>
+    <td>`nav`</td>
+    <td>`'.slides-navigation'`</td>
+    <td>[string] Class surrounding next/previous buttons.</td>
+  </tr>
+  <tr>
+    <td>`container`</td>
+    <td>`'.slides-container'`</td>
+    <td>[string] Container class that must be present with original markup.</td>
+  </tr>
+  <tr>
+    <td>`pagination`</td>
+    <td>`'.slides-pagination'`</td>
+    <td>[string] Pagination class added to pagination container.</td>
+  </tr>
+</table>
 
 ## Events
 
