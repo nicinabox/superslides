@@ -13,6 +13,8 @@
 * Add support for arrow keys
 * Fix double image load
 * Fix pagination, navigation when using multiple instances
+* Fix tests
+* Fix update method
 
 ### 0.5.2 - Jan 20, 2013
 
