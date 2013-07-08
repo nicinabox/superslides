@@ -89,6 +89,12 @@ Superslides.prototype = {
   },
 
   update: function() {
+    this.css.children();
+    this.css.containers();
+    this.css.images();
+
+    this.pagination._addItem(this.size())
+
     this._findPositions(this.current);
     this.$el.trigger('updated.slides');
   },

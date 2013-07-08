@@ -63,22 +63,21 @@ var css = {
       });
 
     $images.each(function() {
-      var thisImg = this,
-          image_aspect_ratio = that.image._aspectRatio(this);
+      var image_aspect_ratio = that.image._aspectRatio(this),
+          image = this;
 
-      if (!$.data(thisImg, 'processed')) {
+      if (!$.data(this, 'processed')) {
         var img = new Image();
         img.onload = function() {
-
-          that.image._scale(thisImg, image_aspect_ratio);
-          that.image._center(thisImg, image_aspect_ratio);
-          $.data(thisImg, 'processed', true);
+          that.image._scale(image, image_aspect_ratio);
+          that.image._center(image, image_aspect_ratio);
+          $.data(image, 'processed', true);
         };
         img.src = this.src;
 
       } else {
-        that.image._scale(thisImg, image_aspect_ratio);
-        that.image._center(thisImg, image_aspect_ratio);
+        that.image._scale(image, image_aspect_ratio);
+        that.image._center(image, image_aspect_ratio);
       }
     });
   },
@@ -86,27 +85,35 @@ var css = {
     var $children = that.$container.children();
 
     if ($children.is('img')) {
-      $children.wrap('<div>');
-
-      // move id attribute
       $children.each(function() {
-        var id = $(this).attr('id');
-        $(this).removeAttr('id');
-        $(this).parent().attr('id', id);
+        if ($(this).is('img')) {
+          $(this).wrap('<div>');
+
+          // move id attribute
+          var id = $(this).attr('id');
+          $(this).removeAttr('id');
+          $(this).parent().attr('id', id);
+        }
       });
 
       $children = that.$container.children();
     }
 
+    if (!that.init) {
+      $children.css({
+        display: 'none',
+        left: that.width * 2
+      });
+    }
+
     $children.css({
       position: 'absolute',
       overflow: 'hidden',
-      display: 'none',
       height: '100%',
       width: that.width,
-      left: that.width * 2,
       top: 0,
       zIndex: 0
     });
+
   }
 }
