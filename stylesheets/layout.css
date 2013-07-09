@@ -942,27 +942,27 @@ body {
 }
 
 h1 {
-  font-size: 58px;
+  font-size: 3.64058em;
 }
 
 h2 {
-  font-size: 47px;
+  font-size: 2.94529em;
 }
 
 h3 {
-  font-size: 36px;
+  font-size: 2.25em;
 }
 
 h4 {
-  font-size: 29px;
+  font-size: 1.82029em;
 }
 
 h5 {
-  font-size: 22px;
+  font-size: 1.39058em;
 }
 
 h6 {
-  font-size: 18px;
+  font-size: 1.125em;
 }
 
 h1 {
@@ -971,6 +971,12 @@ h1 {
   color: white;
   text-shadow: 0 1px 1px #000;
   margin: 30px 0;
+}
+@media screen and (max-width: 767px) {
+  h1 {
+    font-size: 2.94529em;
+    margin: 15px 0;
+  }
 }
 
 a {
@@ -987,7 +993,7 @@ a:hover {
 }
 
 p {
-  font-size: 22px;
+  font-size: 1.39058em;
   color: white;
   text-shadow: 0 1px 1px #555;
 }
@@ -1051,6 +1057,15 @@ img.keep-original {
   }
 }
 
+body {
+  font-size: 16px;
+}
+@media screen and (max-width: 767px) {
+  body {
+    font-size: 13px;
+  }
+}
+
 #connect {
   z-index: 10;
   position: fixed;
@@ -1072,6 +1087,11 @@ img.keep-original {
 }
 #connect li .version:before {
   content: "v";
+}
+@media screen and (max-width: 767px) {
+  #connect {
+    margin-left: 0;
+  }
 }
 
 .button {
@@ -1111,6 +1131,14 @@ img.keep-original {
   top: 13%;
   padding: 10px 20px;
 }
+@media screen and (max-width: 767px) {
+  .container {
+    margin-top: 70px;
+    max-width: 100%;
+    width: 100%;
+    position: static;
+  }
+}
 
 .slides-navigation {
   top: 50%;
@@ -1144,6 +1172,11 @@ img.keep-original {
 }
 .slides-navigation a:hover {
   background: rgba(0, 0, 0, 0.4);
+}
+@media screen and (max-width: 767px) {
+  .slides-navigation {
+    display: none;
+  }
 }
 
 .slides-pagination a {
