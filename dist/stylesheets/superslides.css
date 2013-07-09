@@ -49,8 +49,16 @@
   border-radius: 15px;
   width: 10px;
   height: 10px;
+  display: -moz-inline-stack;
   display: inline-block;
+  vertical-align: middle;
+  *vertical-align: auto;
+  zoom: 1;
+  *display: inline;
+  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR4nGP6zwAAAgcBApocMXEAAAAASUVORK5CYII=");
   margin: 2px;
+  overflow: hidden;
+  text-indent: -100%;
 }
 .slides-pagination a.current {
   background: #222;
