@@ -401,7 +401,9 @@ var pagination = {
           index = that._upcomingSlide(hash - 1);
 
       if (index !== that.current) {
-        that.animate(index);
+        that.animate(index, function() {
+          that.start();
+        });
       }
     });
   }
