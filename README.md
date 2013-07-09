@@ -50,7 +50,7 @@ $('#slides').superslides()
   <tr>
     <td>pagination</td>
     <td>true</td>
-    <td>[boolean] Generate pagination. Add an id to your slide to use custom pagination that slide.</td>
+    <td>[boolean] Generate pagination. Add an id to your slide to use custom pagination on that slide.</td>
   </tr>
   <tr>
     <td>hashchange</td>
