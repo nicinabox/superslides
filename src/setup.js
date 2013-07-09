@@ -7,9 +7,13 @@
 
       that.stop();
       if ($(this).hasClass('next')) {
-        that.animate('next');
+        that.animate('next', function() {
+          that.start();
+        });
       } else {
-        that.animate('prev');
+        that.animate('prev', function() {
+          that.start();
+        });
       }
     });
 
