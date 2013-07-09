@@ -32,7 +32,6 @@ module.exports = function(grunt) {
               'src/core_outro.js',
               'src/core_prototype.js',
               'src/plugin.js',
-              'src/polyfills.js',
               'src/outro.js'
              ],
         dest: 'dist/jquery.<%= pkg.name %>.js'
