@@ -1,5 +1,9 @@
 # Changelog
 
+### 0.6.1 - July 9, 2013
+
+* Continue playing even after clicking navigation
+
 ### 0.6.0 - July 8, 2013
 
 * Drop Coffeescript, port to vanilla Javascript
