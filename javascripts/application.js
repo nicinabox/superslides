@@ -13,6 +13,16 @@ $(document).ready(function() {
     scrollable: true
   });
 
+  document.ontouchmove = function(e) {
+    e.preventDefault();
+  };
+  $('#slides').hammer().on('swipeleft', function() {
+    $(this).superslides('animate', 'next');
+  });
+
+  $('#slides').hammer().on('swiperight', function() {
+    $(this).superslides('animate', 'prev');
+  });
 
   // Update verion based on github tags
   var url = 'https://api.github.com/repos/nicinabox/superslides/git/refs/tags',
