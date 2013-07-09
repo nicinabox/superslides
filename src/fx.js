@@ -79,3 +79,5 @@ var fx = {
     }
   }
 };
+
+fx = $.extend(fx, $.fn.superslides.fx);

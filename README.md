@@ -162,6 +162,19 @@ You could even use a UL as the `slides-container`
 </div>
 ```
 
+## Custom Animations
+
+I realize that you might want to do something unique in your application. That's why I've added the ability to extend the existing animations with your own. See `examples/custom-fx.html`.
+
+```javascript
+$.fn.superslides.fx = $.extend({
+  flip: function(orientation, complete) {
+    console.log(orientation);
+    complete();
+  }
+}, $.fn.superslides.fx);
+```
+
 ## Hardware Acceleration
 
 Superslides is compatible with the [jQuery Animate Enhanced](http://playground.benbarnett.net/jquery-animate-enhanced/) plugin. Simply include it before this plugin and it will automatically smooth out transitions using CSS instead of JavaScript.

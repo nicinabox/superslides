@@ -24,3 +24,5 @@ $.fn[plugin] = function(option, args) {
 
   return result;
 };
+
+$.fn[plugin].fx = {};
