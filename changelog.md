@@ -1,6 +1,6 @@
 # Changelog
 
-### 0.6.0 - Unreleased
+### 0.6.0 - July 8, 2013
 
 * Drop Coffeescript, port to vanilla Javascript
 * Change src organization
