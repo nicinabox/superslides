@@ -1,4 +1,4 @@
-/*! Superslides - v0.6.1 - 2013-07-09
+/*! Superslides - v0.6.1 - 2013-07-10
 * https://github.com/nicinabox/superslides
 * Copyright (c) 2013 Nic Aitch; Licensed MIT */
 (function(window, $) {
@@ -434,7 +434,7 @@ Superslides.prototype = {
     return $(this.options.inherit_width_from).width();
   },
   _findHeight: function() {
-    return $(this.options.inherit_width_from).height();
+    return $(this.options.inherit_height_from).height();
   },
 
   _findMultiplier: function() {
