@@ -3,7 +3,7 @@ Superslides.prototype = {
     return $(this.options.inherit_width_from).width();
   },
   _findHeight: function() {
-    return $(this.options.inherit_width_from).height();
+    return $(this.options.inherit_height_from).height();
   },
 
   _findMultiplier: function() {
