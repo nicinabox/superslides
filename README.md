@@ -109,9 +109,9 @@ $('#slides').superslides('stop')
 $('#slides').superslides('animate' [, index|'next'|'prev'])
 $('#slides').superslides('size')
 $('#slides').superslides('destroy')
-$('#slides').superslides('current')
-$('#slides').superslides('next') // go to next slide
-$('#slides').superslides('prev') // go to previous slide
+$('#slides').superslides('current') // get current slide index
+$('#slides').superslides('next')    // get next slide index
+$('#slides').superslides('prev')    // get previous slide index
 ```
 
 If adding slides after initialization (a la ajax), be sure to call `update`.
