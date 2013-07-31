@@ -10,7 +10,11 @@ Superslides.prototype = {
     return this.size() === 1 ? 1 : 3;
   },
 
-  _upcomingSlide: function(direction) {
+  _upcomingSlide: function(direction, from_hash_change) {
+    if (from_hash_change && !isNaN(direction)) {
+      direction = direction - 1;
+    }
+
     if ((/next/).test(direction)) {
       return this._nextInDom();
 

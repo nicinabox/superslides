@@ -42,8 +42,8 @@ var pagination = {
     that.$el.on('click', that.options.elements.pagination + ' a', function(e) {
       e.preventDefault();
 
-      var hash  = that._parseHash(this.hash),
-          index = that._upcomingSlide(hash - 1);
+      var hash  = that._parseHash(this.hash), index;
+      index = that._upcomingSlide(hash, true);
 
       if (index !== that.current) {
         that.animate(index, function() {

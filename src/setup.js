@@ -46,14 +46,7 @@
     $(window).on('hashchange', function() {
       var hash = that._parseHash(), index;
 
-      if (hash && !isNaN(hash)) {
-        // Minus 1 here because we don't want the url
-        // to be zero-indexed
-        index = that._upcomingSlide(hash - 1);
-
-      } else {
-        index = that._upcomingSlide(hash);
-      }
+      index = that._upcomingSlide(hash, true);
 
       if (index >= 0 && index !== that.current) {
         that.animate(index);
