@@ -1,4 +1,4 @@
-/*! Superslides - v0.6.3-wip - 2013-07-31
+/*! Superslides - v0.6.3-wip - 2013-08-01
 * https://github.com/nicinabox/superslides
 * Copyright (c) 2013 Nic Aitch; Licensed MIT */
 (function(window, $) {
@@ -79,7 +79,7 @@ Superslides = function(el, options) {
     $(window).on('hashchange', function() {
       var hash = that._parseHash(), index;
 
-      index = that._upcomingSlide(hash, true);
+      index = that._upcomingSlide(hash);
 
       if (index >= 0 && index !== that.current) {
         that.animate(index);
