@@ -1,5 +1,14 @@
 # Changelog
 
+### 0.6.3 - Unreleased
+
+* Fix clicking custom pagination
+*
+
+### 0.6.2 - July 10, 2013
+
+* Fix _findHeight typo
+
 ### 0.6.1 - July 9, 2013
 
 * Continue playing even after clicking navigation
