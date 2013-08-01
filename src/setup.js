@@ -46,7 +46,7 @@
     $(window).on('hashchange', function() {
       var hash = that._parseHash(), index;
 
-      index = that._upcomingSlide(hash, true);
+      index = that._upcomingSlide(hash);
 
       if (index >= 0 && index !== that.current) {
         that.animate(index);
