@@ -44,9 +44,14 @@ var fx = {
 
     $target.css({
       left: this.width,
-      opacity: 1,
+      opacity: 0,
       display: 'block'
-    });
+    }).animate({
+          opacity: 1
+        },
+        that.options.animation_speed,
+        that.options.animation_easing
+    );
 
     if (orientation.outgoing_slide >= 0) {
       $outgoing.animate({
