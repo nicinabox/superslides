@@ -43,15 +43,17 @@
       }, 10);
     });
 
-    $(window).on('hashchange', function() {
-      var hash = that._parseHash(), index;
+    if (that.options.hashchange) {
+      $(window).on('hashchange', function() {
+        var hash = that._parseHash(), index;
 
-      index = that._upcomingSlide(hash);
+        index = that._upcomingSlide(hash);
 
-      if (index >= 0 && index !== that.current) {
-        that.animate(index);
-      }
-    });
+        if (index >= 0 && index !== that.current) {
+          that.animate(index);
+        }
+      });
+    }
 
     that.pagination._events();
 

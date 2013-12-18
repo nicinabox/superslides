@@ -1,4 +1,4 @@
-/*! Superslides - v0.6.3-wip - 2013-08-01
+/*! Superslides - v0.6.3-wip - 2013-12-17
 * https://github.com/nicinabox/superslides
 * Copyright (c) 2013 Nic Aitch; Licensed MIT */
 (function(window, $) {
@@ -76,15 +76,17 @@ Superslides = function(el, options) {
       }, 10);
     });
 
-    $(window).on('hashchange', function() {
-      var hash = that._parseHash(), index;
+    if (that.options.hashchange) {
+      $(window).on('hashchange', function() {
+        var hash = that._parseHash(), index;
 
-      index = that._upcomingSlide(hash);
+        index = that._upcomingSlide(hash);
 
-      if (index >= 0 && index !== that.current) {
-        that.animate(index);
-      }
-    });
+        if (index >= 0 && index !== that.current) {
+          that.animate(index);
+        }
+      });
+    }
 
     that.pagination._events();
 
@@ -258,9 +260,14 @@ var fx = {
 
     $target.css({
       left: this.width,
-      opacity: 1,
+      opacity: 0,
       display: 'block'
-    });
+    }).animate({
+          opacity: 1
+        },
+        that.options.animation_speed,
+        that.options.animation_easing
+    );
 
     if (orientation.outgoing_slide >= 0) {
       $outgoing.animate({
