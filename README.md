@@ -186,3 +186,7 @@ Check contributing.md.
 ## Changelog
 
 [Changelog](https://github.com/nicinabox/superslides/blob/0.5-stable/changelog.md)
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/nicinabox/superslides/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
