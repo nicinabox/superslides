@@ -606,7 +606,10 @@ Superslides.prototype = {
         window.location.hash = hash;
       }
     }
-
+    if (that.size() === 1) {
+      orientation.upcoming_slide    = 0;
+      orientation.outgoing_slide    = -1;
+    }
     that.$el.trigger('animating.slides', [orientation]);
 
     that.animation(orientation, function() {
