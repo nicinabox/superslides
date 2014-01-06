@@ -607,7 +607,9 @@ Superslides.prototype = {
       }
     }
     if (that.size() === 1) {
-      that.options.play             = 0;
+      that.stop();
+      that.options.play = 0;
+      that.options.animation_speed = 0;
       orientation.upcoming_slide    = 0;
       orientation.outgoing_slide    = -1;
     }
