@@ -187,15 +187,17 @@
     $slides.superslides();
   });
 
-  asyncTest('.start() should assign play_id', function() {
+  asyncTest('.animate() should assign play_id', function() {
     $slides.superslides({
       play: true
     });
 
-    setTimeout(function() {
+    $slides.on('animated.slides', function() {
       ok($slides.data('superslides').play_id);
+
+      $slides.off('animated.slides');
       start();
-    }, 100);
+    });
   });
 
   test('.stop() should remove play_id', function() {
@@ -253,6 +255,66 @@
     });
 
     $slides.superslides();
+  });
+
+  module('API Options');
+
+  asyncTest('Autoplay option should automatically switch slides user initiated after timeout', function() {
+    addSlide(1);
+    var lastAnimation;
+
+    $slides.on('animated.slides', function() {
+      var s = $slides.data('superslides');
+
+      if (s.current === 1) {
+        ok((new Date() - lastAnimation) >= (s.options.play + s.options.animation_speed));
+
+        $slides.off('animated.slides');
+        start();
+      }
+
+      lastAnimation = new Date();
+    });
+
+    $slides.superslides({
+      animation_speed: 10,
+      play: 50
+    });
+  });
+
+  asyncTest('Autoplay timeout should be reset after animation', 2, function() {
+    addSlide(2);
+    var lastAnimation;
+
+    $slides.on('animated.slides', function() {
+      var s = $slides.data('superslides');
+
+      if (s.current === 1) {
+        // Making sure that the first animation triggered upon user action.
+        ok((new Date() - lastAnimation) >= (150 + s.options.animation_speed));
+      } else if (s.current === 2) {
+        // Making sure that the last animation was triggered after the play
+        // timeout has expired.
+        ok((new Date() - lastAnimation) >= (s.options.play + s.options.animation_speed));
+
+        $slides.off('animated.slides');
+
+        start();
+      }
+
+      lastAnimation = new Date();
+    });
+
+    $slides.on('init.slides', function() {
+      setTimeout(function() {
+        $slides.superslides('animate');
+      }, 150);
+    });
+
+    $slides.superslides({
+      animation_speed: 10,
+      play: 300
+    });
   });
 
 }(jQuery));
