@@ -100,7 +100,7 @@ Superslides.prototype = {
   },
 
   stop: function() {
-    clearInterval(this.play_id);
+    clearTimeout(this.play_id);
     delete this.play_id;
 
     this.$el.trigger('stopped.slides');
@@ -113,16 +113,6 @@ Superslides.prototype = {
       $(window).trigger('hashchange');
     } else {
       this.animate();
-    }
-
-    if (this.options.play) {
-      if (this.play_id) {
-        this.stop();
-      }
-
-      this.play_id = setInterval(function() {
-        that.animate();
-      }, this.options.play);
     }
 
     this.$el.trigger('started.slides');
@@ -179,6 +169,14 @@ Superslides.prototype = {
 
       if (typeof userCallback === 'function') {
         userCallback();
+      }
+
+      if (that.options.play) {
+        clearTimeout(that.play_id);
+
+        that.play_id = setTimeout(function() {
+          that.animate();
+        }, that.options.play);
       }
 
       that.animating = false;
