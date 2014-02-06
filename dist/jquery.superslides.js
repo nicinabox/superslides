@@ -1,6 +1,6 @@
-/*! Superslides - v0.6.3-wip - 2013-12-17
+/*! Superslides - v0.6.3-wip - 2014-02-06
 * https://github.com/nicinabox/superslides
-* Copyright (c) 2013 Nic Aitch; Licensed MIT */
+* Copyright (c) 2014 Nic Aitch; Licensed MIT */
 (function(window, $) {
 
 var Superslides, plugin = 'superslides';
@@ -580,6 +580,10 @@ Superslides.prototype = {
     orientation.upcoming_slide = this._upcomingSlide(direction);
 
     if (orientation.upcoming_slide >= this.size()) {
+      return;
+    }
+
+    if (orientation.upcoming_slide === this.current) {
       return;
     }
 

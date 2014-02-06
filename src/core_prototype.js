@@ -152,6 +152,10 @@ Superslides.prototype = {
       return;
     }
 
+    if (orientation.upcoming_slide === this.current) {
+      return;
+    }
+
     orientation.outgoing_slide    = this.current;
     orientation.upcoming_position = this.width * 2;
     orientation.offset            = -orientation.upcoming_position;
