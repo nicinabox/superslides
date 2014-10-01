@@ -108,7 +108,7 @@ var css = {
 
     $children.css({
       position: 'absolute',
-      overflow: 'hidden',
+      overflow: that.options.scrollable? 'auto' : 'hidden',
       height: '100%',
       width: that.width,
       top: 0,
