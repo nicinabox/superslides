@@ -1,6 +1,6 @@
-/*! Superslides - v0.6.1 - 2013-07-09
+/*! Superslides - v0.6.1 - 2014-10-01
 * https://github.com/nicinabox/superslides
-* Copyright (c) 2013 Nic Aitch; Licensed MIT */
+* Copyright (c) 2014 Nic Aitch; Licensed MIT */
 (function(window, $) {
 
 var Superslides, plugin = 'superslides';
@@ -446,7 +446,7 @@ Superslides.prototype = {
     } else if ((/prev/).test(direction)) {
       return this._prevInDom();
 
-    } else if ((/\d/).test(direction)) {
+    } else if ((/^\d+$/).test(direction)) {
       return +direction;
 
     } else if (direction && (/\w/).test(direction)) {
@@ -529,7 +529,7 @@ Superslides.prototype = {
   },
 
   stop: function() {
-    clearInterval(this.play_id);
+    clearTimeout(this.play_id);
     delete this.play_id;
 
     this.$el.trigger('stopped.slides');
@@ -542,16 +542,6 @@ Superslides.prototype = {
       $(window).trigger('hashchange');
     } else {
       this.animate();
-    }
-
-    if (this.options.play) {
-      if (this.play_id) {
-        this.stop();
-      }
-
-      this.play_id = setInterval(function() {
-        that.animate();
-      }, this.options.play);
     }
 
     this.$el.trigger('started.slides');
@@ -608,6 +598,14 @@ Superslides.prototype = {
 
       if (typeof userCallback === 'function') {
         userCallback();
+      }
+
+      if (that.options.play) {
+        clearTimeout(that.play_id);
+
+        that.play_id = setTimeout(function() {
+          that.animate();
+        }, that.options.play);
       }
 
       that.animating = false;
