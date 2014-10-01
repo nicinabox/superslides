@@ -17,7 +17,7 @@ Superslides.prototype = {
     } else if ((/prev/).test(direction)) {
       return this._prevInDom();
 
-    } else if ((/\d/).test(direction)) {
+    } else if ((/^\d+$/).test(direction)) {
       return +direction;
 
     } else if (direction && (/\w/).test(direction)) {
