@@ -1,10 +1,15 @@
 var image = {
   _centerY: function(image) {
     var $img = $(image);
-
-    $img.css({
-      top: (that.height - $img.height()) / 2
-    });
+    var css = {top: (that.height - $img.height()) / 2};
+    if(that.options.gravity){
+        swith(that.options.gravity){
+          case 'top': css = {top: 0}; break;
+          case 'bottom': css = {bottom: 0}; break; 
+          default:  css = {top: that.options.gravity}; break; 
+        };
+    };
+    $img.css(css);
   },
   _centerX: function(image) {
     var $img = $(image);
