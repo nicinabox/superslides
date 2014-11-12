@@ -2,7 +2,7 @@ var pagination = {
   _setCurrent: function(i) {
     if (!that.$pagination) { return; }
 
-    var $pagination_children = that.$pagination.children();
+    var $pagination_children = that.$pagination.children('a');
 
     $pagination_children.removeClass('current');
     $pagination_children.eq(i)
@@ -28,9 +28,12 @@ var pagination = {
   _setup: function() {
     if (!that.options.pagination || that.size() === 1) { return; }
 
-    var $pagination = $("<nav>", {
-      'class': that.options.elements.pagination.replace(/^\./, '')
-    });
+    var $pagination = $(that.options.elements.pagination);
+    if (!$pagination[0]) {
+      $pagination = $("<nav>", {
+        'class': that.options.elements.pagination.replace(/^\./, '')
+      });
+    };
 
     that.$pagination = $pagination.appendTo(that.$el);
 
