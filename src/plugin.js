@@ -17,7 +17,8 @@ $.fn[plugin] = function(option, args) {
     if (typeof option === "string") {
       result = data[option];
       if (typeof result === 'function') {
-        return result = result.call(data, args);
+        result = result.call(data, args);
+        return result;
       }
     }
   });
