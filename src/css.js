@@ -49,7 +49,7 @@ var css = {
   },
   images: function() {
     var $images = that.$container.find('img')
-                                 .not(that.options.elements.preserve)
+                                 .not(that.options.elements.preserve);
 
     $images.removeAttr('width').removeAttr('height')
       .css({
@@ -116,4 +116,4 @@ var css = {
     });
 
   }
-}
+};
