@@ -6,6 +6,7 @@ Superslides = function(el, options) {
     animation_speed: 600,
     animation_easing: 'swing',
     animation: 'slide',
+    fade_in_first_slide: true,
     inherit_width_from: window,
     inherit_height_from: window,
     pagination: true,
