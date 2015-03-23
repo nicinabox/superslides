@@ -18,6 +18,12 @@ var pagination = {
       href = slide_id;
     }
 
+    if (that.size() > 1){ 
+      that.$pagination.css({display: 'block'});
+    } else {
+      that.$pagination.css({display: 'none'});
+    }; 
+
     var $item = $("<a>", {
       'href': "#" + href,
       'text': href
@@ -26,13 +32,18 @@ var pagination = {
     $item.appendTo(that.$pagination);
   },
   _setup: function() {
-    if (!that.options.pagination || that.size() === 1) { return; }
+    if (!that.options.pagination) { return; }
 
-    var $pagination = $("<nav>", {
-      'class': that.options.elements.pagination.replace(/^\./, '')
-    });
+    if (that.$pagination){
+      that.$pagination.empty();
+    } else {
+      var $pagination = $("<nav>", {
+        'class': that.options.elements.pagination.replace(/^\./, '')
+      });
+      that.$pagination = $pagination.appendTo(that.$el);
+    }
 
-    that.$pagination = $pagination.appendTo(that.$el);
+    if (that.size() <= 1){ that.$pagination.css({ display: 'none' }); };
 
     for (var i = 0; i < that.size(); i++) {
       that.pagination._addItem(i);
