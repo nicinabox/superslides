@@ -1,3 +1,7 @@
+### /!\ This project is currently unmaintained
+
+If you're interested in maintaining this project and triaging bugs, shoot me an email at nic@nicinabox.com.
+
 # Superslides
 
 Superslides is a full screen, hardware accelerated slider for jQuery. I wasn't happy with the state of full screen sliders, so naturally I built my own.
