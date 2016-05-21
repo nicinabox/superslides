@@ -1,6 +1,6 @@
 ### /!\ This project is currently unmaintained
 
-If you're interested in maintaining this project and triaging bugs, shoot me an email at nic@nicinabox.com.
+If you're interested in maintaining this project and triaging bugs [chime in on this issue](https://github.com/nicinabox/superslides/issues/353).
 
 # Superslides
 
