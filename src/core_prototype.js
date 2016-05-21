@@ -11,8 +11,13 @@ Superslides.prototype = {
   },
 
   _upcomingSlide: function(direction, from_hash_change) {
-    if (from_hash_change && !isNaN(direction)) {
-      direction = direction - 1;
+    if (from_hash_change && (!!direction)) {
+      var index = this._findSlideById(direction);
+      if (index >= 0 && index < that.size()) {
+        return index;
+      } else {
+        return 0;
+      }
     }
 
     if ((/next/).test(direction)) {
@@ -97,7 +102,8 @@ Superslides.prototype = {
     this.css.containers();
     this.css.images();
 
-    this.pagination._addItem(this.size());
+    this.pagination._setup();
+    this.start()
 
     this._findPositions(this.current);
     this.$el.trigger('updated.slides');
