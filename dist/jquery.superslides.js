@@ -1,4 +1,4 @@
-/*! Superslides - v0.6.3-wip - 2013-12-17
+/*! Superslides - v0.6.1 - 2013-07-09
 * https://github.com/nicinabox/superslides
 * Copyright (c) 2013 Nic Aitch; Licensed MIT */
 (function(window, $) {
@@ -16,6 +16,7 @@ Superslides = function(el, options) {
     pagination: true,
     hashchange: false,
     scrollable: true,
+	  paddingBottom: 0, 
     elements: {
       preserve: '.preserve',
       nav: '.slides-navigation',
@@ -76,17 +77,22 @@ Superslides = function(el, options) {
       }, 10);
     });
 
-    if (that.options.hashchange) {
-      $(window).on('hashchange', function() {
-        var hash = that._parseHash(), index;
+    $(window).on('hashchange', function() {
+      var hash = that._parseHash(), index;
 
+      if (hash && !isNaN(hash)) {
+        // Minus 1 here because we don't want the url
+        // to be zero-indexed
+        index = that._upcomingSlide(hash - 1);
+
+      } else {
         index = that._upcomingSlide(hash);
+      }
 
-        if (index >= 0 && index !== that.current) {
-          that.animate(index);
-        }
-      });
-    }
+      if (index >= 0 && index !== that.current) {
+        that.animate(index);
+      }
+    });
 
     that.pagination._events();
 
@@ -98,7 +104,7 @@ var css = {
   containers: function() {
     if (that.init) {
       that.$el.css({
-        height: that.height
+        height: that.height - that.options.paddingBottom
       });
 
       that.$control.css({
@@ -118,7 +124,7 @@ var css = {
         position: 'relative',
         overflow: 'hidden',
         width: '100%',
-        height: that.height
+        height: that.height - that.options.paddingBottom
       });
 
       that.$control.css({
@@ -260,14 +266,9 @@ var fx = {
 
     $target.css({
       left: this.width,
-      opacity: 0,
+      opacity: 1,
       display: 'block'
-    }).animate({
-          opacity: 1
-        },
-        that.options.animation_speed,
-        that.options.animation_easing
-    );
+    });
 
     if (orientation.outgoing_slide >= 0) {
       $outgoing.animate({
@@ -308,7 +309,7 @@ var image = {
     var $img = $(image);
 
     $img.css({
-      top: (that.height - $img.height()) / 2
+      top: ((that.height - $img.height()) / 2) - that.options.paddingBottom
     });
   },
   _centerX: function(image) {
@@ -397,13 +398,11 @@ var pagination = {
     that.$el.on('click', that.options.elements.pagination + ' a', function(e) {
       e.preventDefault();
 
-      var hash  = that._parseHash(this.hash), index;
-      index = that._upcomingSlide(hash, true);
+      var hash  = that._parseHash(this.hash),
+          index = that._upcomingSlide(hash - 1);
 
       if (index !== that.current) {
-        that.animate(index, function() {
-          that.start();
-        });
+        that.animate(index);
       }
     });
   }
@@ -434,18 +433,14 @@ Superslides.prototype = {
     return $(this.options.inherit_width_from).width();
   },
   _findHeight: function() {
-    return $(this.options.inherit_height_from).height();
+    return $(this.options.inherit_width_from).height();
   },
 
   _findMultiplier: function() {
     return this.size() === 1 ? 1 : 3;
   },
 
-  _upcomingSlide: function(direction, from_hash_change) {
-    if (from_hash_change && !isNaN(direction)) {
-      direction = direction - 1;
-    }
-
+  _upcomingSlide: function(direction) {
     if ((/next/).test(direction)) {
       return this._nextInDom();
 
