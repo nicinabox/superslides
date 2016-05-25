@@ -2,7 +2,7 @@ var pagination = {
   _setCurrent: function(i) {
     if (!that.$pagination) { return; }
 
-    var $pagination_children = that.$pagination.children();
+    var $pagination_children = that.$pagination.children('a');
 
     $pagination_children.removeClass('current');
     $pagination_children.eq(i)
