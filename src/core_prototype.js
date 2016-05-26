@@ -192,6 +192,7 @@ Superslides.prototype = {
         that.$el.trigger('init.slides');
         that.init = true;
         that.$container.fadeIn('fast');
+	that.$el.trigger('visible.slides');
       }
     });
   }
