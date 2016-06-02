@@ -30,8 +30,8 @@
       setTimeout(function() {
         var $children = that.$container.children();
 
-        that.width  = that._findWidth();
-        that.height = that._findHeight();
+        that.width  = Math.max(that.options.min_width, that._findWidth());
+        that.height = Math.max(that.options.min_height, that._findHeight());
 
         $children.css({
           width: that.width,
