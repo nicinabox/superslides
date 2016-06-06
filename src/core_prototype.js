@@ -191,7 +191,11 @@ Superslides.prototype = {
       if (!that.init) {
         that.$el.trigger('init.slides');
         that.init = true;
-        that.$container.fadeIn('fast');
+        if(that.options.fade_in_first_slide) {
+          that.$container.fadeIn('fast');
+        } else {
+          that.$container.show();
+        }
       }
     });
   }
