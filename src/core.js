@@ -15,6 +15,7 @@ Superslides = function(el, options) {
       preserve: '.preserve',
       nav: '.slides-navigation',
       container: '.slides-container',
+      slide:      '*',
       pagination: '.slides-pagination'
     }
   }, options);
@@ -25,3 +26,8 @@ Superslides = function(el, options) {
 
   this.$el        = $(el);
   this.$container = this.$el.find(this.options.elements.container);
+
+  this.$container.children = function() {
+    return $.fn.children.call(this, that.options.elements.slide);
+  };
+

@@ -89,6 +89,12 @@ The following are element classes accessible under the `elements` object.
     <td>[string] Container class that must be present with original markup.</td>
   </tr>
   <tr>
+    <td>slide</td>
+    <td>'.slide'</td>
+    <td>[string] Optional slide class. Used to determine which child element of
+    the '.slides-container' is a slide</td>
+  </tr>
+  <tr>
     <td>pagination</td>
     <td>'.slides-pagination'</td>
     <td>[string] Pagination class added to pagination container.</td>

@@ -1,6 +1,6 @@
-/*! Superslides - v0.6.3-wip - 2013-12-17
+/*! Superslides - v0.6.3-wip - 2014-06-24
 * https://github.com/nicinabox/superslides
-* Copyright (c) 2013 Nic Aitch; Licensed MIT */
+* Copyright (c) 2014 Nic Aitch; Licensed MIT */
 (function(window, $) {
 
 var Superslides, plugin = 'superslides';
@@ -20,6 +20,7 @@ Superslides = function(el, options) {
       preserve: '.preserve',
       nav: '.slides-navigation',
       container: '.slides-container',
+      slide:      '*',
       pagination: '.slides-pagination'
     }
   }, options);
@@ -30,6 +31,11 @@ Superslides = function(el, options) {
 
   this.$el        = $(el);
   this.$container = this.$el.find(this.options.elements.container);
+
+  this.$container.children = function() {
+    return $.fn.children.call(this, that.options.elements.slide);
+  };
+
 
   // Private Methods
   var initialize = function() {
